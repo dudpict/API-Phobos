@@ -26,7 +26,7 @@ public class EquipeDaoImpl implements EquipeDao {
         try {
             connexion = daoFactory.getConnection();
             statement = connexion.createStatement();
-            resultat = statement.executeQuery("SELECT id,designation FROM equipe;");
+            resultat = statement.executeQuery("SELECT id,designation FROM Equipe;");
 
             while (resultat.next()) {
             	String id = resultat.getString("id");

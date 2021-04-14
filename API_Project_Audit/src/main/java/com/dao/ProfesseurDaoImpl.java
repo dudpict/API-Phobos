@@ -31,7 +31,7 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 		try {
 			connexion = daoFactory.getConnection();
 			PreparedStatement preparedStatement = connexion
-					.prepareStatement("SELECT * FROM audit WHERE etat ? 'publie' and matiere = ? ;");
+					.prepareStatement("SELECT * FROM Audit WHERE etat ? 'publie' and matiere = ? ;");
 			preparedStatement.setString(1, egalOuDiff);
 			preparedStatement.setInt(2, matiere);
 			resultat = preparedStatement.executeQuery();
@@ -83,7 +83,7 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 			connexion = daoFactory.getConnection();
 			statement = connexion.createStatement();
 			PreparedStatement preparedStatement = connexion
-					.prepareStatement("SELECT id FROM matiere WHERE responsable = ? ;");
+					.prepareStatement("SELECT id FROM Matiere WHERE responsable = ? ;");
 			preparedStatement.setInt(1, idProf);
 			resultat = preparedStatement.executeQuery();
 			while (resultat.next()) {
@@ -107,7 +107,7 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 	        try {
 	            connexion = daoFactory.getConnection();
 	            statement = connexion.createStatement();
-	            resultat = statement.executeQuery("SELECT id,bureau FROM professeur;");
+	            resultat = statement.executeQuery("SELECT id,bureau FROM Professeur;");
 
 	            while (resultat.next()) {
 	            	String id = resultat.getString("id");

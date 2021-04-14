@@ -26,7 +26,7 @@ public class JuryDaoImpl implements JuryDao {
         try {
             connexion = daoFactory.getConnection();
             statement = connexion.createStatement();
-            resultat = statement.executeQuery("SELECT id,designation FROM jury;");
+            resultat = statement.executeQuery("SELECT id,designation FROM Jury;");
 
             while (resultat.next()) {
             	String id = resultat.getString("id");

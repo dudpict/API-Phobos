@@ -27,7 +27,7 @@ public class EtudiantDaoImpl implements EtudiantDao {
         try {
             connexion = daoFactory.getConnection();
             statement = connexion.createStatement();
-            resultat = statement.executeQuery("SELECT id,nom,prenom,email,tel FROM etudiant;");
+            resultat = statement.executeQuery("SELECT id,nom,prenom,email,tel FROM Etudiant;");
 
             while (resultat.next()) {
             	String id = resultat.getString("id");

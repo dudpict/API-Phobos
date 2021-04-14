@@ -1,7 +1,6 @@
 package com.dao;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -9,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.beans.Audit;
-import com.beans.Personne;
 
 public class AuditDaoImpl implements AuditDao {
 
@@ -29,7 +27,7 @@ public class AuditDaoImpl implements AuditDao {
         try {
             connexion = daoFactory.getConnection();
             statement = connexion.createStatement();
-            resultat = statement.executeQuery("SELECT id,designation,etat,dateDebut,dateFin,dateLimite,dateModif FROM audit;");
+            resultat = statement.executeQuery("SELECT id,designation,etat,dateDebut,dateFin,dateLimite,dateModif FROM Audit;");
 
             while (resultat.next()) {
             	String id = resultat.getString("id");
