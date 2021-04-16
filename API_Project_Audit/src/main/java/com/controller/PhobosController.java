@@ -22,8 +22,8 @@ public class PhobosController {
 		
 		//TODO AJOUTER LE LIEN BDD SERVER
 		
-		DaoFactory fact = new DaoFactory("jdbc:mariadb://172.24.1.9/phpmyadmin/projetGl","root","network");
-		
+		DaoFactory fact = new DaoFactory();
+
 		PersonneDao personneDao = fact.getPersonneDao();
 		ArrayList<Personne> allPersonnes = personneDao.getPersonnes(role);
 		return allPersonnes;
@@ -39,8 +39,9 @@ public class PhobosController {
 			@RequestParam(required = false, value = "tel") String tel) {
 		
 		Personne personneToAdd = new Personne(nom, prenom, email, tel);
-		
-		DaoFactory fact = new DaoFactory("url","identifiant","mdp");
+
+		DaoFactory fact = new DaoFactory();
+
 		PersonneDao personneDao = fact.getPersonneDao();
 		personneDao.ajouter(personneToAdd);
 	}

@@ -33,14 +33,16 @@ public class EtudiantDaoImpl implements EtudiantDao {
             	String id = resultat.getString("id");
                 String classe = resultat.getString("nom");
                 String promo = resultat.getString("promo");
-     
+               
                 Etudiant etudiant = new Etudiant();
                 etudiant.setId(Integer.valueOf(id));
                 etudiant.setPromo(promo);
                 etudiant.setClasse(classe);
+                
+                connexion.close();
 
                 etudiants.add(etudiant);
-                connexion.close();
+                
             }
         } catch (SQLException e) {
             e.printStackTrace();

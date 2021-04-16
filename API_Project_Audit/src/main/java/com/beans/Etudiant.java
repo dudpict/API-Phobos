@@ -6,17 +6,19 @@ public class Etudiant {
 	int id;
 	String promo;
 	String classe;
+	Personne personne;
 	
 	public Etudiant() {
 		this.id=idCount;
 		idCount++;
 		}
 
-	public Etudiant(int id, String promo, String classe) {
+	public Etudiant(int id, String promo, String classe,Personne personne) {
 		super();
 		this.id = id;
 		this.promo = promo;
 		this.classe = classe;
+		this.personne = personne;
 	}
 
 	public int getId() {
@@ -42,6 +44,16 @@ public class Etudiant {
 	public void setClasse(String classe) {
 		this.classe = classe;
 	}
+
+	public Personne getPersonne() {
+		return personne;
+	}
+
+	public void setPersonne(Personne personne) {
+		this.personne = personne;
+	}
+	
+	
 	
 	
 
