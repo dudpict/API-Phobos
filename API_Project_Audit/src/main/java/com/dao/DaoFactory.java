@@ -17,19 +17,21 @@ public class DaoFactory {
     }
 
     public static DaoFactory getInstance() {
-        try {
-            Class.forName("org.mariadb.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-
-        }
 
         DaoFactory instance = new DaoFactory(
-                "jdbc:mariadb://localhost:3306/phobosGL", "root", "password");
+                "jdbc:mariadb://172.24.1.9/phpmyadmin/projetGl", "root", "network");
         return instance;
     }
 
     public Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(url, username, password);
+    	System.out.println("url : "+url );
+    	try {
+			Class.forName("org.mariadb.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        return DriverManager.getConnection(this.url, this.username, this.password);
     }
 
      //Récupération du Dao
