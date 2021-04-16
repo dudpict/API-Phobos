@@ -20,10 +20,7 @@ public class PhobosController {
 										@RequestParam(required = false, value = "id") String id) {
 		System.out.println("Appel GET");
 		
-		//TODO AJOUTER LE LIEN BDD SERVER
-		
 		DaoFactory fact = new DaoFactory();
-
 		PersonneDao personneDao = fact.getPersonneDao();
 		ArrayList<Personne> allPersonnes = personneDao.getPersonnes(role);
 		return allPersonnes;
