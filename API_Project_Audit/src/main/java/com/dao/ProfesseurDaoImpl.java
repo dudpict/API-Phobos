@@ -30,8 +30,7 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 
 		try {
 			connexion = daoFactory.getConnection();
-			PreparedStatement preparedStatement = connexion
-					.prepareStatement("SELECT * FROM Audit WHERE etat ? 'publie' and matiere = ? ;");
+			PreparedStatement preparedStatement = connexion.prepareStatement("SELECT * FROM Audit WHERE etat ? 'publie' and matiere = ? ;");
 			preparedStatement.setString(1, egalOuDiff);
 			preparedStatement.setInt(2, matiere);
 			resultat = preparedStatement.executeQuery();
@@ -107,15 +106,21 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 	        try {
 	            connexion = daoFactory.getConnection();
 	            statement = connexion.createStatement();
-	            resultat = statement.executeQuery("SELECT id,bureau FROM Professeur;");
+	            resultat = statement.executeQuery("SELECT * FROM Professeur;");
 
 	            while (resultat.next()) {
 	            	String id = resultat.getString("id");
 	                String bureau = resultat.getString("bureau");
+	                int personneID = resultat.getInt("id_Personne");
+	                
+	              //Récupére l'instance de Prsonne via l'id
+	        		PersonneDao personneDao = daoFactory.getPersonneDao();
+	        		Personne personne  = personneDao.getPersonneById(personneID);
 	     
 	                Professeur professeur = new Professeur();
 	                professeur.setId(Integer.valueOf(id));
 	                professeur.setBureau(bureau);
+	                professeur.setPersonne(personne);
 
 	                professeurs.add(professeur);
 	                connexion.close();

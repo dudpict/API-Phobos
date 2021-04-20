@@ -51,8 +51,6 @@ public class PhobosController {
 	}
 	
 	
-	
-	
 	//GESTION PROFESSEURS
 	@RequestMapping(value = "/professeur", method = RequestMethod.GET)
 	@ResponseBody

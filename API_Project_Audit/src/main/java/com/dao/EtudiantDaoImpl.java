@@ -39,7 +39,7 @@ public class EtudiantDaoImpl implements EtudiantDao {
 //                int equipeID = resultat.getInt("id_Equipe");
 //                int roleUserID = resultat.getInt("id_roleUtilisateur");
                 
-                //Réxupére l'instance de Prsonne via l'id
+                //Récupére l'instance de Prsonne via l'id
         		PersonneDao personneDao = daoFactory.getPersonneDao();
         		Personne personne  = personneDao.getPersonneById(personneID);
         		        		
