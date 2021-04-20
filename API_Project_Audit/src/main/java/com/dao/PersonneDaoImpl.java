@@ -62,7 +62,9 @@ public class PersonneDaoImpl implements PersonneDao {
         try {
             connexion = daoFactory.getConnection();
             statement = connexion.createStatement();
-            resultat = statement.executeQuery("SELECT id,nom,prenom,email,tel FROM personne WHERE id="+id+";");
+            resultat = statement.executeQuery("SELECT * FROM Personne WHERE id="+id+";");
+            
+            connexion.close();
 
             while (resultat.next()) {
             	String id2=resultat.getString("id");
@@ -77,7 +79,7 @@ public class PersonneDaoImpl implements PersonneDao {
                 personne.setEmail(email);
                 personne.setTelephone(tel);
                 
-                connexion.close();
+//                connexion.close();
             }
         } catch (SQLException e) {
             e.printStackTrace();

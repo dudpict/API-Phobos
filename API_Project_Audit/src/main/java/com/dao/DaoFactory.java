@@ -46,6 +46,10 @@ public class DaoFactory {
 	public EtudiantDao getEtudiantDao() {
 		return new EtudiantDaoImpl(this);
 	}
+	
+	public ProfesseurDao getProfesseurDao() {
+		return new ProfesseurDaoImpl(this);
+	}
 
 	public JuryDao getJuryDao() {
 		return new JuryDaoImpl(this);
