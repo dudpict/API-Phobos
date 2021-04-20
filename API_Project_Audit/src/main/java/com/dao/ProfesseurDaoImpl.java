@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.List;
 
 import com.beans.Audit;
 import com.beans.Personne;
@@ -19,6 +18,44 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 	ProfesseurDaoImpl(DaoFactory daoFactory) {
         this.daoFactory = daoFactory;
     }
+	
+	
+	@Override
+	public ArrayList<Professeur> getProfesseurs() {
+		 ArrayList<Professeur> professeurs = new ArrayList<Professeur>();
+	        Connection connexion = null;
+	        Statement statement = null;
+	        ResultSet resultat = null;
+
+	        try {
+	            connexion = daoFactory.getConnection();
+	            statement = connexion.createStatement();
+	            resultat = statement.executeQuery("SELECT * FROM Professeur;");
+	            connexion.close();
+	            
+	            while (resultat.next()) {
+	            	String id = resultat.getString("id");
+	                String bureau = resultat.getString("bureau");
+	                int personneID = resultat.getInt("id_Personne");
+	                
+	              //Récupére l'instance de Prsonne via l'id
+	        		PersonneDao personneDao = daoFactory.getPersonneDao();
+	        		Personne personne  = personneDao.getPersonneById(personneID);
+	     
+	                Professeur professeur = new Professeur();
+	                professeur.setId(Integer.valueOf(id));
+	                professeur.setBureau(bureau);
+	                professeur.setPersonne(personne);
+
+	                professeurs.add(professeur);
+	                
+	            }
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	        return professeurs;
+	}
+	
 	
 	@Override
 	public ArrayList<Audit> getAudits(int matiere, boolean publies) {
@@ -96,39 +133,5 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 		return matiere;
 	}
 
-	@Override
-	public ArrayList<Professeur> getProfesseurs() {
-		 ArrayList<Professeur> professeurs = new ArrayList<Professeur>();
-	        Connection connexion = null;
-	        Statement statement = null;
-	        ResultSet resultat = null;
-
-	        try {
-	            connexion = daoFactory.getConnection();
-	            statement = connexion.createStatement();
-	            resultat = statement.executeQuery("SELECT * FROM Professeur;");
-
-	            while (resultat.next()) {
-	            	String id = resultat.getString("id");
-	                String bureau = resultat.getString("bureau");
-	                int personneID = resultat.getInt("id_Personne");
-	                
-	              //Récupére l'instance de Prsonne via l'id
-	        		PersonneDao personneDao = daoFactory.getPersonneDao();
-	        		Personne personne  = personneDao.getPersonneById(personneID);
-	     
-	                Professeur professeur = new Professeur();
-	                professeur.setId(Integer.valueOf(id));
-	                professeur.setBureau(bureau);
-	                professeur.setPersonne(personne);
-
-	                professeurs.add(professeur);
-	                connexion.close();
-	            }
-	        } catch (SQLException e) {
-	            e.printStackTrace();
-	        }
-	        return professeurs;
-	}
 
 }
