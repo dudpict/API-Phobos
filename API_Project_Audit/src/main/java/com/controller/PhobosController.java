@@ -8,39 +8,81 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.beans.Etudiant;
 import com.beans.Personne;
+import com.beans.Professeur;
 import com.dao.DaoFactory;
-import com.dao.PersonneDao;
+import com.dao.EtudiantDao;
+import com.dao.ProfesseurDao;
 
 @RestController
 public class PhobosController {
-	@RequestMapping(value = "/personne", method = RequestMethod.GET)
+	
+	//GESTION ETUDIANTS
+	@RequestMapping(value = "/etudiant", method = RequestMethod.GET)
 	@ResponseBody
-	public ArrayList<Personne> appelGET(@RequestParam(required = false, value = "role") String role, 
-										@RequestParam(required = false, value = "id") String id) {
+	public ArrayList<Etudiant> appelGET_etudiant(@RequestParam(required = false, value = "id") String id) {
 		System.out.println("Appel GET");
 		
 		DaoFactory fact = new DaoFactory();
-		PersonneDao personneDao = fact.getPersonneDao();
-		ArrayList<Personne> allPersonnes = personneDao.getPersonnes(role);
-		return allPersonnes;
+		EtudiantDao etudiantDao = fact.getEtudiantDao();
+		ArrayList<Etudiant> allEtudiant = etudiantDao.getEtudiants();
+		return allEtudiant;
 
 	}
 
-	@RequestMapping(value = "/personne", method = RequestMethod.POST)
+	@RequestMapping(value = "/etudiant", method = RequestMethod.POST)
 	@ResponseBody
-	public void appelPost(@RequestParam(required = false, value = "codeCommune") String codeCommune,
+	public void appelPost_etudiant(@RequestParam(required = false, value = "promo") String promo,
+			@RequestParam(required = false, value = "id") String id,
+			@RequestParam(required = false, value = "classe") String classe,
 			@RequestParam(required = false, value = "nom") String nom,
 			@RequestParam(required = false, value = "prenom") String prenom,
 			@RequestParam(required = false, value = "email") String email,
 			@RequestParam(required = false, value = "tel") String tel) {
 		
 		Personne personneToAdd = new Personne(nom, prenom, email, tel);
+		Etudiant etudiantToAdd = new Etudiant(promo, classe, personneToAdd);
 
 		DaoFactory fact = new DaoFactory();
 
-		PersonneDao personneDao = fact.getPersonneDao();
-		personneDao.ajouter(personneToAdd);
+		EtudiantDao etudiantDao = fact.getEtudiantDao();
+		etudiantDao.addEtudiant(etudiantToAdd);
+	}
+	
+	
+	
+	
+	//GESTION PROFESSEURS
+	@RequestMapping(value = "/professeur", method = RequestMethod.GET)
+	@ResponseBody
+	public ArrayList<Professeur> appelGET_professeur(@RequestParam(required = false, value = "id") String id) {
+		System.out.println("Appel GET");
+		
+		DaoFactory fact = new DaoFactory();
+		ProfesseurDao professeurDao = fact.getProfesseurDao();
+		ArrayList<Professeur> allProfesseur = professeurDao.getProfesseurs();
+		return allProfesseur;
+
 	}
 
+	@RequestMapping(value = "/professeur", method = RequestMethod.POST)
+	@ResponseBody
+	public void appelPost_professeur(@RequestParam(required = false, value = "nom") String nom,
+			@RequestParam(required = false, value = "prenom") String prenom,
+			@RequestParam(required = false, value = "email") String email,
+			@RequestParam(required = false, value = "tel") String tel) {
+		
+		Personne personneToAdd = new Personne(nom, prenom, email, tel);
+		Professeur professeurToAdd = new Professeur();
+
+		DaoFactory fact = new DaoFactory();
+
+		ProfesseurDao professeurDao = fact.getProfesseurDao();
+		//TODO DEV la partie ajout professeur
+//		professeurDao.addProfesseur(professeurDao);
+	}
+
+	
+	
 }
