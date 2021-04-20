@@ -7,6 +7,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import com.beans.Etudiant;
+import com.beans.Personne;
 
 public class EtudiantDaoImpl implements EtudiantDao {
 
@@ -27,19 +28,29 @@ public class EtudiantDaoImpl implements EtudiantDao {
         try {
             connexion = daoFactory.getConnection();
             statement = connexion.createStatement();
-            resultat = statement.executeQuery("SELECT id,nom,prenom,email,tel FROM Etudiant;");
+            resultat = statement.executeQuery("SELECT * FROM Etudiant;");
+            connexion.close();
 
             while (resultat.next()) {
             	String id = resultat.getString("id");
-                String classe = resultat.getString("nom");
+                String classe = resultat.getString("classe");
                 String promo = resultat.getString("promo");
-               
+                int personneID = resultat.getInt("id_Personne");
+//                int equipeID = resultat.getInt("id_Equipe");
+//                int roleUserID = resultat.getInt("id_roleUtilisateur");
+                
+                //Réxupére l'instance de Prsonne via l'id
+        		PersonneDao personneDao = daoFactory.getPersonneDao();
+        		Personne personne  = personneDao.getPersonneById(personneID);
+        		        		
+        		//TODO IMPLEMENTER EQUIPE ET ROLE UTILISATEUR
                 Etudiant etudiant = new Etudiant();
                 etudiant.setId(Integer.valueOf(id));
                 etudiant.setPromo(promo);
                 etudiant.setClasse(classe);
+                etudiant.setPersonne(personne);
                 
-                connexion.close();
+//                connexion.close();
 
                 etudiants.add(etudiant);
                 
@@ -49,4 +60,22 @@ public class EtudiantDaoImpl implements EtudiantDao {
         }
         return etudiants;
     }
+
+	@Override
+	public void addEtudiant(Etudiant etudiant) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void deleteEtudiant(String id) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void updateEtudiant(String id, Etudiant etudiantUpdated) {
+		// TODO Auto-generated method stub
+		
+	}
 }

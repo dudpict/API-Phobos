@@ -13,9 +13,8 @@ public class Etudiant {
 		idCount++;
 		}
 
-	public Etudiant(int id, String promo, String classe,Personne personne) {
+	public Etudiant(String promo, String classe,Personne personne) {
 		super();
-		this.id = id;
 		this.promo = promo;
 		this.classe = classe;
 		this.personne = personne;
