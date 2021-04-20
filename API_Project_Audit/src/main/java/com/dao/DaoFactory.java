@@ -21,7 +21,13 @@ public class DaoFactory {
 	}
 
 	public Connection getConnection() throws SQLException {
-		return DriverManager.getConnection("jdbc:mariadb://localhost:3306/DB?user=root&password=network");
+		try {
+			Class.forName("org.mariadb.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		System.out.println("");
+		return DriverManager.getConnection("jdbc:mariadb://172.24.1.9/projetGL","essai","network");
 	}
 
 	// Récupération du Dao
