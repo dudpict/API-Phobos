@@ -111,5 +111,49 @@ public class SectionDaoImpl implements SectionDao {
         }
         return section;
 	}
+	
+	
+	//TODO vérifier les types des parametres de la fonction 
+	@Override
+	public void addSection(String id,String Designation, String id_Modele) {
+		Connection connexion = null;
+
+		try {
+			connexion = daoFactory.getConnection();
+			String requete = "INSERT INTO `section`(`id`, `designation`, `id_Modele`) VALUES (?,?,?)";
+			PreparedStatement preparedStmt = connexion.prepareStatement(requete);
+			preparedStmt.setString(1, id);
+			preparedStmt.setString(2, Designation);
+			preparedStmt.setString(3, id_Modele);
+			preparedStmt.execute();
+			connexion.close();
+			
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	//TODO vérifier les types des parametres de la fonction 
+	@Override
+	public void updateSection(String id,String Designation,String id_Modele) {
+		Connection connexion = null;
+
+		try {
+			connexion = daoFactory.getConnection();
+			String requete = "UPDATE `section` SET `designation`=?,`id_Modele`=? WHERE `id`=?";
+			PreparedStatement preparedStmt = connexion.prepareStatement(requete);
+			preparedStmt.setString(1, Designation);
+			preparedStmt.setString(2, id_Modele);
+			preparedStmt.setString(3, id);
+			preparedStmt.execute();
+			connexion.close();
+			
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 
 }
