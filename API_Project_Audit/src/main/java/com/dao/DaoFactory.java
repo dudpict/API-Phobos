@@ -53,6 +53,21 @@ public class DaoFactory {
 
 	public JuryDao getJuryDao() {
 		return new JuryDaoImpl(this);
-
+	}
+	
+	public ModeleDao getModeleDao() {
+		return new ModeleDaoImpl(this);
+	}
+	
+	public QuestionDao getQuestionDao() {
+		return new QuestionDaoImpl(this);
+	}
+	
+	public SectionDao getSectionDao() {
+		return new SectionDaoImpl(this);
+	}
+	
+	public TypeQuestionDao getTypeQuestionDao() {
+		return new TypeQuestionDaoImpl(this);
 	}
 }
