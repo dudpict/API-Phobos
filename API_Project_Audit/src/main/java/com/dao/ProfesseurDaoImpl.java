@@ -56,6 +56,19 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 	        return professeurs;
 	}
 	
+	@Override
+	public void addProfesseur(ProfesseurDao professeurDao) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void deleteProfesseur(String id) {
+		// TODO Auto-generated method stub
+		
+	}
+	
 	
 	@Override
 	public ArrayList<Audit> getAudits(int matiere, boolean publies) {
@@ -132,6 +145,5 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 		
 		return matiere;
 	}
-
 
 }
