@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import com.beans.Personne;
 import com.beans.Question;
 import com.beans.Section;
 import com.beans.TypeQuestion;
@@ -80,5 +79,52 @@ public class QuestionDaoImpl implements QuestionDao {
 			e.printStackTrace();
 		}
 	}
+	
+	//TODO vérifier les types des parametres de la fonction 
+	@Override
+	public void addQuestion(String id,String Designation, String id_section,String id_typeQuestion) {
+		Connection connexion = null;
+
+		try {
+			connexion = daoFactory.getConnection();
+			String requete = "INSERT INTO `question`(`id`, `Designation`, `reponse`, `id_section`, `id_typeQuestion`) VALUES (?,?, null,?,?)";
+			PreparedStatement preparedStmt = connexion.prepareStatement(requete);
+			preparedStmt.setString(1, id);
+			preparedStmt.setString(2, Designation);
+			preparedStmt.setString(3, id_section);
+			preparedStmt.setString(4,id_typeQuestion);
+			preparedStmt.execute();
+			connexion.close();
+			
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	//TODO vérifier les types des parametres de la fonction 
+	@Override
+	public void updateQuestion(String id,String Designation,String reponse, String id_section,String id_typeQuestion) {
+		Connection connexion = null;
+
+		try {
+			connexion = daoFactory.getConnection();
+			String requete = "UPDATE `question` SET `Designation`=?,`reponse`=?,`id_section`=?,`id_typeQuestion`=? WHERE `id`=?";
+			PreparedStatement preparedStmt = connexion.prepareStatement(requete);
+			preparedStmt.setString(1, Designation);
+			preparedStmt.setString(2, reponse);
+			preparedStmt.setString(3, id_section);
+			preparedStmt.setString(4,id_typeQuestion);
+			preparedStmt.setString(4,id);
+			preparedStmt.execute();
+			connexion.close();
+			
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	
 }
