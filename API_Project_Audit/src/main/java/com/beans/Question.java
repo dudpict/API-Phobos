@@ -5,12 +5,16 @@ public class Question {
 	String designation;
 	String reponse;
 	int id;
+	TypeQuestion typeQuestion;
+	Section section;
 	
 	public Question(String designation, String reponse, int id) {
 		super();
 		this.designation = designation;
 		this.reponse = reponse;
 		this.id = id;
+		this.section = section;
+		this.typeQuestion = typeQuestion;
 	}
 	
 	public Question() {
@@ -41,6 +45,24 @@ public class Question {
 	public void setId(int id) {
 		this.id = id;
 	}
+
+	public TypeQuestion getTypeQuestion() {
+		return typeQuestion;
+	}
+
+	public void setTypeQuestion(TypeQuestion typeQuestion) {
+		this.typeQuestion = typeQuestion;
+	}
+
+	public Section getSection() {
+		return section;
+	}
+
+	public void setSection(Section section) {
+		this.section = section;
+	}
+	
+	
 	
 	
 }
