@@ -95,4 +95,45 @@ public class ModeleDaoImpl implements ModeleDao {
 		}
 	}
 
+	
+	//TODO vérifier les types des parametres de la fonction 
+	@Override
+	public void addModele(String id,String Designation) {
+		Connection connexion = null;
+
+		try {
+			connexion = daoFactory.getConnection();
+			String requete = "INSERT INTO `Modele`(`id`, `designation`) VALUES (?,?)";
+			PreparedStatement preparedStmt = connexion.prepareStatement(requete);
+			preparedStmt.setString(1, id);
+			preparedStmt.setString(2, Designation);
+			preparedStmt.execute();
+			connexion.close();
+			
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	//TODO vérifier les types des parametres de la fonction 
+	@Override
+	public void updateModele(String id,String Designation) {
+		Connection connexion = null;
+
+		try {
+			connexion = daoFactory.getConnection();
+			String requete = "UPDATE `Modele` SET `designation`=? WHERE `id`=?";
+			PreparedStatement preparedStmt = connexion.prepareStatement(requete);
+			preparedStmt.setString(1, Designation);
+			preparedStmt.setString(2, id);
+			preparedStmt.execute();
+			connexion.close();
+			
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		}
 }
