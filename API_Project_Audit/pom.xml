@@ -3,7 +3,7 @@
   <groupId>com</groupId>
   <artifactId>TP_API_Rest</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <packaging>jar</packaging>
+  <packaging>war</packaging>
   
   <name>ESEO_API_Rest</name>
 	<description>Demo project for API REST</description>
@@ -54,9 +54,17 @@
 	    <groupId>org.mariadb.jdbc</groupId>
 	    <artifactId>mariadb-java-client</artifactId>
 	</dependency>
-
-
-
+	
+	<dependency>
+	    <groupId>org.springframework.boot</groupId>
+	    <artifactId>spring-boot-starter-test</artifactId>
+	    <scope>test</scope>
+	</dependency>
+	<dependency>
+	    <groupId>org.springframework.boot</groupId>
+	    <artifactId>spring-boot-starter-tomcat</artifactId>
+	    <scope>provided</scope>
+	</dependency>
 		
 
 
