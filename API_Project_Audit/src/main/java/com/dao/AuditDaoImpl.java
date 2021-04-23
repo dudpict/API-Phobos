@@ -39,7 +39,7 @@ public class AuditDaoImpl implements AuditDao {
 			resultat = preparedStatement.executeQuery();
 
 			while (resultat.next()) {
-				int modeleID = resultat.getInt("id_Modele");
+				String modeleID = resultat.getString("id_Modele");
 				String juryID = resultat.getString("id_Jury");
 				String matiereID = resultat.getString("id_Matiere");
 				String lieuID = resultat.getString("id_Lieu");
@@ -93,7 +93,7 @@ public class AuditDaoImpl implements AuditDao {
 			resultat = preparedStatement.executeQuery();
 
 			while (resultat.next()) {
-				int modeleID = resultat.getInt("id_Modele");
+				String modeleID = resultat.getString("id_Modele");
 				String juryID = resultat.getString("id_Jury");
 				String matiereID = resultat.getString("id_Matiere");
 				String lieuID = resultat.getString("id_Lieu");

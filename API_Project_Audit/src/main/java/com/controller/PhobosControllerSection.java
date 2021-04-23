@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dao.DaoFactory;
+import com.dao.ModeleDao;
 import com.dao.SectionDao;
 
 @RestController
@@ -33,5 +34,15 @@ public class PhobosControllerSection {
 		DaoFactory fact = new DaoFactory();
 		SectionDao SectionDao = fact.getSectionDao();
 		SectionDao.updateSection(id, Designation, id_Modele);
+		}
+	
+	// UPDATE d'un Modele
+	@RequestMapping(value = "/getSectionByIdModele", method = RequestMethod.GET)
+	@ResponseBody
+	public void getSectionByIdModele(@RequestParam(required = false, value = "id") String id_Modele) {
+		System.out.println("méthode GET, getSectionByIdModele");
+		DaoFactory fact = new DaoFactory();
+		SectionDao SectionDao = fact.getSectionDao();
+		SectionDao.getSectionByIdModele(id_Modele);
 		}
 }

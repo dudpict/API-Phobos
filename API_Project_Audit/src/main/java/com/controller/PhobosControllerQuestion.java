@@ -37,5 +37,15 @@ public class PhobosControllerQuestion {
 		QuestionDao questionDao = fact.getQuestionDao();
 		questionDao.updateQuestion(id, Designation, reponse, id_section, id_typeQuestion);
 	}
+	
+	// SELECT d'une question par son id de section 
+		@RequestMapping(value = "/getQuestionsBySectionId", method = RequestMethod.GET)
+		@ResponseBody
+		public void getQuestionsBySectionId(@RequestParam(required = false, value = "id") String id) {
+			System.out.println("méthode GET, getQuestionsBySectionId");
+			DaoFactory fact = new DaoFactory();
+			QuestionDao questionDao = fact.getQuestionDao();
+			questionDao.getQuestionsBySectionId(id);
+		}
 
 }
