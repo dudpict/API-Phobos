@@ -144,7 +144,17 @@ public class AuditDaoImpl implements AuditDao {
 
 	@Override
 	public void deleteAudit(String id) {
-		// TODO A dev
+		Connection connexion = null;
+		try {
+			connexion = daoFactory.getConnection();
+			String requete = "DELETE * FROM audit WHERE id=?";
+			PreparedStatement preparedStmt = connexion.prepareStatement(requete);
+			preparedStmt.setString(1, id);
+			preparedStmt.execute();
+			connexion.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 
 	}
 

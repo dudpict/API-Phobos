@@ -1,6 +1,7 @@
 package com.dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -107,7 +108,18 @@ public class EtudiantDaoImpl implements EtudiantDao {
 
 	@Override
 	public void deleteEtudiant(String id) {
-		// TODO Auto-generated method stub
+		Connection connexion = null;
+
+		try {
+			connexion = daoFactory.getConnection();
+			String requete = "DELETE * FROM Etudiant WHERE id=?";
+			PreparedStatement preparedStmt = connexion.prepareStatement(requete);
+			preparedStmt.setString(1, id);
+			preparedStmt.execute();
+			connexion.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		
 	}
 
