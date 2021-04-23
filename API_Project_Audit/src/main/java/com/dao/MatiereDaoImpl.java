@@ -45,11 +45,18 @@ public class MatiereDaoImpl implements MatiereDao {
                 matiere.setDepartement(departement);
                 matiere.setEffectif(effectif);
                 matiere.setResponsable(prof);
-                connexion.close();
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        try {
+			resultat.close();
+			statement.close();
+			connexion.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         return matiere;
 	}
 
@@ -57,18 +64,28 @@ public class MatiereDaoImpl implements MatiereDao {
 	public int getMatiereResponsable(int idProf) {
 		Connection connexion = null;
 		Statement statement = null;
+		PreparedStatement preparedStatement = null;
 		ResultSet resultat = null;
 		int matiere = -1;
 		try {
 			connexion = daoFactory.getConnection();
 			statement = connexion.createStatement();
-			PreparedStatement preparedStatement = connexion
+			preparedStatement = connexion
 					.prepareStatement("SELECT id FROM matiere WHERE responsable = ? ;");
 			preparedStatement.setInt(1, idProf);
 			resultat = preparedStatement.executeQuery();
 			while (resultat.next()) {
 				matiere = resultat.getInt("id");
 			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			resultat.close();
+			statement.close();
+			preparedStatement.close();
+			connexion.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

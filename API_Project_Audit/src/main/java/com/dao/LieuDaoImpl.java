@@ -47,6 +47,13 @@ public class LieuDaoImpl implements LieuDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        try {
+			resultat.close();
+			statement.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         return lieu;
 	}
 

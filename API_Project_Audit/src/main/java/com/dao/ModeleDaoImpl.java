@@ -29,8 +29,7 @@ public class ModeleDaoImpl implements ModeleDao {
 			statement = connexion.createStatement();
 			resultat = statement.executeQuery("SELECT * FROM Modele;");
 			connexion.close();
-			statement.close();
-
+			
 			while (resultat.next()) {
 				int id = resultat.getInt("id");
 				String designation = resultat.getString("designation");
@@ -39,14 +38,19 @@ public class ModeleDaoImpl implements ModeleDao {
 				Modele modele = new Modele();
 				modele.setId(id);
 				modele.setDesignation(designation);
-
 				modeles.add(modele);
-				resultat.close();
-
-			}
+							}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		try {
+			statement.close();
+			resultat.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		return modeles;
 	}
 
@@ -61,9 +65,7 @@ public class ModeleDaoImpl implements ModeleDao {
 			connexion = daoFactory.getConnection();
 			statement = connexion.createStatement();
 			resultat = statement.executeQuery("SELECT * FROM Modele WHERE id=" + modeleID + ";");
-
 			connexion.close();
-			statement.close();
 			while (resultat.next()) {
 				int id = resultat.getInt("id");
 				String designation = resultat.getString("designation");
@@ -71,10 +73,15 @@ public class ModeleDaoImpl implements ModeleDao {
 				// TODO IMPLEMENTER EQUIPE ET ROLE MODELE
 				modele.setId(id);
 				modele.setDesignation(designation);
-				resultat.close();
-
-			}
+							}
 		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		try {
+			statement.close();
+			resultat.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return modele;
@@ -83,17 +90,22 @@ public class ModeleDaoImpl implements ModeleDao {
 	@Override
 	public void deleteModele(String id) {
 		Connection connexion = null;
+		PreparedStatement preparedStmt = null;
 
 		try {
 			connexion = daoFactory.getConnection();
 			String requete = "DELETE FROM Modele WHERE id=?";
-			PreparedStatement preparedStmt = connexion.prepareStatement(requete);
+			preparedStmt = connexion.prepareStatement(requete);
 			preparedStmt.setString(1, id);
 			preparedStmt.execute();
-			connexion.close();
-			preparedStmt.close();
 
 		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		try {
+			preparedStmt.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -101,17 +113,23 @@ public class ModeleDaoImpl implements ModeleDao {
 	@Override
 	public void addModele(String Designation) {
 		Connection connexion = null;
+		PreparedStatement preparedStmt = null;
 
 		try {
 			connexion = daoFactory.getConnection();
 			String requete = "INSERT INTO `Modele`(`designation`) VALUES (?)";
-			PreparedStatement preparedStmt = connexion.prepareStatement(requete);
+			preparedStmt = connexion.prepareStatement(requete);
 			preparedStmt.setString(1, Designation);
 			preparedStmt.execute();
 			connexion.close();
-			preparedStmt.close();
 
 		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		try {
+			preparedStmt.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -119,18 +137,24 @@ public class ModeleDaoImpl implements ModeleDao {
 	@Override
 	public void updateModele(int id, String Designation) {
 		Connection connexion = null;
+		PreparedStatement preparedStmt = null;
 
 		try {
 			connexion = daoFactory.getConnection();
 			String requete = "UPDATE `Modele` SET `designation`=? WHERE `id`=?";
-			PreparedStatement preparedStmt = connexion.prepareStatement(requete);
+			preparedStmt = connexion.prepareStatement(requete);
 			preparedStmt.setString(1, Designation);
 			preparedStmt.setInt(2, id);
 			preparedStmt.execute();
 			connexion.close();
-			preparedStmt.close();
 
 		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		try {
+			preparedStmt.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -146,9 +170,7 @@ public class ModeleDaoImpl implements ModeleDao {
 			connexion = daoFactory.getConnection();
 			statement = connexion.createStatement();
 			resultat = statement.executeQuery("SELECT * FROM Modele WHERE Designation='" + Designation + "';");
-
 			connexion.close();
-			statement.close();
 
 			while (resultat.next()) {
 				int id = resultat.getInt("id");
@@ -157,9 +179,15 @@ public class ModeleDaoImpl implements ModeleDao {
 				// TODO IMPLEMENTER EQUIPE ET ROLE MODELE
 				modele.setId(id);
 				modele.setDesignation(designation);
-				resultat.close();
 			}
 		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		try {
+			statement.close();
+			resultat.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return modele;

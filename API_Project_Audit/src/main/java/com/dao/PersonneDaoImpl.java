@@ -44,11 +44,18 @@ public class PersonneDaoImpl implements PersonneDao {
                 personne.setTelephone(tel);
 
                 personnes.add(personne);
-                connexion.close();
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        try {
+        	connexion.close();
+			statement.close();
+			resultat.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         return (ArrayList<Personne>) personnes;
     }
     
@@ -83,7 +90,13 @@ public class PersonneDaoImpl implements PersonneDao {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        }
+        }try {
+			statement.close();
+			resultat.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         return personne;
     }
 

@@ -37,11 +37,18 @@ public class JuryDaoImpl implements JuryDao {
                 jury.setDesignation(designation);
 
                 jurys.add(jury);
-                connexion.close();
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        try {
+			resultat.close();
+			statement.close();
+			connexion.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         return jurys;
     }
 
@@ -64,11 +71,18 @@ public class JuryDaoImpl implements JuryDao {
                
                 jury.setId(Integer.valueOf(id));
                 jury.setDesignation(designation);
-                connexion.close();
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        try {
+			resultat.close();
+			statement.close();
+			connexion.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         return jury;
 	}
 }

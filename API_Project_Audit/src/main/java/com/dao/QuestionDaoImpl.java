@@ -31,8 +31,6 @@ public class QuestionDaoImpl implements QuestionDao {
 			statement = connexion.createStatement();
 			resultat = statement.executeQuery("SELECT * FROM question;");
 			connexion.close();
-			resultat.close();
-
 			while (resultat.next()) {
 				int id = resultat.getInt("id");
 				String designation = resultat.getString("designation");
@@ -57,10 +55,15 @@ public class QuestionDaoImpl implements QuestionDao {
 				question.setIntitule(intitule);
 
 				questions.add(question);
-				resultat.close();
-
 			}
 		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		try {
+			statement.close();
+			resultat.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return questions;
@@ -69,42 +72,53 @@ public class QuestionDaoImpl implements QuestionDao {
 	@Override
 	public void deleteQuestion(String id) {
 		Connection connexion = null;
-
+		PreparedStatement preparedStmt = null;
 		try {
 			connexion = daoFactory.getConnection();
 			String requete = "DELETE FROM question WHERE id=?";
-			PreparedStatement preparedStmt = connexion.prepareStatement(requete);
+			preparedStmt = connexion.prepareStatement(requete);
 			preparedStmt.setString(1, id);
 			preparedStmt.execute();
 			connexion.close();
-			preparedStmt.close();
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+			try {
+				preparedStmt.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 	}
 
 	@Override
 	public void addQuestion(String Designation, String intitule, int id_section, int id_typeQuestion) {
 		Connection connexion = null;
+		PreparedStatement preparedStmt = null;
 
 		try {
 			connexion = daoFactory.getConnection();
 			String requete = 
 					"INSERT INTO `question` (`Designation`, `intitule`, `id_section`, `id_typeQuestion`) VALUES (?,?,?,?);";
-			PreparedStatement preparedStmt = connexion.prepareStatement(requete);
+			preparedStmt = connexion.prepareStatement(requete);
 			preparedStmt.setString(1, Designation);
 			preparedStmt.setString(2, intitule);
 			preparedStmt.setInt(3, id_section);
 			preparedStmt.setInt(4, id_typeQuestion);
 			preparedStmt.execute();
 			preparedStmt.close();
-			connexion.close();
-			preparedStmt.close();
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+			try {
+				connexion.close();
+				preparedStmt.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 		
 	}
@@ -113,23 +127,29 @@ public class QuestionDaoImpl implements QuestionDao {
 	public void updateQuestion(int id, String Designation, String intitule, String reponse, int id_section,
 			int id_typeQuestion) {
 		Connection connexion = null;
+		PreparedStatement preparedStmt = null;
 
 		try {
 			connexion = daoFactory.getConnection();
 			String requete = "UPDATE `question` SET `Designation`=?,'intitule'=?,`id_section`=?,`id_typeQuestion`=? WHERE `id`=?";
-			PreparedStatement preparedStmt = connexion.prepareStatement(requete);
+			preparedStmt = connexion.prepareStatement(requete);
 			preparedStmt.setString(1, Designation);
 			preparedStmt.setString(2, intitule);
 			preparedStmt.setInt(3, id_section);
 			preparedStmt.setInt(4, id_typeQuestion);
 			preparedStmt.setInt(5, id);
 			preparedStmt.execute();
-			connexion.close();
-			preparedStmt.close();
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+			try {
+				connexion.close();
+				preparedStmt.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 	}
 
 	@Override
@@ -144,7 +164,6 @@ public class QuestionDaoImpl implements QuestionDao {
 			statement = connexion.createStatement();
 			resultat = statement.executeQuery("SELECT * FROM question WHERE id=" + id + ";");
 			connexion.close();
-			statement.close();
 
 			while (resultat.next()) {
 				int id2 = resultat.getInt("id");
@@ -168,9 +187,15 @@ public class QuestionDaoImpl implements QuestionDao {
 				question.setIntitule(intitule);
 				question.setSection(section);
 				question.setTypeQuestion(typeQuestion);
-				resultat.close();
 			}
 		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		try {
+			statement.close();
+			resultat.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return question;
@@ -180,13 +205,15 @@ public class QuestionDaoImpl implements QuestionDao {
 	public ArrayList<Question> getQuestionsBySectionId(String id_section) {
 		ArrayList<Question> questions = new ArrayList<Question>();
 		Connection connexion = null;
+		PreparedStatement preparedStmt = null;
+		ResultSet rs = null;
 
 		try {
 			connexion = daoFactory.getConnection();
 			String requete = "SELECT * FROM question WHERE `id_section`=?";
-			PreparedStatement preparedStmt = connexion.prepareStatement(requete);
+			preparedStmt = connexion.prepareStatement(requete);
 			preparedStmt.setString(1, id_section);
-			ResultSet rs = preparedStmt.executeQuery();
+			rs = preparedStmt.executeQuery();
 
 			while (rs.next()) {
 				int id = rs.getInt("id");
@@ -218,6 +245,13 @@ public class QuestionDaoImpl implements QuestionDao {
 			rs.close();
 
 		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		try {
+			preparedStmt.close();
+			rs.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

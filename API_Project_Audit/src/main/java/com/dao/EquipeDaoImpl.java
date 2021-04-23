@@ -35,13 +35,19 @@ public class EquipeDaoImpl implements EquipeDao {
                 Equipe equipe = new Equipe();
                 equipe.setId(Integer.valueOf(id));
                 equipe.setDesignation(designation);
-
                 equipes.add(equipe);
-                connexion.close();
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        try {
+			resultat.close();
+			statement.close();
+			connexion.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         return equipes;
     }
 

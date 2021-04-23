@@ -38,7 +38,7 @@ public class PhobosControllerModele {
 	
 	@RequestMapping(value = "/modele", method = RequestMethod.GET)
 	@ResponseBody
-	public ArrayList<Modele> appelGET_modele(@RequestParam(required = false, value = "id") String id) {
+	public ArrayList<Modele> appelGET_modele() {
 		System.out.println("Appel GET sur modele");
 
 		DaoFactory fact = new DaoFactory();

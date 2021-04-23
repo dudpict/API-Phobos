@@ -8,7 +8,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import com.beans.Audit;
-import com.beans.Etudiant;
 import com.beans.Personne;
 import com.beans.Professeur;
 
@@ -46,11 +45,17 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 				professeur.setId(Integer.valueOf(id));
 				professeur.setBureau(bureau);
 				professeur.setPersonne(personne);
-
 				professeurs.add(professeur);
 
 			}
 		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		try {
+			statement.close();
+			resultat.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return professeurs;
@@ -86,6 +91,13 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		try {
+			statement.close();
+			resultat.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return professeur;
 	}
 
@@ -98,14 +110,21 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 	@Override
 	public void deleteProfesseur(String id) {
 		Connection connexion = null;
+		PreparedStatement preparedStmt = null;
 		try {
 			connexion = daoFactory.getConnection();
 			String requete = "DELETE * FROM Professeur WHERE id=?";
-			PreparedStatement preparedStmt = connexion.prepareStatement(requete);
+			preparedStmt = connexion.prepareStatement(requete);
 			preparedStmt.setString(1, id);
 			preparedStmt.execute();
-			connexion.close();
 		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		try {
+			connexion.close();
+			preparedStmt.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -115,13 +134,13 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 	public ArrayList<Audit> getAudits(int matiere, boolean publies) {
 		ArrayList<Audit> audits = new ArrayList<Audit>();
 		Connection connexion = null;
-		Statement statement = null;
+		PreparedStatement preparedStatement = null;
 		ResultSet resultat = null;
 		String egalOuDiff = publies ? "=" : "<>";
 
 		try {
 			connexion = daoFactory.getConnection();
-			PreparedStatement preparedStatement = connexion
+			preparedStatement = connexion
 					.prepareStatement("SELECT * FROM Audit WHERE etat ? 'publie' and matiere = ? ;");
 			preparedStatement.setString(1, egalOuDiff);
 			preparedStatement.setInt(2, matiere);
@@ -136,6 +155,14 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 				audits.add(audit);
 			}
 
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			connexion.close();
+			preparedStatement.close();
+			resultat.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -162,6 +189,14 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		try {
+			connexion.close();
+			statement.close();
+			resultat.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -180,6 +215,14 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 			while (resultat.next()) {
 				matiere = resultat.getInt("id");
 			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			connexion.close();
+			statement.close();
+			resultat.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

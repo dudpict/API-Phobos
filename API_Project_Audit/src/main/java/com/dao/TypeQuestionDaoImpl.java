@@ -29,8 +29,6 @@ public class TypeQuestionDaoImpl implements TypeQuestionDao {
 			statement = connexion.createStatement();
 			resultat = statement.executeQuery("SELECT * FROM typeQuestion;");
 			connexion.close();
-			statement.close();
-
 			while (resultat.next()) {
 				int id = resultat.getInt("id");
 				String designation = resultat.getString("designation");
@@ -39,12 +37,17 @@ public class TypeQuestionDaoImpl implements TypeQuestionDao {
 				TypeQuestion typeQuestion = new TypeQuestion();
 				typeQuestion.setId(id);
 				typeQuestion.setDesignation(designation);
-
 				typeQuestions.add(typeQuestion);
 
 			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		try {
+			statement.close();
 			resultat.close();
 		} catch (SQLException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return typeQuestions;
@@ -61,9 +64,7 @@ public class TypeQuestionDaoImpl implements TypeQuestionDao {
 			connexion = daoFactory.getConnection();
 			statement = connexion.createStatement();
 			resultat = statement.executeQuery("SELECT * FROM typeQuestion WHERE id=" + typeQuestionID + ";");
-
 			connexion.close();
-			statement.close();
 
 			while (resultat.next()) {
 				int id = resultat.getInt("id");
@@ -73,8 +74,14 @@ public class TypeQuestionDaoImpl implements TypeQuestionDao {
 				typeQuestion.setDesignation(designation);
 
 			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		try {
+			statement.close();
 			resultat.close();
 		} catch (SQLException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return typeQuestion;
@@ -83,18 +90,24 @@ public class TypeQuestionDaoImpl implements TypeQuestionDao {
 	@Override
 	public void deleteTypeQuestion(String id) {
 		Connection connexion = null;
+		PreparedStatement preparedStmt = null;
 
 		try {
 			connexion = daoFactory.getConnection();
 			String requete = "DELETE FROM typeQuestion WHERE id=?";
-			PreparedStatement preparedStmt = connexion.prepareStatement(requete);
+			preparedStmt = connexion.prepareStatement(requete);
 			preparedStmt.setString(1, id);
 			preparedStmt.execute();
 			connexion.close();
-			preparedStmt.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+			try {
+				preparedStmt.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 	}
 
 	@Override
@@ -109,7 +122,6 @@ public class TypeQuestionDaoImpl implements TypeQuestionDao {
 			statement = connexion.createStatement();
 			resultat = statement.executeQuery("SELECT * FROM typeQuestion WHERE id=" + id + ";");
 			connexion.close();
-			statement.close();
 
 			while (resultat.next()) {
 				int id2 = resultat.getInt("id");
@@ -120,8 +132,14 @@ public class TypeQuestionDaoImpl implements TypeQuestionDao {
 				typeQuestion.setDesignation(designation);
 
 			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		try {
+			statement.close();
 			resultat.close();
 		} catch (SQLException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return typeQuestion;
