@@ -150,7 +150,7 @@ public class PhobosController {
 		questionDao.deleteQuestion(id);
 	}
 
-	@RequestMapping(value = "/modeleById", method = RequestMethod.GET)
+	@RequestMapping(value = "/questionById", method = RequestMethod.GET)
 	@ResponseBody
 	public Question appelGET_questionById(@RequestParam(required = true, value = "id") String id) {
 		System.out.println("Appel GET by ID");

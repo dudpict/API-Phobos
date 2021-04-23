@@ -31,5 +31,5 @@ public class PhobosControllerModele {
 		DaoFactory fact = new DaoFactory();
 		ModeleDao modeleDao = fact.getModeleDao();
 		modeleDao.updateModele(Integer.parseInt(id), Designation);
-		}
+	}	
 }
