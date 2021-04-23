@@ -130,4 +130,33 @@ public class ModeleDaoImpl implements ModeleDao {
 			e.printStackTrace();
 		}
 	}
+
+	@Override
+	public Modele getModeleByNom(String Designation) {
+		Connection connexion = null;
+		Statement statement = null;
+		ResultSet resultat = null;
+		Modele modele = new Modele();
+
+		try {
+			connexion = daoFactory.getConnection();
+			statement = connexion.createStatement();
+			resultat = statement.executeQuery("SELECT * FROM Modele WHERE Designation=" + Designation + ";");
+
+			connexion.close();
+
+			while (resultat.next()) {
+				int id = resultat.getInt("id");
+				String designation = resultat.getString("designation");
+
+				// TODO IMPLEMENTER EQUIPE ET ROLE MODELE
+				modele.setId(id);
+				modele.setDesignation(designation);
+
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return modele;
+	}
 }

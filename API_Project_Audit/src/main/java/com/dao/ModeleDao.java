@@ -9,6 +9,7 @@ public interface ModeleDao {
 	ArrayList<Modele> getModeles();
 	void deleteModele(String id);
 	Modele getModeleById(int modeleID);
+	Modele getModeleByNom(String Designation);
 	void addModele(String Designation);
 	void updateModele(int id, String Designation);
 }

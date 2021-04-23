@@ -25,9 +25,7 @@ public class Audit {
 	}
 
 	public Audit(int id, String designation, String etat, String dateDebut, String dateFin, String dateLimite,
-			String dateModif,
-
-			ArrayList<String> dateModifList, Matiere matiere, Boolean publie, Modele modele, Jury jury, Lieu lieu) {
+			String dateModif, ArrayList<String> dateModifList, Matiere matiere, Boolean publie, Modele modele, Jury jury, Lieu lieu) {
 
 		super();
 		this.id = id;

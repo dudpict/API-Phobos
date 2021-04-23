@@ -206,6 +206,17 @@ public class PhobosController {
 		Modele modele = modeleDao.getModeleById(id);
 		return modele;
 	}
+	
+	@RequestMapping(value = "/modeleByNom", method = RequestMethod.GET)
+	@ResponseBody
+	public Modele appelGET_modeleByNom(@RequestParam(required = true, value = "Designation") String designation) {
+		System.out.println("Appel GET by Designation");
+
+		DaoFactory fact = new DaoFactory();
+		ModeleDao modeleDao = fact.getModeleDao();
+		Modele modele = modeleDao.getModeleByNom(designation);
+		return modele;
+	}
 
 	@RequestMapping(value = "/modele", method = RequestMethod.DELETE)
 	@ResponseBody
