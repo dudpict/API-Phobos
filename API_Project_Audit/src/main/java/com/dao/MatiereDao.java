@@ -6,6 +6,6 @@ public interface MatiereDao {
 
 	Matiere getMatiereById(String matiereID);
 
-	int getMatiereResponsable(int idProf);
+	int getMatiereIdByResponsableID(int idProf);
 
 }

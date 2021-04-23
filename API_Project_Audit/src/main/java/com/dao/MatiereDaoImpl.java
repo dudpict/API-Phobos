@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import com.beans.Jury;
 import com.beans.Matiere;
 import com.beans.Professeur;
 
@@ -61,7 +60,7 @@ public class MatiereDaoImpl implements MatiereDao {
 	}
 
 	@Override
-	public int getMatiereResponsable(int idProf) {
+	public int getMatiereIdByResponsableID(int idProf) {
 		Connection connexion = null;
 		Statement statement = null;
 		PreparedStatement preparedStatement = null;

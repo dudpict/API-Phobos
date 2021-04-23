@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.beans.Audit;
-import com.beans.Etudiant;
-import com.beans.Personne;
 import com.dao.AuditDao;
 import com.dao.DaoFactory;
 
@@ -40,24 +38,6 @@ public class PhobosControllerAudit {
 		return audit;
 	}
 
-	@RequestMapping(value = "/addAudit", method = RequestMethod.POST)
-	@ResponseBody
-	public void appelPost_audit(@RequestParam(required = false, value = "promo") String promo,
-			@RequestParam(required = false, value = "id") String id,
-			@RequestParam(required = false, value = "classe") String classe,
-			@RequestParam(required = false, value = "nom") String nom,
-			@RequestParam(required = false, value = "prenom") String prenom,
-			@RequestParam(required = false, value = "email") String email,
-			@RequestParam(required = false, value = "tel") String tel) {
-
-		Personne personneToAdd = new Personne(nom, prenom, email, tel);
-		Etudiant etudiantToAdd = new Etudiant(promo, classe, personneToAdd);
-
-		DaoFactory fact = new DaoFactory();
-		AuditDao auditDao = fact.getAuditDao();
-		auditDao.addAudit(etudiantToAdd);
-	}
-
 	@RequestMapping(value = "/deleteAudit", method = RequestMethod.DELETE)
 	@ResponseBody
 	public void appelDELETE_audit(@RequestParam(required = false, value = "id") String id) {
@@ -67,14 +47,42 @@ public class PhobosControllerAudit {
 		AuditDao auditDao = fact.getAuditDao();
 		auditDao.deleteAudit(id);
 	}
-	
-	@RequestMapping(value = "/updateAudit", method = RequestMethod.POST)
+
+	@RequestMapping(value = "/dateHeureAudits", method = RequestMethod.POST)
 	@ResponseBody
-	public void appelPost_audit_updateAudit(@RequestParam(required = false, value = "id") String id,
-												@RequestParam(required = false, value = "Designation") String Designation) {
-		System.out.println("méthode POST, update Modele");
+	public void appelPost_audit_setDateLimiteAudits(
+			@RequestParam(required = false, value = "heureDebut") String heureDebut,
+			@RequestParam(required = false, value = "id") int id,
+			@RequestParam(required = false, value = "mode") String mode) {
+		System.out.println("Appel SET by ID");
+
 		DaoFactory fact = new DaoFactory();
 		AuditDao auditDao = fact.getAuditDao();
-		auditDao.updateAudit(id);
-		}
+		auditDao.setHeureAudits(heureDebut, id, mode);
+	}
+
+	@RequestMapping(value = "/dateLimiteAudits", method = RequestMethod.POST)
+	@ResponseBody
+	public void appelPost_audit_setDateLimiteAudits(
+			@RequestParam(required = false, value = "heureLimite") String heureLimite,
+			@RequestParam(required = false, value = "id") int id) {
+		System.out.println("Appel SET dateLimite");
+
+		DaoFactory fact = new DaoFactory();
+		AuditDao auditDao = fact.getAuditDao();
+		auditDao.setDateLimiteAudits(heureLimite, id);
+	}
+
+	@RequestMapping(value = "/addAudit", method = RequestMethod.POST)
+	@ResponseBody
+	public void appelPost_audit() {
+		// TODO A dev pour Alexis et Gab - demander a QUENTIN
+	}
+
+	@RequestMapping(value = "/updateAudit", method = RequestMethod.POST)
+	@ResponseBody
+	public void appelPost_audit_setHeureAudit() {
+		// TODO A dev pour Alexis et Gab - demander a QUENTIN
+	}
+
 }

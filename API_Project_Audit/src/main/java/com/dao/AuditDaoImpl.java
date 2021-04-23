@@ -8,7 +8,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import com.beans.Audit;
-import com.beans.Etudiant;
 import com.beans.Jury;
 import com.beans.Lieu;
 import com.beans.Matiere;
@@ -130,14 +129,9 @@ public class AuditDaoImpl implements AuditDao {
 		return audit;
 	}
 
-	@Override
-	public void updateAudit(String id) {
-		// TODO Auto-generated method stub
-
-	}
 
 	@Override
-	public void addAudit(Etudiant etudiantToAdd) {
+	public void addAudit(Audit audit) {
 		// TODO A dev
 
 	}
@@ -159,16 +153,17 @@ public class AuditDaoImpl implements AuditDao {
 	}
 
 //
-
+	@Override
 	public void setHeureAudits(String heureDebut, int id, String mode) {
 		Connection connexion = null;
 		Statement statement = null;
 		ResultSet resultat = null;
+		PreparedStatement preparedStatement = null;
 
 		try {
 			connexion = daoFactory.getConnection();
 			statement = connexion.createStatement();
-			PreparedStatement preparedStatement = connexion
+			preparedStatement = connexion
 					.prepareStatement("SET dateDebut = to_date('?', 'YYYY/MM/DD HH24:MI') FROM audit WHERE id = ? ;");
 			preparedStatement.setString(1, heureDebut);
 			preparedStatement.setInt(2, id);
@@ -178,17 +173,28 @@ public class AuditDaoImpl implements AuditDao {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		try {
+			resultat.close();
+			preparedStatement.close();
+			statement.close();
+			connexion.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
-
+	
+	@Override
 	public void setDateLimiteAudits(String heureLimite, int id) {
 		Connection connexion = null;
 		Statement statement = null;
 		ResultSet resultat = null;
+		PreparedStatement preparedStatement = null;
 
 		try {
 			connexion = daoFactory.getConnection();
 			statement = connexion.createStatement();
-			PreparedStatement preparedStatement = connexion
+			preparedStatement = connexion
 					.prepareStatement("SET dateLimite = to_date('?', 'YYYY/MM/DD HH24:MI') FROM audit WHERE id = ? ;");
 			preparedStatement.setString(1, heureLimite);
 			preparedStatement.setInt(2, id);
@@ -198,6 +204,21 @@ public class AuditDaoImpl implements AuditDao {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		try {
+			resultat.close();
+			preparedStatement.close();
+			statement.close();
+			connexion.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void updateAudit(String id, Audit auditUpdated) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
