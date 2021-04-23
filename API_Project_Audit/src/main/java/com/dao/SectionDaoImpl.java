@@ -161,7 +161,7 @@ public class SectionDaoImpl implements SectionDao {
 
         try {
         	connexion = daoFactory.getConnection();
-			String requete = "SELECT * FROM section WHERE 'id_Modele'=?;";
+			String requete = "SELECT * FROM section WHERE id_Modele=?;";
 			PreparedStatement preparedStmt = connexion.prepareStatement(requete);
 			preparedStmt.setString(1, id_Modele);
 			ResultSet rs = preparedStmt.executeQuery();
