@@ -5,9 +5,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.List;
 
 import com.beans.Audit;
+import com.beans.Etudiant;
 
 public class AuditDaoImpl implements AuditDao {
 
@@ -18,8 +18,8 @@ public class AuditDaoImpl implements AuditDao {
     }
     
 	@Override
-	public List<Audit> getAudits() {
-		List<Audit> audits = new ArrayList<Audit>();
+	public ArrayList<Audit> getAudits() {
+		ArrayList<Audit> audits = new ArrayList<Audit>();
         Connection connexion = null;
         Statement statement = null;
         ResultSet resultat = null;
@@ -27,7 +27,7 @@ public class AuditDaoImpl implements AuditDao {
         try {
             connexion = daoFactory.getConnection();
             statement = connexion.createStatement();
-            resultat = statement.executeQuery("SELECT id,designation,etat,dateDebut,dateFin,dateLimite,dateModif FROM Audit;");
+            resultat = statement.executeQuery("SELECT * FROM Audit;");
 
             while (resultat.next()) {
             	String id = resultat.getString("id");
@@ -57,7 +57,7 @@ public class AuditDaoImpl implements AuditDao {
 	}
 
 	@Override
-	public Audit getPAuditById(int id) {
+	public Audit getAuditById(String id) {
 		Connection connexion = null;
         Statement statement = null;
         ResultSet resultat = null;
@@ -91,6 +91,24 @@ public class AuditDaoImpl implements AuditDao {
             e.printStackTrace();
         }
         return audit;
+	}
+
+	@Override
+	public void updateAudit(String id) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addAudit(Etudiant etudiantToAdd) {
+		// TODO A dev
+		
+	}
+
+	@Override
+	public void deleteAudit(String id) {
+		// TODO A dev
+		
 	}
 
 }

@@ -27,7 +27,7 @@ public class PersonneDaoImpl implements PersonneDao {
         try {
             connexion = daoFactory.getConnection();
             statement = connexion.createStatement();
-            resultat = statement.executeQuery("SELECT id,nom,prenom,email,tel FROM Personne WHERE role LIKE '"+role+"%';");
+            resultat = statement.executeQuery("SELECT * FROM Personne WHERE role LIKE '"+role+"%';");
 
             while (resultat.next()) {
             	String id = resultat.getString("id");

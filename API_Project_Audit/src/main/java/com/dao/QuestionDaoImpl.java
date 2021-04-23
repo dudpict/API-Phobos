@@ -125,6 +125,46 @@ public class QuestionDaoImpl implements QuestionDao {
 			e.printStackTrace();
 		}
 	}
+
+	@Override
+	public Question getQuestionById(String id) {
+		Connection connexion = null;
+		Statement statement = null;
+		ResultSet resultat = null;
+		Question question = new Question();
+
+		try {
+			connexion = daoFactory.getConnection();
+			statement = connexion.createStatement();
+			resultat = statement.executeQuery("SELECT * FROM question;");
+			connexion.close();
+
+			while (resultat.next()) {
+				int id2 = resultat.getInt("id");
+				String designation = resultat.getString("designation");
+				int typeQuestionID = resultat.getInt("id_typeQuestion");
+				int sectionID = resultat.getInt("id_section");
+				
+				//Récupére l'instance de TypeQuestion via l'id
+        		TypeQuestionDao typeQuestionDao = daoFactory.getTypeQuestionDao();
+        		TypeQuestion typeQuestion  = typeQuestionDao.getTypeQuestionById(typeQuestionID);
+        		
+        		//Récupére l'instance de Section via l'id
+        		SectionDao sectionDao = daoFactory.getSectionDao();
+        		Section section  = sectionDao.getSectionById(sectionID);
+
+        		//Remplir les attributs
+				
+				question.setId(id2);
+				question.setDesignation(designation);
+        		question.setSection(section);
+        		question.setTypeQuestion(typeQuestion);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return question;
+	}
 	
 	
 }

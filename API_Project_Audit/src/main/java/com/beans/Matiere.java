@@ -54,14 +54,6 @@ public class Matiere {
 		this.effectif = effectif;
 	}
 
-	public static int getIdCount() {
-		return idCount;
-	}
-
-	public static void setIdCount(int idCount) {
-		Matiere.idCount = idCount;
-	}
-
 	public Professeur getResponsable() {
 		return responsable;
 	}

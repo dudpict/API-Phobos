@@ -8,5 +8,5 @@ public interface PersonneDao {
 	void ajouter( Personne personne );
     ArrayList<Personne> getPersonnes(String role);
 	Personne getPersonneById(int id);
-	//void modifier(String id, String field, String value);
+//	void modifier(String id, String field, String value);
 }

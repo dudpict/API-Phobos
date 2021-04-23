@@ -94,6 +94,36 @@ public class TypeQuestionDaoImpl implements TypeQuestionDao {
 		}
 	}
 
+	@Override
+	public TypeQuestion getTypeQuestionById(String id) {
+        Connection connexion = null;
+        Statement statement = null;
+        ResultSet resultat = null;
+        TypeQuestion typeQuestion = new TypeQuestion();
+
+
+        try {
+            connexion = daoFactory.getConnection();
+            statement = connexion.createStatement();
+            resultat = statement.executeQuery("SELECT * FROM typeQuestion WHERE id="+id+";");
+            connexion.close();
+
+            while (resultat.next()) {
+            	int id2 = resultat.getInt("id");
+                String designation = resultat.getString("designation");
+        		        		
+        		//TODO IMPLEMENTER EQUIPE ET ROLE MODELE
+                typeQuestion.setId(id2);
+                typeQuestion.setDesignation(designation);
+
+                
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return typeQuestion;
+	}
+
 	
 
 }

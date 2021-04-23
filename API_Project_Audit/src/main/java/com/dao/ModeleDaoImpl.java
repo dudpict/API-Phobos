@@ -10,73 +10,73 @@ import java.util.ArrayList;
 import com.beans.Modele;
 
 public class ModeleDaoImpl implements ModeleDao {
-	
+
 	private DaoFactory daoFactory;
 
 	ModeleDaoImpl(DaoFactory daoFactory) {
-        this.daoFactory = daoFactory;
-    }
+		this.daoFactory = daoFactory;
+	}
 
 	@Override
 	public ArrayList<Modele> getModeles() {
 		ArrayList<Modele> modeles = new ArrayList<Modele>();
-        Connection connexion = null;
-        Statement statement = null;
-        ResultSet resultat = null;
+		Connection connexion = null;
+		Statement statement = null;
+		ResultSet resultat = null;
 
-        try {
-            connexion = daoFactory.getConnection();
-            statement = connexion.createStatement();
-            resultat = statement.executeQuery("SELECT * FROM Modele;");
-            connexion.close();
+		try {
+			connexion = daoFactory.getConnection();
+			statement = connexion.createStatement();
+			resultat = statement.executeQuery("SELECT * FROM Modele;");
+			connexion.close();
 
-            while (resultat.next()) {
-            	int id = resultat.getInt("id");
-                String designation = resultat.getString("designation");
-        		        		
-        		//TODO IMPLEMENTER EQUIPE ET ROLE MODELE
-                Modele modele = new Modele();
-                modele.setId(id);
-                modele.setDesignation(designation);
+			while (resultat.next()) {
+				int id = resultat.getInt("id");
+				String designation = resultat.getString("designation");
 
-                modeles.add(modele);
-                
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return modeles;
+				// TODO IMPLEMENTER EQUIPE ET ROLE MODELE
+				Modele modele = new Modele();
+				modele.setId(id);
+				modele.setDesignation(designation);
+
+				modeles.add(modele);
+
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return modeles;
 	}
 
 	@Override
-	public Modele getModeleById(int modeleID) {
+	public Modele getModeleById(String modeleID) {
 		Connection connexion = null;
-        Statement statement = null;
-        ResultSet resultat = null;
-        Modele modele = new Modele();
-        
-        try {
-            connexion = daoFactory.getConnection();
-            statement = connexion.createStatement();
-            resultat = statement.executeQuery("SELECT * FROM Modele WHERE id="+modeleID+";");
-            
-            connexion.close();
+		Statement statement = null;
+		ResultSet resultat = null;
+		Modele modele = new Modele();
 
-            while (resultat.next()) {
-            	int id = resultat.getInt("id");
-                String designation = resultat.getString("designation");
-     
-              //TODO IMPLEMENTER EQUIPE ET ROLE MODELE
-                modele.setId(id);
-                modele.setDesignation(designation);
-                
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return modele;
+		try {
+			connexion = daoFactory.getConnection();
+			statement = connexion.createStatement();
+			resultat = statement.executeQuery("SELECT * FROM Modele WHERE id=" + modeleID + ";");
+
+			connexion.close();
+
+			while (resultat.next()) {
+				int id = resultat.getInt("id");
+				String designation = resultat.getString("designation");
+
+				// TODO IMPLEMENTER EQUIPE ET ROLE MODELE
+				modele.setId(id);
+				modele.setDesignation(designation);
+
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return modele;
 	}
-	
+
 	@Override
 	public void deleteModele(String id) {
 		Connection connexion = null;
@@ -88,17 +88,15 @@ public class ModeleDaoImpl implements ModeleDao {
 			preparedStmt.setString(1, id);
 			preparedStmt.execute();
 			connexion.close();
-			
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
-	
-	//TODO vérifier les types des parametres de la fonction 
+	// TODO vérifier les types des parametres de la fonction
 	@Override
-	public void addModele(String id,String Designation) {
+	public void addModele(String id, String Designation) {
 		Connection connexion = null;
 
 		try {
@@ -109,17 +107,15 @@ public class ModeleDaoImpl implements ModeleDao {
 			preparedStmt.setString(2, Designation);
 			preparedStmt.execute();
 			connexion.close();
-			
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
-	
-	
-	//TODO vérifier les types des parametres de la fonction 
+
+	// TODO vérifier les types des parametres de la fonction
 	@Override
-	public void updateModele(String id,String Designation) {
+	public void updateModele(String id, String Designation) {
 		Connection connexion = null;
 
 		try {
@@ -130,10 +126,9 @@ public class ModeleDaoImpl implements ModeleDao {
 			preparedStmt.setString(2, id);
 			preparedStmt.execute();
 			connexion.close();
-			
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		}
+	}
 }

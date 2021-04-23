@@ -13,10 +13,16 @@ public class Question {
 		this.designation = designation;
 		this.reponse = reponse;
 		this.id = id;
-		this.section = section;
-		this.typeQuestion = typeQuestion;
 	}
 	
+	public Question(String designation, String reponse, TypeQuestion typeQuestion, Section section) {
+		super();
+		this.designation = designation;
+		this.reponse = reponse;
+		this.typeQuestion = typeQuestion;
+		this.section = section;
+	}
+
 	public Question() {
 		this.id=idCount;
 		idCount++;

@@ -9,5 +9,6 @@ public interface EtudiantDao {
     void addEtudiant(Etudiant etudiant);
     void deleteEtudiant(String id);
     void updateEtudiant(String id, Etudiant etudiantUpdated);
+	Etudiant getEtudiantById(String id);
 
 }

@@ -13,5 +13,6 @@ public interface ProfesseurDao {
 	ArrayList<Audit> getAudits(int matiere, boolean publies);
 	void setHeureAudits(String heureDebut, int id);
 	int getMatiereResponsable(int id);
+	Professeur getProfesseurById(String id);
 	
 }

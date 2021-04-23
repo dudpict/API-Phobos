@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.beans.Audit;
 import com.beans.Etudiant;
 import com.beans.Modele;
 import com.beans.Personne;
@@ -15,6 +16,7 @@ import com.beans.Professeur;
 import com.beans.Question;
 import com.beans.Section;
 import com.beans.TypeQuestion;
+import com.dao.AuditDao;
 import com.dao.DaoFactory;
 import com.dao.EtudiantDao;
 import com.dao.ModeleDao;
@@ -39,6 +41,17 @@ public class PhobosController {
 
 	}
 
+	@RequestMapping(value = "/etudiantById", method = RequestMethod.GET)
+	@ResponseBody
+	public Etudiant appelGET_etudiantById(@RequestParam(required = true, value = "id") String id) {
+		System.out.println("Appel GET by ID");
+
+		DaoFactory fact = new DaoFactory();
+		EtudiantDao etudiantDao = fact.getEtudiantDao();
+		Etudiant etudiant = etudiantDao.getEtudiantById(id);
+		return etudiant;
+	}
+
 	@RequestMapping(value = "/etudiant", method = RequestMethod.POST)
 	@ResponseBody
 	public void appelPost_etudiant(@RequestParam(required = false, value = "promo") String promo,
@@ -58,6 +71,16 @@ public class PhobosController {
 		etudiantDao.addEtudiant(etudiantToAdd);
 	}
 
+	@RequestMapping(value = "/etudiant", method = RequestMethod.DELETE)
+	@ResponseBody
+	public void appelDELETE_etudiant(@RequestParam(required = false, value = "id") String id) {
+		System.out.println("Appel DELETE");
+
+		DaoFactory fact = new DaoFactory();
+		EtudiantDao etudiantDao = fact.getEtudiantDao();
+		etudiantDao.deleteEtudiant(id);
+	}
+
 	// GESTION PROFESSEURS
 	@RequestMapping(value = "/professeur", method = RequestMethod.GET)
 	@ResponseBody
@@ -68,7 +91,17 @@ public class PhobosController {
 		ProfesseurDao professeurDao = fact.getProfesseurDao();
 		ArrayList<Professeur> allProfesseur = professeurDao.getProfesseurs();
 		return allProfesseur;
+	}
 
+	@RequestMapping(value = "/professeurById", method = RequestMethod.GET)
+	@ResponseBody
+	public Professeur appelGET_professeurById(@RequestParam(required = true, value = "id") String id) {
+		System.out.println("Appel GET by ID");
+
+		DaoFactory fact = new DaoFactory();
+		ProfesseurDao professeurDao = fact.getProfesseurDao();
+		Professeur professeur = professeurDao.getProfesseurById(id);
+		return professeur;
 	}
 
 	@RequestMapping(value = "/professeur", method = RequestMethod.POST)
@@ -80,16 +113,20 @@ public class PhobosController {
 
 		Personne personneToAdd = new Personne(nom, prenom, email, tel);
 		Professeur professeurToAdd = new Professeur();
-
 		DaoFactory fact = new DaoFactory();
-
 		ProfesseurDao professeurDao = fact.getProfesseurDao();
-		
 		professeurDao.addProfesseur(professeurDao);
 	}
-	
-	
-	
+
+	@RequestMapping(value = "/professeur", method = RequestMethod.DELETE)
+	@ResponseBody
+	public void appelDELETE_professeur(@RequestParam(required = false, value = "id") String id) {
+		System.out.println("Appel DELETE");
+
+		DaoFactory fact = new DaoFactory();
+		ProfesseurDao professeurDao = fact.getProfesseurDao();
+		professeurDao.deleteProfesseur(id);
+	}
 
 	// GESTION QUESTION
 	@RequestMapping(value = "/question", method = RequestMethod.GET)
@@ -101,7 +138,27 @@ public class PhobosController {
 		QuestionDao questionDao = fact.getQuestionDao();
 		ArrayList<Question> allQuestion = questionDao.getQuestions();
 		return allQuestion;
+	}
 
+	@RequestMapping(value = "/question", method = RequestMethod.DELETE)
+	@ResponseBody
+	public void appelDELETE_question(@RequestParam(required = false, value = "id") String id) {
+		System.out.println("Appel Delete");
+
+		DaoFactory fact = new DaoFactory();
+		QuestionDao questionDao = fact.getQuestionDao();
+		questionDao.deleteQuestion(id);
+	}
+
+	@RequestMapping(value = "/modeleById", method = RequestMethod.GET)
+	@ResponseBody
+	public Question appelGET_questionById(@RequestParam(required = true, value = "id") String id) {
+		System.out.println("Appel GET by ID");
+
+		DaoFactory fact = new DaoFactory();
+		QuestionDao questionDao = fact.getQuestionDao();
+		Question question = questionDao.getQuestionById(id);
+		return question;
 	}
 
 	// GESTION SECTION
@@ -117,6 +174,16 @@ public class PhobosController {
 
 	}
 
+	@RequestMapping(value = "/section", method = RequestMethod.DELETE)
+	@ResponseBody
+	public void appelDELETE_section(@RequestParam(required = false, value = "id") String id) {
+		System.out.println("Appel Delete");
+
+		DaoFactory fact = new DaoFactory();
+		SectionDao sectionDao = fact.getSectionDao();
+		sectionDao.deleteSection(id);
+	}
+
 	// GESTION MODELE
 	@RequestMapping(value = "/modele", method = RequestMethod.GET)
 	@ResponseBody
@@ -127,20 +194,102 @@ public class PhobosController {
 		ModeleDao modeleDao = fact.getModeleDao();
 		ArrayList<Modele> allModele = modeleDao.getModeles();
 		return allModele;
+	}
+
+	@RequestMapping(value = "/modeleById", method = RequestMethod.GET)
+	@ResponseBody
+	public Modele appelGET_modeleById(@RequestParam(required = true, value = "id") String id) {
+		System.out.println("Appel GET by ID");
+
+		DaoFactory fact = new DaoFactory();
+		ModeleDao modeleDao = fact.getModeleDao();
+		Modele modele = modeleDao.getModeleById(id);
+		return modele;
+	}
+
+	@RequestMapping(value = "/modele", method = RequestMethod.DELETE)
+	@ResponseBody
+	public void appelDELETE_modele(@RequestParam(required = false, value = "id") String id) {
+		System.out.println("Appel Delete");
+
+		DaoFactory fact = new DaoFactory();
+		ModeleDao modeleDao = fact.getModeleDao();
+		modeleDao.deleteModele(id);
+	}
+
+	// GESTION TYPEQUESTION
+	@RequestMapping(value = "/typeQuestion", method = RequestMethod.GET)
+	@ResponseBody
+	public ArrayList<TypeQuestion> appelGET_typequestion(@RequestParam(required = false, value = "id") String id) {
+		System.out.println("Appel GET");
+
+		DaoFactory fact = new DaoFactory();
+		TypeQuestionDao typeQuestionDao = fact.getTypeQuestionDao();
+		ArrayList<TypeQuestion> allTypeQuestion = typeQuestionDao.getTypeQuestions();
+		return allTypeQuestion;
+	}
+
+	@RequestMapping(value = "/typeQuestionById", method = RequestMethod.GET)
+	@ResponseBody
+	public TypeQuestion appelGET_typeQuestionById(@RequestParam(required = true, value = "id") String id) {
+		System.out.println("Appel GET by ID");
+
+		DaoFactory fact = new DaoFactory();
+		TypeQuestionDao typeQuestionDao = fact.getTypeQuestionDao();
+		TypeQuestion typeQuestion = typeQuestionDao.getTypeQuestionById(id);
+		return typeQuestion;
+	}
+
+	// GESTION AUDITS
+	@RequestMapping(value = "/audits", method = RequestMethod.GET)
+	@ResponseBody
+	public ArrayList<Audit> appelGET_audit(@RequestParam(required = false, value = "id") String id) {
+		System.out.println("Appel GET");
+
+		DaoFactory fact = new DaoFactory();
+		AuditDao auditDao = fact.getAuditDao();
+		ArrayList<Audit> allAudit = auditDao.getAudits();
+		return allAudit;
 
 	}
 
-		//GESTION TYPEQUESTION
-		@RequestMapping(value = "/typeQuestion", method = RequestMethod.GET)
-		@ResponseBody
-		public ArrayList<TypeQuestion> appelGET_typequestion(@RequestParam(required = false, value = "id") String id) {
-			System.out.println("Appel GET");
-			
-			DaoFactory fact = new DaoFactory();
-			TypeQuestionDao typeQuestionDao = fact.getTypeQuestionDao();
-			ArrayList<TypeQuestion> allTypeQuestion = typeQuestionDao.getTypeQuestions();
-			return allTypeQuestion;
+	@RequestMapping(value = "/auditById", method = RequestMethod.GET)
+	@ResponseBody
+	public Audit appelGET_auditById(@RequestParam(required = true, value = "id") String id) {
+		System.out.println("Appel GET by ID");
 
-		}
+		DaoFactory fact = new DaoFactory();
+		AuditDao auditDao = fact.getAuditDao();
+		Audit audit = auditDao.getAuditById(id);
+		return audit;
+	}
+
+	@RequestMapping(value = "/addAudit", method = RequestMethod.POST)
+	@ResponseBody
+	public void appelPost_audit(@RequestParam(required = false, value = "promo") String promo,
+			@RequestParam(required = false, value = "id") String id,
+			@RequestParam(required = false, value = "classe") String classe,
+			@RequestParam(required = false, value = "nom") String nom,
+			@RequestParam(required = false, value = "prenom") String prenom,
+			@RequestParam(required = false, value = "email") String email,
+			@RequestParam(required = false, value = "tel") String tel) {
+
+		Personne personneToAdd = new Personne(nom, prenom, email, tel);
+		Etudiant etudiantToAdd = new Etudiant(promo, classe, personneToAdd);
+
+		DaoFactory fact = new DaoFactory();
+		AuditDao auditDao = fact.getAuditDao();
+		auditDao.addAudit(etudiantToAdd);
+	}
+
+	@RequestMapping(value = "/deleteAudit", method = RequestMethod.DELETE)
+	@ResponseBody
+	public void appelDELETE_audit(@RequestParam(required = false, value = "id") String id) {
+		System.out.println("Appel DELETE");
+
+		DaoFactory fact = new DaoFactory();
+		AuditDao auditDao = fact.getAuditDao();
+		auditDao.deleteAudit(id);
+	}
 
 }

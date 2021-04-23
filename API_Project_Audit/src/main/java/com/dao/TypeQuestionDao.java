@@ -9,4 +9,5 @@ public interface TypeQuestionDao {
 	ArrayList<TypeQuestion> getTypeQuestions();
 	void deleteTypeQuestion(String id);
 	TypeQuestion getTypeQuestionById(int typeQuestionID);
+	TypeQuestion getTypeQuestionById(String id);
 }
