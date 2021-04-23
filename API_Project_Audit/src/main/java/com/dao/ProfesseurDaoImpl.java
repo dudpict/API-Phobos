@@ -97,7 +97,17 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 
 	@Override
 	public void deleteProfesseur(String id) {
-		// TODO Auto-generated method stub
+		Connection connexion = null;
+		try {
+			connexion = daoFactory.getConnection();
+			String requete = "DELETE * FROM Professeur WHERE id=?";
+			PreparedStatement preparedStmt = connexion.prepareStatement(requete);
+			preparedStmt.setString(1, id);
+			preparedStmt.execute();
+			connexion.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 
 	}
 
