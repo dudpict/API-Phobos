@@ -1,13 +1,15 @@
 package com.controller;
 
+import java.util.ArrayList;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.beans.Section;
 import com.dao.DaoFactory;
-import com.dao.ModeleDao;
 import com.dao.SectionDao;
 
 @RestController
@@ -36,7 +38,6 @@ public class PhobosControllerSection {
 		SectionDao.updateSection(id, Designation, id_Modele);
 		}
 	
-	// UPDATE d'un Modele
 	@RequestMapping(value = "/getSectionByIdModele", method = RequestMethod.GET)
 	@ResponseBody
 	public void getSectionByIdModele(@RequestParam(required = false, value = "id") String id_Modele) {
@@ -45,4 +46,26 @@ public class PhobosControllerSection {
 		SectionDao SectionDao = fact.getSectionDao();
 		SectionDao.getSectionByIdModele(id_Modele);
 		}
+	
+	@RequestMapping(value = "/section", method = RequestMethod.GET)
+	@ResponseBody
+	public ArrayList<Section> appelGET_section(@RequestParam(required = false, value = "id") String id) {
+		System.out.println("Appel GET");
+
+		DaoFactory fact = new DaoFactory();
+		SectionDao sectionDao = fact.getSectionDao();
+		ArrayList<Section> allSection = sectionDao.getSections();
+		return allSection;
+
+	}
+
+	@RequestMapping(value = "/section", method = RequestMethod.DELETE)
+	@ResponseBody
+	public void appelDELETE_section(@RequestParam(required = false, value = "id") String id) {
+		System.out.println("Appel Delete");
+
+		DaoFactory fact = new DaoFactory();
+		SectionDao sectionDao = fact.getSectionDao();
+		sectionDao.deleteSection(id);
+	}
 }
