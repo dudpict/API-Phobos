@@ -119,7 +119,7 @@ public class SectionDaoImpl implements SectionDao {
 
 		try {
 			connexion = daoFactory.getConnection();
-			String requete = "INSERT INTO `section`(`designation`, `id_Modele`) VALUES (?,?)";
+			String requete = "INSERT INTO `section`(`designation`, `id_Modele`) VALUES (?,?);";
 			PreparedStatement preparedStmt = connexion.prepareStatement(requete);
 			preparedStmt.setString(1, Designation);
 			preparedStmt.setInt(2, id_Modele);
@@ -138,7 +138,7 @@ public class SectionDaoImpl implements SectionDao {
 
 		try {
 			connexion = daoFactory.getConnection();
-			String requete = "UPDATE `section` SET `designation`=?,`id_Modele`=? WHERE `id`=?";
+			String requete = "UPDATE `section` SET `designation`=?,`id_Modele`=? WHERE `id`=?;";
 			PreparedStatement preparedStmt = connexion.prepareStatement(requete);
 			preparedStmt.setString(1, Designation);
 			preparedStmt.setInt(2, id_Modele);
@@ -150,6 +150,45 @@ public class SectionDaoImpl implements SectionDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	
+	@Override
+	public ArrayList<Section> getSectionByIdModele(String id_Modele) {
+		ArrayList<Section> sections = new ArrayList<Section>();
+        Connection connexion = null;
+        Statement statement = null;
+
+        try {
+        	connexion = daoFactory.getConnection();
+			String requete = "SELECT * FROM section WHERE 'id_Modele'=?;";
+			PreparedStatement preparedStmt = connexion.prepareStatement(requete);
+			preparedStmt.setString(1, id_Modele);
+			ResultSet rs = preparedStmt.executeQuery();
+
+            while (rs.next()) {
+            	int id = rs.getInt("id");
+                String designation = rs.getString("designation");
+                String modeleID = rs.getString("id_Modele");
+                
+                
+                //Récupére l'instance de Prsonne via l'id
+        		ModeleDao modeleDao = daoFactory.getModeleDao();
+        		Modele modele  = modeleDao.getModeleById(modeleID);
+        		        		
+        		//TODO IMPLEMENTER EQUIPE ET ROLE MODELE
+                Section section = new Section();
+                section.setId(id);
+                section.setDesignation(designation);
+                section.setModele(modele);
+
+                sections.add(section);
+                
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return sections;
 	}
 
 }
