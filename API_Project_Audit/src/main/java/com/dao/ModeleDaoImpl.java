@@ -49,7 +49,7 @@ public class ModeleDaoImpl implements ModeleDao {
 	}
 
 	@Override
-	public Modele getModeleById(String modeleID) {
+	public Modele getModeleById(int modeleID) {
 		Connection connexion = null;
 		Statement statement = null;
 		ResultSet resultat = null;

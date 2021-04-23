@@ -2,6 +2,7 @@ package com.beans;
 
 public class Question {
 	private static int idCount = 0;
+	private String intitule;
 	String designation;
 	String reponse;
 	int id;
@@ -21,6 +22,15 @@ public class Question {
 		this.reponse = reponse;
 		this.typeQuestion = typeQuestion;
 		this.section = section;
+	}
+	
+	public Question(String designation, String intitule, String reponse, TypeQuestion typeQuestion, Section section) {
+		super();
+		this.designation = designation;
+		this.reponse = reponse;
+		this.typeQuestion = typeQuestion;
+		this.section = section;
+		this.intitule = intitule;
 	}
 
 	public Question() {
@@ -67,6 +77,16 @@ public class Question {
 	public void setSection(Section section) {
 		this.section = section;
 	}
+
+	public String getIntitule() {
+		return intitule;
+	}
+
+	public void setIntitule(String intitule) {
+		this.intitule = intitule;
+	}
+	
+	
 	
 	
 	
