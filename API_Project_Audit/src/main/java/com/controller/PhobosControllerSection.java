@@ -48,6 +48,16 @@ public class PhobosControllerSection {
 		return allSection;
 		}
 	
+	@RequestMapping(value = "/sectionById", method = RequestMethod.GET)
+	@ResponseBody
+	public Section getSectionById(@RequestParam(required = false, value = "id") int id) {
+		System.out.println("méthode GET, getSectionById");
+		DaoFactory fact = new DaoFactory();
+		SectionDao SectionDao = fact.getSectionDao();
+		Section section = SectionDao.getSectionById(id);
+		return section;
+		}
+	
 	@RequestMapping(value = "/section", method = RequestMethod.GET)
 	@ResponseBody
 	public ArrayList<Section> appelGET_section(@RequestParam(required = false, value = "id") String id) {
