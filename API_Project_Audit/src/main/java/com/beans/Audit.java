@@ -1,28 +1,34 @@
 package com.beans;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 public class Audit {
-	
+
 	private static int idCount = 0;
 	int id;
 	String designation;
 	String etat;
-	Date dateDebut;
-	Date dateFin;
-	Date dateLimite;
-	Date dateModif;
-	ArrayList<Date> dateModifList;
+	String dateDebut;
+	String dateFin;
+	String dateLimite;
+	String dateModif;
 	Matiere matiere;
-	
+	Modele modele;
+	Jury jury;
+	Lieu lieu;
+	ArrayList<String> dateModifList;
+	Boolean publie;
+
 	public Audit() {
-		this.id=idCount;
+		this.id = idCount;
 		idCount++;
-		}
-	
-	public Audit(int id, String designation, String etat, Date dateDebut, Date dateFin, Date dateLimite, Date dateModif,
-			ArrayList<Date> dateModifList, Matiere matiere) {
+	}
+
+	public Audit(int id, String designation, String etat, String dateDebut, String dateFin, String dateLimite,
+			String dateModif,
+
+			ArrayList<String> dateModifList, Matiere matiere, Boolean publie, Modele modele, Jury jury, Lieu lieu) {
+
 		super();
 		this.id = id;
 		this.designation = designation;
@@ -33,6 +39,22 @@ public class Audit {
 		this.dateModif = dateModif;
 		this.dateModifList = dateModifList;
 		this.matiere = matiere;
+		this.publie = publie;
+		this.lieu = lieu;
+		this.modele = modele;
+		this.jury = jury;
+	}
+
+	public Audit(String designation, String etat, String dateDebut, String dateFin, String dateLimite, String dateModif,
+			ArrayList<String> dateModifList ) {
+		super();
+		this.designation = designation;
+		this.etat = etat;
+		this.dateDebut = dateDebut;
+		this.dateFin = dateFin;
+		this.dateLimite = dateLimite;
+		this.dateModif = dateModif;
+		this.dateModifList = dateModifList;
 	}
 
 	public int getId() {
@@ -59,43 +81,43 @@ public class Audit {
 		this.etat = etat;
 	}
 
-	public Date getDateDebut() {
+	public String getDateDebut() {
 		return dateDebut;
 	}
 
-	public void setDateDebut(Date dateDebut) {
+	public void setDateDebut(String dateDebut) {
 		this.dateDebut = dateDebut;
 	}
 
-	public Date getDateFin() {
+	public String getDateFin() {
 		return dateFin;
 	}
 
-	public void setDateFin(Date dateFin) {
+	public void setDateFin(String dateFin) {
 		this.dateFin = dateFin;
 	}
 
-	public Date getDateLimite() {
+	public String getDateLimite() {
 		return dateLimite;
 	}
 
-	public void setDateLimite(Date dateLimite) {
+	public void setDateLimite(String dateLimite) {
 		this.dateLimite = dateLimite;
 	}
 
-	public Date getDateModif() {
+	public String getDateModif() {
 		return dateModif;
 	}
 
-	public void setDateModif(Date dateModif) {
+	public void setDateModif(String dateModif) {
 		this.dateModif = dateModif;
 	}
 
-	public ArrayList<Date> getDateModifList() {
+	public ArrayList<String> getDateModifList() {
 		return dateModifList;
 	}
 
-	public void setDateModifList(ArrayList<Date> dateModifList) {
+	public void setDateModifList(ArrayList<String> dateModifList) {
 		this.dateModifList = dateModifList;
 	}
 
@@ -106,6 +128,39 @@ public class Audit {
 	public void setMatiere(Matiere matiere) {
 		this.matiere = matiere;
 	}
+
+	public Boolean getPublie() {
+		return publie;
+	}
+
+	public void setPublie(Boolean publie) {
+		this.publie = publie;
+	}
+
+	public Modele getModele() {
+		return modele;
+	}
+
+	public void setModele(Modele modele) {
+		this.modele = modele;
+	}
+
+	public Jury getJury() {
+		return jury;
+	}
+
+	public void setJury(Jury jury) {
+		this.jury = jury;
+	}
+
+	public Lieu getLieu() {
+		return lieu;
+	}
+
+	public void setLieu(Lieu lieu) {
+		this.lieu = lieu;
+	}
+	
 	
 	
 

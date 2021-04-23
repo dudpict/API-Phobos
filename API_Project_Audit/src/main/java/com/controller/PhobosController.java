@@ -243,12 +243,13 @@ public class PhobosController {
 	// GESTION AUDITS
 	@RequestMapping(value = "/audits", method = RequestMethod.GET)
 	@ResponseBody
-	public ArrayList<Audit> appelGET_audit(@RequestParam(required = false, value = "id") String id) {
-		System.out.println("Appel GET");
+	public ArrayList<Audit> appelGET_audit(@RequestParam(required = true, value = "matiereId") int matiereId,
+			@RequestParam(required = true, value = "publiesBoolean") boolean publiesBoolean) {
+		System.out.println("Appel GET avec matiereID et publiesBoolean");
 
 		DaoFactory fact = new DaoFactory();
 		AuditDao auditDao = fact.getAuditDao();
-		ArrayList<Audit> allAudit = auditDao.getAudits();
+		ArrayList<Audit> allAudit = auditDao.getAudits(matiereId, publiesBoolean);
 		return allAudit;
 
 	}
@@ -291,5 +292,15 @@ public class PhobosController {
 		AuditDao auditDao = fact.getAuditDao();
 		auditDao.deleteAudit(id);
 	}
+	
+	@RequestMapping(value = "/updateAudit", method = RequestMethod.POST)
+	@ResponseBody
+	public void appelPost_audit_updateAudit(@RequestParam(required = false, value = "id") String id,
+												@RequestParam(required = false, value = "Designation") String Designation) {
+		System.out.println("méthode POST, update Modele");
+		DaoFactory fact = new DaoFactory();
+		AuditDao auditDao = fact.getAuditDao();
+		auditDao.updateAudit(id);
+		}
 
 }

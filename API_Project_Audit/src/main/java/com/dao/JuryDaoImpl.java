@@ -44,4 +44,31 @@ public class JuryDaoImpl implements JuryDao {
         }
         return jurys;
     }
+
+	@Override
+	public Jury getJuryById(String juryID) {
+        Connection connexion = null;
+        Statement statement = null;
+        ResultSet resultat = null;
+        Jury jury = new Jury();
+
+        try {
+            connexion = daoFactory.getConnection();
+            statement = connexion.createStatement();
+            resultat = statement.executeQuery("SELECT id,designation FROM Jury WHERE id="+juryID+";");
+
+            while (resultat.next()) {
+            	String id = resultat.getString("id");
+                String designation = resultat.getString("designation");
+                     
+               
+                jury.setId(Integer.valueOf(id));
+                jury.setDesignation(designation);
+                connexion.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return jury;
+	}
 }

@@ -6,7 +6,7 @@ import com.beans.Audit;
 import com.beans.Etudiant;
 
 public interface AuditDao {
-	ArrayList<Audit> getAudits();
+	ArrayList<Audit> getAudits(int matiere, boolean publies);
 	Audit getAuditById(String id);
 	void updateAudit(String id);
 	void addAudit(Etudiant etudiantToAdd);
