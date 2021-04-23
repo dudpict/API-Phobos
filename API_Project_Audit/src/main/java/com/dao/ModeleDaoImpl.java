@@ -49,7 +49,7 @@ public class ModeleDaoImpl implements ModeleDao {
 	}
 
 	@Override
-	public Modele getModeleById(String modeleID) {
+	public Modele getModeleById(int modeleID) {
 		Connection connexion = null;
 		Statement statement = null;
 		ResultSet resultat = null;
@@ -94,17 +94,16 @@ public class ModeleDaoImpl implements ModeleDao {
 		}
 	}
 
-	// TODO vérifier les types des parametres de la fonction
+	
 	@Override
-	public void addModele(String id, String Designation) {
+	public void addModele(String Designation) {
 		Connection connexion = null;
 
 		try {
 			connexion = daoFactory.getConnection();
-			String requete = "INSERT INTO `Modele`(`id`, `designation`) VALUES (?,?)";
+			String requete = "INSERT INTO `Modele`(`designation`) VALUES (?)";
 			PreparedStatement preparedStmt = connexion.prepareStatement(requete);
-			preparedStmt.setString(1, id);
-			preparedStmt.setString(2, Designation);
+			preparedStmt.setString(1, Designation);
 			preparedStmt.execute();
 			connexion.close();
 
@@ -112,10 +111,10 @@ public class ModeleDaoImpl implements ModeleDao {
 			e.printStackTrace();
 		}
 	}
-
-	// TODO vérifier les types des parametres de la fonction
+		
+	 
 	@Override
-	public void updateModele(String id, String Designation) {
+	public void updateModele(int id,String Designation) {
 		Connection connexion = null;
 
 		try {
@@ -123,7 +122,7 @@ public class ModeleDaoImpl implements ModeleDao {
 			String requete = "UPDATE `Modele` SET `designation`=? WHERE `id`=?";
 			PreparedStatement preparedStmt = connexion.prepareStatement(requete);
 			preparedStmt.setString(1, Designation);
-			preparedStmt.setString(2, id);
+			preparedStmt.setInt(2, id);
 			preparedStmt.execute();
 			connexion.close();
 
