@@ -34,7 +34,7 @@ public class SectionDaoImpl implements SectionDao {
             while (resultat.next()) {
             	int id = resultat.getInt("id");
                 String designation = resultat.getString("designation");
-                String modeleID = resultat.getString("id_Modele");
+                int modeleID = resultat.getInt("id_Modele");
                 
                 
                 //Récupére l'instance de Prsonne via l'id
@@ -92,7 +92,7 @@ public class SectionDaoImpl implements SectionDao {
             while (resultat.next()) {
             	int id = resultat.getInt("id");
                 String designation = resultat.getString("designation");
-                String modeleID = resultat.getString("id_Modele");
+                int modeleID = resultat.getInt("id_Modele");
                 
                 
                 //Récupére l'instance de Prsonne via l'id
