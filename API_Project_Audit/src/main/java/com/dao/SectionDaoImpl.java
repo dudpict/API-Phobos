@@ -34,7 +34,7 @@ public class SectionDaoImpl implements SectionDao {
             while (resultat.next()) {
             	int id = resultat.getInt("id");
                 String designation = resultat.getString("designation");
-                String modeleID = resultat.getString("id_Modele");
+                int modeleID = resultat.getInt("id_Modele");
                 
                 
                 //Récupére l'instance de Prsonne via l'id
@@ -92,7 +92,7 @@ public class SectionDaoImpl implements SectionDao {
             while (resultat.next()) {
             	int id = resultat.getInt("id");
                 String designation = resultat.getString("designation");
-                String modeleID = resultat.getString("id_Modele");
+                int modeleID = resultat.getInt("id_Modele");
                 
                 
                 //Récupére l'instance de Prsonne via l'id
@@ -113,18 +113,16 @@ public class SectionDaoImpl implements SectionDao {
 	}
 	
 	
-	//TODO vérifier les types des parametres de la fonction 
 	@Override
-	public void addSection(String id,String Designation, String id_Modele) {
+	public void addSection(String Designation, int id_Modele) {
 		Connection connexion = null;
 
 		try {
 			connexion = daoFactory.getConnection();
-			String requete = "INSERT INTO `section`(`id`, `designation`, `id_Modele`) VALUES (?,?,?)";
+			String requete = "INSERT INTO `section`(`designation`, `id_Modele`) VALUES (?,?)";
 			PreparedStatement preparedStmt = connexion.prepareStatement(requete);
-			preparedStmt.setString(1, id);
-			preparedStmt.setString(2, Designation);
-			preparedStmt.setString(3, id_Modele);
+			preparedStmt.setString(1, Designation);
+			preparedStmt.setInt(2, id_Modele);
 			preparedStmt.execute();
 			connexion.close();
 			
@@ -133,11 +131,9 @@ public class SectionDaoImpl implements SectionDao {
 			e.printStackTrace();
 		}
 	}
-	
-	
-	//TODO vérifier les types des parametres de la fonction 
+	 
 	@Override
-	public void updateSection(String id,String Designation,String id_Modele) {
+	public void updateSection(int id,String Designation,int id_Modele) {
 		Connection connexion = null;
 
 		try {
@@ -145,8 +141,8 @@ public class SectionDaoImpl implements SectionDao {
 			String requete = "UPDATE `section` SET `designation`=?,`id_Modele`=? WHERE `id`=?";
 			PreparedStatement preparedStmt = connexion.prepareStatement(requete);
 			preparedStmt.setString(1, Designation);
-			preparedStmt.setString(2, id_Modele);
-			preparedStmt.setString(3, id);
+			preparedStmt.setInt(2, id_Modele);
+			preparedStmt.setInt(3, id);
 			preparedStmt.execute();
 			connexion.close();
 			

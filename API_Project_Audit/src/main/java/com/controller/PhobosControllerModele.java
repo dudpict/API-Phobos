@@ -15,12 +15,11 @@ public class PhobosControllerModele {
 	// INSERT d'un Modele 
 	@RequestMapping(value = "/addModele", method = RequestMethod.POST)
 	@ResponseBody
-	public void appelPost_question_addModele(@RequestParam(required = false, value = "id") String id,
-												@RequestParam(required = false, value = "Designation") String Designation) {
+	public void appelPost_question_addModele(@RequestParam(required = false, value = "Designation") String Designation) {
 		System.out.println("méthode POST, add Modele");
 		DaoFactory fact = new DaoFactory();
 		ModeleDao modeleDao = fact.getModeleDao();
-		modeleDao.addModele(id, Designation);
+		modeleDao.addModele(Designation);
 	}
 	
 	// UPDATE d'un Modele
@@ -31,6 +30,6 @@ public class PhobosControllerModele {
 		System.out.println("méthode POST, update Modele");
 		DaoFactory fact = new DaoFactory();
 		ModeleDao modeleDao = fact.getModeleDao();
-		modeleDao.updateModele(id, Designation);
+		modeleDao.updateModele(Integer.parseInt(id), Designation);
 		}
 }

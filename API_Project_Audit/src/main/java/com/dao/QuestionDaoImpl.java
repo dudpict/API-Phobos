@@ -80,19 +80,18 @@ public class QuestionDaoImpl implements QuestionDao {
 		}
 	}
 	
-	//TODO vérifier les types des parametres de la fonction 
+	
 	@Override
-	public void addQuestion(String id,String Designation, String id_section,String id_typeQuestion) {
+	public void addQuestion(String Designation, int id_section,int id_typeQuestion) {
 		Connection connexion = null;
 
 		try {
 			connexion = daoFactory.getConnection();
-			String requete = "INSERT INTO `question`(`id`, `Designation`, `reponse`, `id_section`, `id_typeQuestion`) VALUES (?,?, null,?,?)";
+			String requete = "INSERT INTO `question`(`Designation`, `reponse`, `id_section`, `id_typeQuestion`) VALUES (?, null,?,?)";
 			PreparedStatement preparedStmt = connexion.prepareStatement(requete);
-			preparedStmt.setString(1, id);
-			preparedStmt.setString(2, Designation);
-			preparedStmt.setString(3, id_section);
-			preparedStmt.setString(4,id_typeQuestion);
+			preparedStmt.setString(1, Designation);
+			preparedStmt.setInt(2, id_section);
+			preparedStmt.setInt(3,id_typeQuestion);
 			preparedStmt.execute();
 			connexion.close();
 			
@@ -102,10 +101,9 @@ public class QuestionDaoImpl implements QuestionDao {
 		}
 	}
 	
-	
-	//TODO vérifier les types des parametres de la fonction 
+		
 	@Override
-	public void updateQuestion(String id,String Designation,String reponse, String id_section,String id_typeQuestion) {
+	public void updateQuestion(int id,String Designation,String reponse, int id_section,int id_typeQuestion) {
 		Connection connexion = null;
 
 		try {
@@ -114,9 +112,9 @@ public class QuestionDaoImpl implements QuestionDao {
 			PreparedStatement preparedStmt = connexion.prepareStatement(requete);
 			preparedStmt.setString(1, Designation);
 			preparedStmt.setString(2, reponse);
-			preparedStmt.setString(3, id_section);
-			preparedStmt.setString(4,id_typeQuestion);
-			preparedStmt.setString(4,id);
+			preparedStmt.setInt(3, id_section);
+			preparedStmt.setInt(4,id_typeQuestion);
+			preparedStmt.setInt(4,id);
 			preparedStmt.execute();
 			connexion.close();
 			

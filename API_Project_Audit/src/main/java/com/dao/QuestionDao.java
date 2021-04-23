@@ -8,7 +8,7 @@ public interface QuestionDao {
 
 	ArrayList<Question> getQuestions();
 	void deleteQuestion(String id);
-	void addQuestion(String id, String Designation, String id_section, String id_typeQuestion);
-	void updateQuestion(String id, String Designation, String reponse, String id_section, String id_typeQuestion);
+	void addQuestion(String Designation, int id_section, int id_typeQuestion);
+	void updateQuestion(int id, String Designation, String reponse, int id_section, int id_typeQuestion);
 	Question getQuestionById(String id);
 }
