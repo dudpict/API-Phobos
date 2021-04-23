@@ -157,8 +157,7 @@ public class SectionDaoImpl implements SectionDao {
 	public ArrayList<Section> getSectionByIdModele(String id_Modele) {
 		ArrayList<Section> sections = new ArrayList<Section>();
         Connection connexion = null;
-        Statement statement = null;
-
+        System.out.println("id_Modele "+id_Modele);
         try {
         	connexion = daoFactory.getConnection();
 			String requete = "SELECT * FROM section WHERE id_Modele=?;";

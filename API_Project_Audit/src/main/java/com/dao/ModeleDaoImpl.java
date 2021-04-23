@@ -141,7 +141,7 @@ public class ModeleDaoImpl implements ModeleDao {
 		try {
 			connexion = daoFactory.getConnection();
 			statement = connexion.createStatement();
-			resultat = statement.executeQuery("SELECT * FROM Modele WHERE Designation=" + Designation + ";");
+			resultat = statement.executeQuery("SELECT * FROM Modele WHERE Designation='" + Designation + "';");
 
 			connexion.close();
 
