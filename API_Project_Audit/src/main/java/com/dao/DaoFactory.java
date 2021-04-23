@@ -70,4 +70,12 @@ public class DaoFactory {
 	public TypeQuestionDao getTypeQuestionDao() {
 		return new TypeQuestionDaoImpl(this);
 	}
+
+	public MatiereDao getMatiereDao() {
+		return new MatiereDaoImpl(this);
+	}
+
+	public LieuDao getLieuDao() {
+		return new LieuDaoImpl(this);
+	}
 }

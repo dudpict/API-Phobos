@@ -8,4 +8,6 @@ public interface JuryDao {
 
     ArrayList<Jury> getJurys();
 
+	Jury getJuryById(String juryID);
+
 }
