@@ -19,7 +19,7 @@ public class PhobosControllerEtudiant {
 	@RequestMapping(value = "/etudiant", method = RequestMethod.GET)
 	@ResponseBody
 	public ArrayList<Etudiant> appelGET_etudiant(@RequestParam(required = false, value = "id") String id) {
-		System.out.println("Appel GET");
+		System.out.println("Appel GET, etudiant");
 
 		DaoFactory fact = new DaoFactory();
 		EtudiantDao etudiantDao = fact.getEtudiantDao();

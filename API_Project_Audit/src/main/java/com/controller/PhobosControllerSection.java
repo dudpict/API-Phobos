@@ -40,11 +40,12 @@ public class PhobosControllerSection {
 	
 	@RequestMapping(value = "/sectionByModele", method = RequestMethod.GET)
 	@ResponseBody
-	public void getSectionByIdModele(@RequestParam(required = false, value = "id") String id_Modele) {
+	public ArrayList<Section> getSectionByIdModele(@RequestParam(required = false, value = "id") String id_Modele) {
 		System.out.println("méthode GET, getSectionByIdModele");
 		DaoFactory fact = new DaoFactory();
 		SectionDao SectionDao = fact.getSectionDao();
-		SectionDao.getSectionByIdModele(id_Modele);
+		ArrayList<Section> allSection = SectionDao.getSectionByIdModele(id_Modele);
+		return allSection;
 		}
 	
 	@RequestMapping(value = "/section", method = RequestMethod.GET)
