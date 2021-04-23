@@ -30,13 +30,13 @@ public class SectionDaoImpl implements SectionDao {
             statement = connexion.createStatement();
             resultat = statement.executeQuery("SELECT * FROM section;");
             connexion.close();
+            statement.close();
 
             while (resultat.next()) {
             	int id = resultat.getInt("id");
                 String designation = resultat.getString("designation");
                 String modeleID = resultat.getString("id_Modele");
-                
-                
+                                
                 //Récupére l'instance de Prsonne via l'id
         		ModeleDao modeleDao = daoFactory.getModeleDao();
         		Modele modele  = modeleDao.getModeleById(modeleID);
@@ -48,7 +48,7 @@ public class SectionDaoImpl implements SectionDao {
                 section.setModele(modele);
 
                 sections.add(section);
-                
+                resultat.close();
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -67,8 +67,8 @@ public class SectionDaoImpl implements SectionDao {
 			preparedStmt.setString(1, id);
 			preparedStmt.execute();
 			connexion.close();
-			
-
+			preparedStmt.close();
+		
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -88,6 +88,7 @@ public class SectionDaoImpl implements SectionDao {
             resultat = statement.executeQuery("SELECT * FROM section WHERE id="+sectionID+";");
             
             connexion.close();
+            statement.close();
 
             while (resultat.next()) {
             	int id = resultat.getInt("id");
@@ -104,7 +105,7 @@ public class SectionDaoImpl implements SectionDao {
                 section.setDesignation(designation);
                 section.setModele(modele);
                 
-//                connexion.close();
+                resultat.close();
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -125,8 +126,8 @@ public class SectionDaoImpl implements SectionDao {
 			preparedStmt.setInt(2, id_Modele);
 			preparedStmt.execute();
 			connexion.close();
+			preparedStmt.close();
 			
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -145,8 +146,8 @@ public class SectionDaoImpl implements SectionDao {
 			preparedStmt.setInt(3, id);
 			preparedStmt.execute();
 			connexion.close();
+			preparedStmt.close();
 			
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -164,13 +165,15 @@ public class SectionDaoImpl implements SectionDao {
 			PreparedStatement preparedStmt = connexion.prepareStatement(requete);
 			preparedStmt.setString(1, id_Modele);
 			ResultSet rs = preparedStmt.executeQuery();
+			
+			connexion.close();
+			preparedStmt.close();
 
             while (rs.next()) {
             	int id = rs.getInt("id");
                 String designation = rs.getString("designation");
                 String modeleID = rs.getString("id_Modele");
-                
-                
+                                
                 //Récupére l'instance de Prsonne via l'id
         		ModeleDao modeleDao = daoFactory.getModeleDao();
         		Modele modele  = modeleDao.getModeleById(modeleID);
@@ -182,6 +185,7 @@ public class SectionDaoImpl implements SectionDao {
                 section.setModele(modele);
 
                 sections.add(section);
+                rs.close();
                 
             }
         } catch (SQLException e) {

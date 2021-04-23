@@ -31,6 +31,7 @@ public class QuestionDaoImpl implements QuestionDao {
 			statement = connexion.createStatement();
 			resultat = statement.executeQuery("SELECT * FROM question;");
 			connexion.close();
+			resultat.close();
 
 			while (resultat.next()) {
 				int id = resultat.getInt("id");
@@ -56,6 +57,7 @@ public class QuestionDaoImpl implements QuestionDao {
 				question.setIntitule(intitule);
 
 				questions.add(question);
+				resultat.close();
 
 			}
 		} catch (SQLException e) {
@@ -75,6 +77,7 @@ public class QuestionDaoImpl implements QuestionDao {
 			preparedStmt.setString(1, id);
 			preparedStmt.execute();
 			connexion.close();
+			preparedStmt.close();
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -95,7 +98,9 @@ public class QuestionDaoImpl implements QuestionDao {
 			preparedStmt.setInt(3, id_section);
 			preparedStmt.setInt(4, id_typeQuestion);
 			preparedStmt.execute();
+			preparedStmt.close();
 			connexion.close();
+			preparedStmt.close();
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -120,6 +125,7 @@ public class QuestionDaoImpl implements QuestionDao {
 			preparedStmt.setInt(5, id);
 			preparedStmt.execute();
 			connexion.close();
+			preparedStmt.close();
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -138,6 +144,7 @@ public class QuestionDaoImpl implements QuestionDao {
 			statement = connexion.createStatement();
 			resultat = statement.executeQuery("SELECT * FROM question WHERE id=" + id + ";");
 			connexion.close();
+			statement.close();
 
 			while (resultat.next()) {
 				int id2 = resultat.getInt("id");
@@ -161,6 +168,7 @@ public class QuestionDaoImpl implements QuestionDao {
 				question.setIntitule(intitule);
 				question.setSection(section);
 				question.setTypeQuestion(typeQuestion);
+				resultat.close();
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -206,6 +214,8 @@ public class QuestionDaoImpl implements QuestionDao {
 				questions.add(question);
 			}
 			connexion.close();
+			preparedStmt.close();
+			rs.close();
 
 		} catch (SQLException e) {
 			e.printStackTrace();

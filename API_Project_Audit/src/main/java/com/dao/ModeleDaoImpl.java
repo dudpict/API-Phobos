@@ -29,6 +29,7 @@ public class ModeleDaoImpl implements ModeleDao {
 			statement = connexion.createStatement();
 			resultat = statement.executeQuery("SELECT * FROM Modele;");
 			connexion.close();
+			statement.close();
 
 			while (resultat.next()) {
 				int id = resultat.getInt("id");
@@ -40,6 +41,7 @@ public class ModeleDaoImpl implements ModeleDao {
 				modele.setDesignation(designation);
 
 				modeles.add(modele);
+				resultat.close();
 
 			}
 		} catch (SQLException e) {
@@ -61,7 +63,7 @@ public class ModeleDaoImpl implements ModeleDao {
 			resultat = statement.executeQuery("SELECT * FROM Modele WHERE id=" + modeleID + ";");
 
 			connexion.close();
-
+			statement.close();
 			while (resultat.next()) {
 				int id = resultat.getInt("id");
 				String designation = resultat.getString("designation");
@@ -69,6 +71,7 @@ public class ModeleDaoImpl implements ModeleDao {
 				// TODO IMPLEMENTER EQUIPE ET ROLE MODELE
 				modele.setId(id);
 				modele.setDesignation(designation);
+				resultat.close();
 
 			}
 		} catch (SQLException e) {
@@ -88,13 +91,13 @@ public class ModeleDaoImpl implements ModeleDao {
 			preparedStmt.setString(1, id);
 			preparedStmt.execute();
 			connexion.close();
+			preparedStmt.close();
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
-	
 	@Override
 	public void addModele(String Designation) {
 		Connection connexion = null;
@@ -106,15 +109,15 @@ public class ModeleDaoImpl implements ModeleDao {
 			preparedStmt.setString(1, Designation);
 			preparedStmt.execute();
 			connexion.close();
+			preparedStmt.close();
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
-		
-	 
+
 	@Override
-	public void updateModele(int id,String Designation) {
+	public void updateModele(int id, String Designation) {
 		Connection connexion = null;
 
 		try {
@@ -125,6 +128,7 @@ public class ModeleDaoImpl implements ModeleDao {
 			preparedStmt.setInt(2, id);
 			preparedStmt.execute();
 			connexion.close();
+			preparedStmt.close();
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -144,6 +148,7 @@ public class ModeleDaoImpl implements ModeleDao {
 			resultat = statement.executeQuery("SELECT * FROM Modele WHERE Designation='" + Designation + "';");
 
 			connexion.close();
+			statement.close();
 
 			while (resultat.next()) {
 				int id = resultat.getInt("id");
@@ -152,7 +157,7 @@ public class ModeleDaoImpl implements ModeleDao {
 				// TODO IMPLEMENTER EQUIPE ET ROLE MODELE
 				modele.setId(id);
 				modele.setDesignation(designation);
-
+				resultat.close();
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

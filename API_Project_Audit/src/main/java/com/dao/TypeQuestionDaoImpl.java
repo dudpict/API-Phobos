@@ -10,70 +10,74 @@ import java.util.ArrayList;
 import com.beans.TypeQuestion;
 
 public class TypeQuestionDaoImpl implements TypeQuestionDao {
-	
+
 	private DaoFactory daoFactory;
 
 	TypeQuestionDaoImpl(DaoFactory daoFactory) {
-        this.daoFactory = daoFactory;
-    }
+		this.daoFactory = daoFactory;
+	}
 
 	@Override
 	public ArrayList<TypeQuestion> getTypeQuestions() {
 		ArrayList<TypeQuestion> typeQuestions = new ArrayList<TypeQuestion>();
-        Connection connexion = null;
-        Statement statement = null;
-        ResultSet resultat = null;
+		Connection connexion = null;
+		Statement statement = null;
+		ResultSet resultat = null;
 
-        try {
-            connexion = daoFactory.getConnection();
-            statement = connexion.createStatement();
-            resultat = statement.executeQuery("SELECT * FROM typeQuestion;");
-            connexion.close();
+		try {
+			connexion = daoFactory.getConnection();
+			statement = connexion.createStatement();
+			resultat = statement.executeQuery("SELECT * FROM typeQuestion;");
+			connexion.close();
+			statement.close();
 
-            while (resultat.next()) {
-            	int id = resultat.getInt("id");
-                String designation = resultat.getString("designation");
-        		        		
-        		//TODO IMPLEMENTER EQUIPE ET ROLE MODELE
-                TypeQuestion typeQuestion = new TypeQuestion();
-                typeQuestion.setId(id);
-                typeQuestion.setDesignation(designation);
+			while (resultat.next()) {
+				int id = resultat.getInt("id");
+				String designation = resultat.getString("designation");
 
-                typeQuestions.add(typeQuestion);
-                
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return typeQuestions;
+				// TODO IMPLEMENTER EQUIPE ET ROLE MODELE
+				TypeQuestion typeQuestion = new TypeQuestion();
+				typeQuestion.setId(id);
+				typeQuestion.setDesignation(designation);
+
+				typeQuestions.add(typeQuestion);
+
+			}
+			resultat.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return typeQuestions;
 	}
-	
+
 	@Override
 	public TypeQuestion getTypeQuestionById(int typeQuestionID) {
 		Connection connexion = null;
-        Statement statement = null;
-        ResultSet resultat = null;
-        TypeQuestion typeQuestion=new TypeQuestion();
-        
-        try {
-            connexion = daoFactory.getConnection();
-            statement = connexion.createStatement();
-            resultat = statement.executeQuery("SELECT * FROM typeQuestion WHERE id="+typeQuestionID+";");
-            
-            connexion.close();
+		Statement statement = null;
+		ResultSet resultat = null;
+		TypeQuestion typeQuestion = new TypeQuestion();
 
-            while (resultat.next()) {
-            	int id = resultat.getInt("id");
-                String designation = resultat.getString("designation");
-     
-                typeQuestion.setId(id);
-                typeQuestion.setDesignation(designation);
-                
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return typeQuestion;
+		try {
+			connexion = daoFactory.getConnection();
+			statement = connexion.createStatement();
+			resultat = statement.executeQuery("SELECT * FROM typeQuestion WHERE id=" + typeQuestionID + ";");
+
+			connexion.close();
+			statement.close();
+
+			while (resultat.next()) {
+				int id = resultat.getInt("id");
+				String designation = resultat.getString("designation");
+
+				typeQuestion.setId(id);
+				typeQuestion.setDesignation(designation);
+
+			}
+			resultat.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return typeQuestion;
 	}
 
 	@Override
@@ -87,8 +91,7 @@ public class TypeQuestionDaoImpl implements TypeQuestionDao {
 			preparedStmt.setString(1, id);
 			preparedStmt.execute();
 			connexion.close();
-			
-
+			preparedStmt.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -96,34 +99,32 @@ public class TypeQuestionDaoImpl implements TypeQuestionDao {
 
 	@Override
 	public TypeQuestion getTypeQuestionById(String id) {
-        Connection connexion = null;
-        Statement statement = null;
-        ResultSet resultat = null;
-        TypeQuestion typeQuestion = new TypeQuestion();
+		Connection connexion = null;
+		Statement statement = null;
+		ResultSet resultat = null;
+		TypeQuestion typeQuestion = new TypeQuestion();
 
+		try {
+			connexion = daoFactory.getConnection();
+			statement = connexion.createStatement();
+			resultat = statement.executeQuery("SELECT * FROM typeQuestion WHERE id=" + id + ";");
+			connexion.close();
+			statement.close();
 
-        try {
-            connexion = daoFactory.getConnection();
-            statement = connexion.createStatement();
-            resultat = statement.executeQuery("SELECT * FROM typeQuestion WHERE id="+id+";");
-            connexion.close();
+			while (resultat.next()) {
+				int id2 = resultat.getInt("id");
+				String designation = resultat.getString("designation");
 
-            while (resultat.next()) {
-            	int id2 = resultat.getInt("id");
-                String designation = resultat.getString("designation");
-        		        		
-        		//TODO IMPLEMENTER EQUIPE ET ROLE MODELE
-                typeQuestion.setId(id2);
-                typeQuestion.setDesignation(designation);
+				// TODO IMPLEMENTER EQUIPE ET ROLE MODELE
+				typeQuestion.setId(id2);
+				typeQuestion.setDesignation(designation);
 
-                
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return typeQuestion;
+			}
+			resultat.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return typeQuestion;
 	}
-
-	
 
 }
