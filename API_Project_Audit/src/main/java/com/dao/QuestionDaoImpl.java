@@ -88,7 +88,7 @@ public class QuestionDaoImpl implements QuestionDao {
 		try {
 			connexion = daoFactory.getConnection();
 			String requete = 
-					"INSERT INTO 'question'('Designation','intitule', 'id_section', 'id_typeQuestion') VALUES ('?','?','?','?')";
+					"INSERT INTO `question` (`Designation`, `intitule`, `id_section`, `id_typeQuestion`) VALUES (?,?,?,?);";
 			PreparedStatement preparedStmt = connexion.prepareStatement(requete);
 			preparedStmt.setString(1, Designation);
 			preparedStmt.setString(2, intitule);
@@ -100,6 +100,8 @@ public class QuestionDaoImpl implements QuestionDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+
+		
 	}
 
 	@Override
