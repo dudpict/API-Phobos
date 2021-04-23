@@ -38,7 +38,7 @@ public class PhobosControllerSection {
 		SectionDao.updateSection(id, Designation, id_Modele);
 		}
 	
-	@RequestMapping(value = "/getSectionByIdModele", method = RequestMethod.GET)
+	@RequestMapping(value = "/sectionByModele", method = RequestMethod.GET)
 	@ResponseBody
 	public void getSectionByIdModele(@RequestParam(required = false, value = "id") String id_Modele) {
 		System.out.println("méthode GET, getSectionByIdModele");
