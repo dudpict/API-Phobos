@@ -27,7 +27,7 @@ public class DaoFactory {
 			e.printStackTrace();
 		}
 		System.out.println("");
-		return DriverManager.getConnection("jdbc:mariadb://localhost/projetGL","essai","network");
+		return DriverManager.getConnection("jdbc:mariadb://172.24.1.9/projetGL","essai","network");
 	}
 
 	// Récupération du Dao

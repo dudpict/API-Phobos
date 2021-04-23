@@ -73,7 +73,7 @@ public class EtudiantDaoImpl implements EtudiantDao {
             statement = connexion.createStatement();
             resultat = statement.executeQuery("SELECT * FROM Etudiant WHERE id="+id+";");
             connexion.close();
-
+            System.out.println("apelle etudiant id "+id);
             while (resultat.next()) {
             	String id2 = resultat.getString("id");
                 String classe = resultat.getString("classe");

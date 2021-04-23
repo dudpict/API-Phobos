@@ -195,7 +195,7 @@ public class PhobosController {
 		ArrayList<Modele> allModele = modeleDao.getModeles();
 		return allModele;
 	}
-
+/*
 	@RequestMapping(value = "/modeleById", method = RequestMethod.GET)
 	@ResponseBody
 	public Modele appelGET_modeleById(@RequestParam(required = true, value = "id") String id) {
@@ -206,7 +206,7 @@ public class PhobosController {
 		Modele modele = modeleDao.getModeleById(id);
 		return modele;
 	}
-
+*/
 	@RequestMapping(value = "/modele", method = RequestMethod.DELETE)
 	@ResponseBody
 	public void appelDELETE_modele(@RequestParam(required = false, value = "id") String id) {
