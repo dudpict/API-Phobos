@@ -10,6 +10,7 @@ public interface AuditDao {
 	void updateAudit(String id, Audit auditUpdated);
 	void addAudit(Audit audit);
 	void deleteAudit(String id);
-	void setHeureAudits(String heureDebut, int id, String mode);
+	void setHeureAudits(Audit audit);
 	void setDateLimiteAudits(String heureLimite, int id);
+	Audit setAuditDate(Audit audit);
 }

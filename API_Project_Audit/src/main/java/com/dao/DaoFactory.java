@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import org.springframework.context.annotation.Configuration;
+@Configuration
 public class DaoFactory {
 
 	public DaoFactory() {
@@ -27,7 +29,7 @@ public class DaoFactory {
 			e.printStackTrace();
 		}
 		System.out.println("");
-		return DriverManager.getConnection("jdbc:mariadb://localhost/projetGL","essai","network");
+		return DriverManager.getConnection("jdbc:mariadb://172.24.1.9:3306/projetGL","essai","network");
 	}
 
 	// Récupération du Dao
