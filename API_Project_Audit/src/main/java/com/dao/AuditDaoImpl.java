@@ -6,8 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -187,8 +185,47 @@ public class AuditDaoImpl implements AuditDao {
 
 
 	@Override
-	public void addAudit(Audit audit) {
-		// TODO A dev
+	public Audit addAudit(Audit audit) {
+		Connection connexion = null;
+		Statement statement = null;
+		ResultSet resultat = null;
+		PreparedStatement preparedStatement = null;
+
+		try {
+			connexion = daoFactory.getConnection();
+			statement = connexion.createStatement();
+			preparedStatement = connexion
+					.prepareStatement("INSERT INTO Audit (designation, etat,dateDebut,dateFin,dateLimite,dateModif,note,id_Modele,id_Jury,id_Matiere,id_Lieu) VALUES (?,?,?,?,?,?,?,?,?,?,?);");
+			preparedStatement.setString(1, audit.getDesignation());
+			preparedStatement.setString(2, audit.getEtat());
+			preparedStatement.setString(3, audit.getDateDebut());
+			preparedStatement.setString(4, audit.getDateFin());
+			preparedStatement.setString(5, audit.getDateLimite());
+			preparedStatement.setString(6, audit.getDateModif());
+			preparedStatement.setInt(7, audit.getNote());
+			preparedStatement.setInt(8, audit.getModele().getId());
+			preparedStatement.setInt(9, audit.getJury().getId());
+			preparedStatement.setInt(10, audit.getMatiere().getId());
+			preparedStatement.setInt(11, audit.getLieu().getId());
+			
+			
+			
+			resultat = preparedStatement.executeQuery();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			resultat.close();
+			preparedStatement.close();
+			statement.close();
+			connexion.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return audit;
 
 	}
 
@@ -240,8 +277,9 @@ public class AuditDaoImpl implements AuditDao {
 		}
 	}
 	
+
 	@Override
-	public void setDateLimiteAudits(String heureLimite, int id) {
+	public Audit updateAudit(Audit audit) {
 		Connection connexion = null;
 		Statement statement = null;
 		ResultSet resultat = null;
@@ -251,9 +289,22 @@ public class AuditDaoImpl implements AuditDao {
 			connexion = daoFactory.getConnection();
 			statement = connexion.createStatement();
 			preparedStatement = connexion
-					.prepareStatement("SET dateLimite = to_date('?', 'YYYY/MM/DD HH24:MI') FROM audit WHERE id = ? ;");
-			preparedStatement.setString(1, heureLimite);
-			preparedStatement.setInt(2, id);
+					.prepareStatement("UPDATE Audit  SET designation=?, etat=? ,dateDebut=?,dateFin=?,dateLimite=?,dateModif=?,note=?,id_Modele=?,id_Jury=?,id_Matiere=?,id_Lieu= ? WHERE id=?;");
+			preparedStatement.setString(1, audit.getDesignation());
+			preparedStatement.setString(2, audit.getEtat());
+			preparedStatement.setString(3, audit.getDateDebut());
+			preparedStatement.setString(4, audit.getDateFin());
+			preparedStatement.setString(5, audit.getDateLimite());
+			preparedStatement.setString(6, audit.getDateModif());
+			preparedStatement.setInt(7, audit.getNote());
+			preparedStatement.setInt(8, audit.getModele().getId());
+			preparedStatement.setInt(9, audit.getJury().getId());
+			preparedStatement.setInt(10, audit.getMatiere().getId());
+			preparedStatement.setInt(11, audit.getLieu().getId());
+			preparedStatement.setInt(12, audit.getId());
+			
+			
+			
 			resultat = preparedStatement.executeQuery();
 
 		} catch (SQLException e) {
@@ -269,11 +320,7 @@ public class AuditDaoImpl implements AuditDao {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-
-	@Override
-	public void updateAudit(String id, Audit auditUpdated) {
-		// TODO Auto-generated method stub
+		return audit;
 		
 	}
 	@Override
@@ -308,6 +355,37 @@ public class AuditDaoImpl implements AuditDao {
 		
 		return audit;
 		
+	}
+	@Override
+	public Audit setSemaineAudit(Audit audit) {
+		Connection connexion = null;
+		Statement statement = null;
+		ResultSet resultat = null;
+		PreparedStatement preparedStatement = null;
+
+		try {
+			connexion = daoFactory.getConnection();
+			statement = connexion.createStatement();
+			preparedStatement = connexion
+					.prepareStatement("SET semaineAudit = ? FROM audit WHERE id = ? ;");
+			preparedStatement.setString(1, audit.getSemaineAudit());
+			preparedStatement.setInt(2, audit.getId());
+			resultat = preparedStatement.executeQuery();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			resultat.close();
+			preparedStatement.close();
+			statement.close();
+			connexion.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return audit;
 	}
 
 }

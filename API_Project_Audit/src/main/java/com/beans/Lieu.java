@@ -1,7 +1,7 @@
 package com.beans;
 
 public class Lieu {
-
+	int id;
 	String ville;
 	String etablissement;
 	String batiment;
@@ -69,6 +69,13 @@ public class Lieu {
 
 	public void setNumSalle(String numSalle) {
 		this.numSalle = numSalle;
+	}
+	
+	public void setId(int id ) {
+		this.id=id;
+	}
+	public int getId() {
+		return this.id;
 	}
 
 }

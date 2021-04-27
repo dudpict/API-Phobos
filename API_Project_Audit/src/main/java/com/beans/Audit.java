@@ -18,6 +18,9 @@ public class Audit {
 	Lieu lieu;
 	ArrayList<String> dateModifList;
 	Boolean publie;
+	String semaineAudit;
+	int note;
+	
 
 	public Audit() {
 		this.id = idCount;
@@ -158,6 +161,23 @@ public class Audit {
 	public void setLieu(Lieu lieu) {
 		this.lieu = lieu;
 	}
+	
+	public String getSemaineAudit() {
+		return this.semaineAudit;
+	}
+	
+	public void setSemaineAudit(String semaine) {
+		this.semaineAudit=semaine;
+	}
+	
+	public int getNote() {
+		return this.note;
+	}
+	
+	public void setNote(int note) {
+		this.note=note;
+	}
+	
 	
 	
 	

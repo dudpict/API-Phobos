@@ -12,8 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.beans.Audit;
 import com.blo.AuditBLO;
-import com.dao.AuditDao;
-import com.dao.DaoFactory;
+
 
 @RestController
 public class PhobosControllerAudit {
@@ -47,40 +46,38 @@ public class PhobosControllerAudit {
 	public void appelDELETE_audit(@RequestParam(required = false, value = "id") String id) {
 		System.out.println("Appel DELETE");
 
-		DaoFactory fact = new DaoFactory();
-		AuditDao auditDao = fact.getAuditDao();
-		auditDao.deleteAudit(id);
+		auditBLO.deleteAudit(id);
 	}
 
-	@RequestMapping(value = "/dateHeureAudits", method = RequestMethod.PATCH)
+	@RequestMapping(value = "/dateLimiteAudits", method = RequestMethod.POST)
 	@ResponseBody
 	public Audit appelPost_audit_setDateLimiteAudits(@RequestBody Audit audit) {
 		Audit auditret = auditBLO.setAuditDate(audit);
 		return auditret;
 	}
 
-	@RequestMapping(value = "/dateLimiteAudits", method = RequestMethod.POST)
+	@RequestMapping(value = "/semaineAudits", method = RequestMethod.POST)
 	@ResponseBody
-	public void appelPost_audit_setDateLimiteAudits(
-			@RequestParam(required = false, value = "heureLimite") String heureLimite,
-			@RequestParam(required = false, value = "id") int id) {
+	public Audit appelPost_audit_setSemaineeAudits(@RequestBody Audit audit) {
 		System.out.println("Appel SET dateLimite");
 
-		DaoFactory fact = new DaoFactory();
-		AuditDao auditDao = fact.getAuditDao();
-		auditDao.setDateLimiteAudits(heureLimite, id);
+		auditBLO.setAuditWeek(audit);
+		return audit;
 	}
 
 	@RequestMapping(value = "/addAudit", method = RequestMethod.POST)
 	@ResponseBody
-	public void appelPost_audit() {
-		// TODO A dev pour Alexis et Gab - demander a QUENTIN
+	public Audit appelPost_audit(@RequestBody Audit audit) {
+		auditBLO.addAudit(audit);
+		return audit;
+		
 	}
 
 	@RequestMapping(value = "/updateAudit", method = RequestMethod.POST)
 	@ResponseBody
-	public void appelPost_audit_setHeureAudit() {
-		// TODO A dev pour Alexis et Gab - demander a QUENTIN
+	public Audit appelPost_audit_update(@RequestBody Audit audit) {
+		auditBLO.updateAudit(audit);
+		return audit;
 	}
 
 }

@@ -25,6 +25,23 @@ public class AuditBLO {
 		return auditDao.setAuditDate(audit);
 	}
 	
+	public void deleteAudit(String id) {
+		auditDao.deleteAudit(id);
+	}
+	
+	public void setAuditWeek(Audit audit) {
+		auditDao.setSemaineAudit(audit);
+	}
+	
+	public Audit addAudit(Audit audit) {
+		return auditDao.addAudit(audit);
+	}
+	
+	public Audit updateAudit(Audit audit) {
+		return auditDao.updateAudit(audit);
+		
+	}
+	
 	
 	
 }

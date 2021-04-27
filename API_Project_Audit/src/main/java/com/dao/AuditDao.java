@@ -7,10 +7,10 @@ import com.beans.Audit;
 public interface AuditDao {
 	ArrayList<Audit> getAudits(int matiere, boolean publies);
 	Audit getAuditById(String id);
-	void updateAudit(String id, Audit auditUpdated);
-	void addAudit(Audit audit);
+	Audit updateAudit(Audit auditUpdated);
+	Audit addAudit(Audit audit);
 	void deleteAudit(String id);
 	void setHeureAudits(Audit audit);
-	void setDateLimiteAudits(String heureLimite, int id);
 	Audit setAuditDate(Audit audit);
+	public Audit setSemaineAudit(Audit audit);
 }
