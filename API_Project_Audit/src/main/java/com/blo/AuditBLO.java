@@ -21,6 +21,10 @@ public class AuditBLO {
 		return auditDao.getAudits();
 	}
 	
+	public ArrayList<Audit> getAudits(String id,String publie){
+		return auditDao.getAudits(Integer.parseInt(id), publie);
+	}
+	
 	public Audit setAuditDate(Audit audit) {
 		return auditDao.setAuditDate(audit);
 	}

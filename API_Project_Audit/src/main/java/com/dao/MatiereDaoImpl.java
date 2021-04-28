@@ -27,7 +27,7 @@ public class MatiereDaoImpl implements MatiereDao {
         try {
             connexion = daoFactory.getConnection();
             statement = connexion.createStatement();
-            resultat = statement.executeQuery("SELECT * FROM Jury WHERE id="+matiereID+";");
+            resultat = statement.executeQuery("SELECT * FROM Matiere WHERE id="+matiereID+";");
 
             while (resultat.next()) {
             	String id = resultat.getString("id");

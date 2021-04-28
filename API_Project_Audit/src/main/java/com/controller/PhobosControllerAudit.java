@@ -23,12 +23,19 @@ public class PhobosControllerAudit {
 	
 	@RequestMapping(value = "/audits", method = RequestMethod.GET)
 	@ResponseBody
-	public ArrayList<Audit> appelGET_audit() {
+	public ArrayList<Audit> appelGET_audit(@RequestParam(required = false, value = "matiereId") String matiereId,@RequestParam(required = false, value = "publie") String publie) {
 		System.out.println("Appel GET avec matiereID et publiesBoolean");
-
-		ArrayList<Audit> audits  = new ArrayList<Audit>();
-		audits=auditBLO.getAllAudits();
-		return audits;
+		if (matiereId==null || publie==null) {
+			ArrayList<Audit> audits  = new ArrayList<Audit>();
+			audits=auditBLO.getAllAudits();
+			return audits;
+		}else {
+			ArrayList<Audit> audits  = new ArrayList<Audit>();
+			audits=auditBLO.getAudits(matiereId, publie);
+			return audits;
+			
+		}
+		
 
 	}
 
@@ -43,7 +50,7 @@ public class PhobosControllerAudit {
 
 	@RequestMapping(value = "/deleteAudit", method = RequestMethod.DELETE)
 	@ResponseBody
-	public void appelDELETE_audit(@RequestParam(required = false, value = "id") String id) {
+	public void appelDELETE_audit(@RequestParam(required = true, value = "id") String id) {
 		System.out.println("Appel DELETE");
 
 		auditBLO.deleteAudit(id);

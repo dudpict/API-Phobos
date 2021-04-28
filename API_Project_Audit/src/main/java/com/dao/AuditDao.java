@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import com.beans.Audit;
 
 public interface AuditDao {
-	ArrayList<Audit> getAudits(int matiere, boolean publies);
+	ArrayList<Audit> getAudits(int matiere, String publies);
 	Audit getAuditById(String id);
 	Audit updateAudit(Audit auditUpdated);
 	Audit addAudit(Audit audit);

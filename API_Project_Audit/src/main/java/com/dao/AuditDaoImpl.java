@@ -76,19 +76,23 @@ public class AuditDaoImpl implements AuditDao {
 	}
 
 	@Override
-	public ArrayList<Audit> getAudits(int matiere, boolean publies) {
+	public ArrayList<Audit> getAudits(int matiere, String publies) {
 		ArrayList<Audit> audits = new ArrayList<Audit>();
 		Connection connexion = null;
-		Statement statement = null;
+		PreparedStatement preparedStatement = null;
 		ResultSet resultat = null;
-		String egalOuDiff = publies ? "=" : "<>";
 
 		try {
 			connexion = daoFactory.getConnection();
-			PreparedStatement preparedStatement = connexion
-					.prepareStatement("SELECT * FROM audit WHERE etat ? 'publie' and matiere = ? ;");
-			preparedStatement.setString(1, egalOuDiff);
-			preparedStatement.setInt(2, matiere);
+			if(publies.equals("true")) {
+				preparedStatement = connexion
+						.prepareStatement("SELECT * FROM Audit WHERE etat = 'publie' and id_Matiere = ? ;");
+			}else {
+				preparedStatement = connexion
+						.prepareStatement("SELECT * FROM Audit WHERE etat <> 'publie' and id_Matiere = ? ;");
+			}
+			
+			preparedStatement.setInt(1, matiere);
 			resultat = preparedStatement.executeQuery();
 
 			while (resultat.next()) {
