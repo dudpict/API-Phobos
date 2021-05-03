@@ -217,5 +217,98 @@ public class SectionDaoImpl implements SectionDao {
 		}
 		return sections;
 	}
+	
+	@Override
+	public ArrayList<Section> getSectionByNom(String designationPara) {
+		ArrayList<Section> sections = new ArrayList<Section>();
+		Connection connexion = null;
+		ResultSet rs = null;
+		PreparedStatement preparedStmt = null;
+		System.out.println("id_Modele " + designationPara);
+		try {
+			connexion = daoFactory.getConnection();
+			String requete = "SELECT * FROM section WHERE designation=?;";
+			preparedStmt = connexion.prepareStatement(requete);
+			preparedStmt.setString(1, designationPara);
+			rs = preparedStmt.executeQuery();
+			connexion.close();
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				String designation = rs.getString("designation");
+				String modeleID = rs.getString("id_Modele");
+
+				// Récupére l'instance de Prsonne via l'id
+				ModeleDao modeleDao = daoFactory.getModeleDao();
+				Modele modele = modeleDao.getModeleById(modeleID);
+
+				// TODO IMPLEMENTER EQUIPE ET ROLE MODELE
+				Section section = new Section();
+				section.setId(id);
+				section.setDesignation(designation);
+				section.setModele(modele);
+				sections.add(section);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		try {
+			preparedStmt.close();
+			rs.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return sections;
+	}
+	/*
+	@Override
+	public ArrayList<Section> getSection_By_All_Param(Section sectionParam) {
+		ArrayList<Section> sections = new ArrayList<Section>();
+		Connection connexion = null;
+		ResultSet rs = null;
+		PreparedStatement preparedStmt = null;
+	
+		try {
+			connexion = daoFactory.getConnection();
+			
+			String requete = "SELECT * FROM section WHERE id LIKE ?% AND designation LIKE ?% id_Modele LIKE ?%";
+			
+			preparedStmt = connexion.prepareStatement(requete);
+			preparedStmt.setInt(1, sectionParam.getId());
+			preparedStmt.setString(2, sectionParam.getDesignation());
+			preparedStmt.setString(3, sectionParam.get);
+			rs = preparedStmt.executeQuery();
+			connexion.close();
+			
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				String designation = rs.getString("designation");
+				String modeleID = rs.getString("id_Modele");
+
+				// Récupére l'instance de Prsonne via l'id
+				ModeleDao modeleDao = daoFactory.getModeleDao();
+				Modele modele = modeleDao.getModeleById(modeleID);
+
+				// TODO IMPLEMENTER EQUIPE ET ROLE MODELE
+				Section section = new Section();
+				section.setId(id);
+				section.setDesignation(designation);
+				section.setModele(modele);
+				sections.add(section);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		try {
+			preparedStmt.close();
+			rs.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return sections;
+	}
+	*/
+	
 
 }
