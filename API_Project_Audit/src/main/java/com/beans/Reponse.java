@@ -18,10 +18,10 @@ public class Reponse {
 	/**
 	 * Constructeur de réponse
 	 */
-	/*public Reponse(){
-		this.id = idCount;
-		idCount++;
-	}*/
+	public Reponse(){
+		/*this.id = idCount;
+		idCount++;*/
+	}
 	
 	/**
 	 * Constructeur d'une réponse de type reponseLongue

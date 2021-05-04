@@ -306,7 +306,4 @@ public class SectionDaoImpl implements SectionDao {
 		}
 		return sections;
 	}
-	
-	
-
 }

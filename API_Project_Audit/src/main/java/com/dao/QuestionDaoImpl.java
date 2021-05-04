@@ -201,6 +201,55 @@ public class QuestionDaoImpl implements QuestionDao {
 		}
 		return question;
 	}
+	
+	@Override
+	public Question getQuestionByNom(String nom) {
+		Connection connexion = null;
+		Statement statement = null;
+		ResultSet resultat = null;
+		Question question = new Question();
+
+		try {
+			connexion = daoFactory.getConnection();
+			statement = connexion.createStatement();
+			resultat = statement.executeQuery("SELECT * FROM question WHERE Designation=" + nom + ";");
+			connexion.close();
+
+			while (resultat.next()) {
+				int id2 = resultat.getInt("id");
+				String designation = resultat.getString("designation");
+				String intitule = resultat.getString("intitule");
+				int typeQuestionID = resultat.getInt("id_typeQuestion");
+				int sectionID = resultat.getInt("id_section");
+
+				// Récupére l'instance de TypeQuestion via l'id
+				TypeQuestionDao typeQuestionDao = daoFactory.getTypeQuestionDao();
+				TypeQuestion typeQuestion = typeQuestionDao.getTypeQuestionById(typeQuestionID);
+
+				// Récupére l'instance de Section via l'id
+				SectionDao sectionDao = daoFactory.getSectionDao();
+				Section section = sectionDao.getSectionById(sectionID);
+
+				// Remplir les attributs
+
+				question.setId(id2);
+				question.setDesignation(designation);
+				question.setIntitule(intitule);
+				question.setSection(section);
+				question.setTypeQuestion(typeQuestion);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		try {
+			statement.close();
+			resultat.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return question;
+	}
 
 	@Override
 	public ArrayList<Question> getQuestionsBySectionId(String id_section) {
@@ -258,7 +307,6 @@ public class QuestionDaoImpl implements QuestionDao {
 
 		return questions;
 	}
-	
 	
 	@Override
 	public ArrayList<Question> getQuestion_By_All_Param(Question questionParam) {

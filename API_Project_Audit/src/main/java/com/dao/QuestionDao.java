@@ -13,4 +13,5 @@ public interface QuestionDao {
 	Question getQuestionById(String id);
 	ArrayList<Question> getQuestionsBySectionId(String id_section);
 	ArrayList<Question> getQuestion_By_All_Param(Question questionParam);
+	Question getQuestionByNom(String nom);
 }

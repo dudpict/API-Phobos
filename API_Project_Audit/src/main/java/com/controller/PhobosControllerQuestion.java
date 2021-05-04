@@ -10,10 +10,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.beans.Question;
-import com.beans.Section;
 import com.dao.DaoFactory;
 import com.dao.QuestionDao;
-import com.dao.SectionDao;
 
 @RestController
 public class PhobosControllerQuestion {
@@ -43,8 +41,6 @@ public class PhobosControllerQuestion {
 		return allQuestion;
 	}
 
-	
-
 	@RequestMapping(value = "/questionById", method = RequestMethod.GET)
 	@ResponseBody
 	public Question appelGET_questionById(@RequestParam(required = true, value = "id") String id) {
@@ -53,6 +49,17 @@ public class PhobosControllerQuestion {
 		DaoFactory fact = new DaoFactory();
 		QuestionDao questionDao = fact.getQuestionDao();
 		Question question = questionDao.getQuestionById(id);
+		return question;
+	}
+	
+	@RequestMapping(value = "/questionByNom", method = RequestMethod.GET)
+	@ResponseBody
+	public Question appelGET_questionByNom(@RequestParam(required = true, value = "Designation") String Designation) {
+		System.out.println("Appel GET by ID");
+
+		DaoFactory fact = new DaoFactory();
+		QuestionDao questionDao = fact.getQuestionDao();
+		Question question = questionDao.getQuestionByNom(Designation);
 		return question;
 	}
 	
@@ -110,7 +117,4 @@ public class PhobosControllerQuestion {
 		questionDao.deleteQuestion(id);
 	}
 	
-
-	
-
 }
