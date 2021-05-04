@@ -36,7 +36,7 @@ public class LieuDaoImpl implements LieuDao {
                 String etage = resultat.getString("Etage");
                 String nomSalle = resultat.getString("NomSalle");
                 String numSalle = resultat.getString("NumSalle");
-     
+                lieu.setId(Integer.parseInt(lieuID));
                 lieu.setVille(ville);
                 lieu.setEtablissement(etablissement);
                 lieu.setEtage(etage);

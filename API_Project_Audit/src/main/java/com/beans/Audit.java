@@ -19,6 +19,7 @@ public class Audit {
 	ArrayList<String> dateModifList;
 	Boolean publie;
 	String semaineAudit;
+	String modeDate;
 	int note;
 	
 
@@ -64,6 +65,14 @@ public class Audit {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+	
+	public void setModeDate(String modeDate) {
+		this.modeDate=modeDate;
+	}
+	
+	public String getModeDate() {
+		return this.modeDate;
 	}
 
 	public String getDesignation() {

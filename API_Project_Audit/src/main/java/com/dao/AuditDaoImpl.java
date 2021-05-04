@@ -161,6 +161,8 @@ public class AuditDaoImpl implements AuditDao {
 				audit.setDateDebut(resultat.getString("dateDebut"));
 				audit.setDateFin(resultat.getString("dateFin"));
 				audit.setDateLimite(resultat.getString("dateLimite"));
+				audit.setModeDate(resultat.getString("modeDate"));
+				audit.setSemaineAudit(resultat.getString("semaineAudit"));
 				// TODO Implementer un object Matiere, Jury, Modele et Lieu
 				// Récupére l'instance de Prsonne via l'id
 				MatiereDao matiereDao = daoFactory.getMatiereDao();
@@ -338,7 +340,7 @@ public class AuditDaoImpl implements AuditDao {
 			connexion = daoFactory.getConnection();
 			statement = connexion.createStatement();
 			preparedStatement = connexion
-					.prepareStatement("UPDATE Audit SET dateLimite = STR_TO_DATE(?, '%Y-%m-%d') WHERE id = ? ;");
+					.prepareStatement("UPDATE Audit SET dateLimite = STR_TO_DATE(?, '%Y-%m-%d'), dateMode='Date Limite' WHERE id = ? ;");
 			preparedStatement.setString(1, audit.getDateLimite());
 			preparedStatement.setInt(2, audit.getId());
 			resultat = preparedStatement.executeQuery();
@@ -371,7 +373,7 @@ public class AuditDaoImpl implements AuditDao {
 			connexion = daoFactory.getConnection();
 			statement = connexion.createStatement();
 			preparedStatement = connexion
-					.prepareStatement("SET semaineAudit = ? FROM audit WHERE id = ? ;");
+					.prepareStatement("UPDATE Audit SET semaineAudit = ? , dateMode='WEEK' WHERE id = ? ;");
 			preparedStatement.setString(1, audit.getSemaineAudit());
 			preparedStatement.setInt(2, audit.getId());
 			resultat = preparedStatement.executeQuery();

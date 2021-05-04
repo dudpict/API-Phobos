@@ -3,6 +3,7 @@ package com.controller;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -23,6 +24,7 @@ public class PhobosControllerAudit {
 	
 	@RequestMapping(value = "/audits", method = RequestMethod.GET)
 	@ResponseBody
+	@CrossOrigin(origins = "*")
 	public ArrayList<Audit> appelGET_audit(@RequestParam(required = false, value = "matiereId") String matiereId,@RequestParam(required = false, value = "publie") String publie) {
 		System.out.println("Appel GET avec matiereID et publiesBoolean");
 		if (matiereId==null || publie==null) {
@@ -41,6 +43,7 @@ public class PhobosControllerAudit {
 
 	@RequestMapping(value = "/auditById", method = RequestMethod.GET)
 	@ResponseBody
+	@CrossOrigin(origins = "*")
 	public Audit appelGET_auditById(@RequestParam(required = true, value = "id") String id) {
 		System.out.println("Appel GET by ID");
 
