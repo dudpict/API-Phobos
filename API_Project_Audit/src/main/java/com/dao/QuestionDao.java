@@ -12,4 +12,5 @@ public interface QuestionDao {
 	void updateQuestion(int id, String Designation,String intitule, String reponse, int id_section, int id_typeQuestion);
 	Question getQuestionById(String id);
 	ArrayList<Question> getQuestionsBySectionId(String id_section);
+	ArrayList<Question> getQuestion_By_All_Param(Question questionParam);
 }
