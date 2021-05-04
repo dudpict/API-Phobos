@@ -7,11 +7,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import com.beans.Question;
 import com.beans.Reponse;
 import com.beans.ReponseMultiple;
-import com.beans.Section;
-import com.beans.TypeQuestion;
 
 public class ReponseDaoImpl implements ReponseDao {
 
@@ -20,9 +17,9 @@ public class ReponseDaoImpl implements ReponseDao {
 	ReponseDaoImpl(DaoFactory daoFactory) {
 		this.daoFactory = daoFactory;
 	}
-/*
+
 	@Override
-	public ArrayList<Reponse> getReponse() {
+	public ArrayList<Reponse> getReponseById(String id) {
 		ArrayList<Reponse> reponses = new ArrayList<Reponse>();
 		Connection connexion = null;
 		Statement statement = null;
@@ -30,38 +27,102 @@ public class ReponseDaoImpl implements ReponseDao {
 		PreparedStatement preparedStmt = null;
 
 
-		try {
+		try {			
 			connexion = daoFactory.getConnection();
 			statement = connexion.createStatement();
-			preparedStmt = connexion.prepareStatement("SELECT * FROM Reponse;");
+			preparedStmt = connexion.prepareStatement("SELECT * FROM Reponse where id=?;");
+			preparedStmt.setString(1, id);
 			resultat = preparedStmt.executeQuery();
 			
 			while (resultat.next()) {
-				int id = resultat.getInt("id");
+				int idReponse = resultat.getInt("id");
 				int note = resultat.getInt("Note");
-				boolean reponseCourte = resultat.getString("ReponseLongue");
+				boolean reponseCourte = resultat.getBoolean("ReponseLongue");
 				String reponseLongue = resultat.getString("ReponseLongue");
-				ArrayList<ReponseMultiple> reponseMultiple;
+				ArrayList<ReponseMultiple> reponseMultiples = null;
+				if(!reponseCourte) {
+					DaoFactory fact = new DaoFactory();
+					ReponseMultipleDao reponseMultipleDao = fact.getReponseMultipleDao();
+					reponseMultiples = reponseMultipleDao.getReponseMultipleByIdReponse(Integer.toString(idReponse));
+				}
 				
 				Reponse reponse = new Reponse();				
-				reponse.setId(id);				
+				reponse.setId(idReponse);				
 				reponse.setNote(note);				
 				reponse.setReponseCourte(reponseCourte);				
 				reponse.setReponseLongue(reponseLongue);				
-				reponse.setReponseMultiple(reponseMultiple);
+				reponse.setReponseMultiple(reponseMultiples);
 				reponses.add(reponse);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
-			connexion.close();
-			statement.close();
-			resultat.close();
+			if(connexion!= null || statement!= null || resultat!= null) {
+				try {
+					connexion.close();
+					statement.close();
+					resultat.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}	
 		}
 		
 		return reponses;
 	}
-	*/
+	
+	@Override
+	public ArrayList<Reponse> getReponsesByQuestionId(String id) {
+		ArrayList<Reponse> reponses = new ArrayList<Reponse>();
+		Connection connexion = null;
+		Statement statement = null;
+		ResultSet resultat = null;
+		PreparedStatement preparedStmt = null;
+
+
+		try {			
+			connexion = daoFactory.getConnection();
+			statement = connexion.createStatement();
+			preparedStmt = connexion.prepareStatement("SELECT * FROM Reponse where ID_question=?;");
+			preparedStmt.setString(1, id);
+			resultat = preparedStmt.executeQuery();
+			
+			while (resultat.next()) {
+				int idReponse = resultat.getInt("id");
+				int note = resultat.getInt("Note");
+				boolean reponseCourte = resultat.getBoolean("ReponseLongue");
+				String reponseLongue = resultat.getString("ReponseLongue");
+				ArrayList<ReponseMultiple> reponseMultiples = null;
+				if(!reponseCourte) {
+					DaoFactory fact = new DaoFactory();
+					ReponseMultipleDao reponseMultipleDao = fact.getReponseMultipleDao();
+					reponseMultiples = reponseMultipleDao.getReponseMultipleByIdReponse(Integer.toString(idReponse));
+				}
+				
+				Reponse reponse = new Reponse();				
+				reponse.setId(idReponse);				
+				reponse.setNote(note);				
+				reponse.setReponseCourte(reponseCourte);				
+				reponse.setReponseLongue(reponseLongue);				
+				reponse.setReponseMultiple(reponseMultiples);
+				reponses.add(reponse);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			if(connexion!= null || statement!= null || resultat!= null) {
+				try {
+					connexion.close();
+					statement.close();
+					resultat.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}	
+		}
+		
+		return reponses;
+	}
 	
 	
 	

@@ -19,8 +19,7 @@ public class Reponse {
 	 * Constructeur de réponse
 	 */
 	public Reponse(){
-		/*this.id = idCount;
-		idCount++;*/
+		super();
 	}
 	
 	/**
