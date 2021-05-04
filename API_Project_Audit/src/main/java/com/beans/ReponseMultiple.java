@@ -11,16 +11,30 @@ public class ReponseMultiple {
 	 * Constructeur d'une réponse de type reponseMultiple
 	 * @param reponse
 	 */
+	public ReponseMultiple() {
+		super();
+	}
+	
 	public ReponseMultiple(String reponse){
 		//super();
 		this.reponse=reponse;
 	}
 	
-	public String getReponseMultiple() {
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getReponse() {
 		return reponse;
 	}
 
-	public void setReponseMultiple(String reponse) {
+	public void setReponse(String reponse) {
 		this.reponse = reponse;
-	}	
+	}
+
+	
 }
