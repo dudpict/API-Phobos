@@ -212,7 +212,9 @@ public class QuestionDaoImpl implements QuestionDao {
 		try {
 			connexion = daoFactory.getConnection();
 			statement = connexion.createStatement();
-			resultat = statement.executeQuery("SELECT * FROM question WHERE Designation=" + nom + ";");
+			PreparedStatement preparedStmt = connexion.prepareStatement("SELECT * FROM question WHERE Designation=?;");
+			preparedStmt.setString(1, nom);
+			resultat = preparedStmt.executeQuery();			
 			connexion.close();
 
 			while (resultat.next()) {
