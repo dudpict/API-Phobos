@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import com.beans.Modele;
 import com.beans.Question;
 import com.beans.Section;
 import com.beans.TypeQuestion;
@@ -200,6 +201,57 @@ public class QuestionDaoImpl implements QuestionDao {
 		}
 		return question;
 	}
+	
+	@Override
+	public Question getQuestionByNom(String nom) {
+		Connection connexion = null;
+		Statement statement = null;
+		ResultSet resultat = null;
+		Question question = new Question();
+
+		try {
+			connexion = daoFactory.getConnection();
+			statement = connexion.createStatement();
+			PreparedStatement preparedStmt = connexion.prepareStatement("SELECT * FROM question WHERE Designation=?;");
+			preparedStmt.setString(1, nom);
+			resultat = preparedStmt.executeQuery();			
+			connexion.close();
+
+			while (resultat.next()) {
+				int id2 = resultat.getInt("id");
+				String designation = resultat.getString("designation");
+				String intitule = resultat.getString("intitule");
+				int typeQuestionID = resultat.getInt("id_typeQuestion");
+				int sectionID = resultat.getInt("id_section");
+
+				// Récupére l'instance de TypeQuestion via l'id
+				TypeQuestionDao typeQuestionDao = daoFactory.getTypeQuestionDao();
+				TypeQuestion typeQuestion = typeQuestionDao.getTypeQuestionById(typeQuestionID);
+
+				// Récupére l'instance de Section via l'id
+				SectionDao sectionDao = daoFactory.getSectionDao();
+				Section section = sectionDao.getSectionById(sectionID);
+
+				// Remplir les attributs
+
+				question.setId(id2);
+				question.setDesignation(designation);
+				question.setIntitule(intitule);
+				question.setSection(section);
+				question.setTypeQuestion(typeQuestion);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		try {
+			statement.close();
+			resultat.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return question;
+	}
 
 	@Override
 	public ArrayList<Question> getQuestionsBySectionId(String id_section) {
@@ -213,6 +265,67 @@ public class QuestionDaoImpl implements QuestionDao {
 			String requete = "SELECT * FROM question WHERE `id_section`=?";
 			preparedStmt = connexion.prepareStatement(requete);
 			preparedStmt.setString(1, id_section);
+			rs = preparedStmt.executeQuery();
+
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				String designation = rs.getString("designation");
+				String intitule = rs.getString("intitule");
+				int typeQuestionID = rs.getInt("id_typeQuestion");
+				int sectionID = rs.getInt("id_section");
+
+				// Récupére l'instance de TypeQuestion via l'id
+				TypeQuestionDao typeQuestionDao = daoFactory.getTypeQuestionDao();
+				TypeQuestion typeQuestion = typeQuestionDao.getTypeQuestionById(typeQuestionID);
+
+				// Récupére l'instance de Section via l'id
+				SectionDao sectionDao = daoFactory.getSectionDao();
+				Section section = sectionDao.getSectionById(sectionID);
+
+				// Remplir les attributs
+				Question question = new Question();
+				question.setId(id);
+				question.setDesignation(designation);
+				question.setIntitule(intitule);
+				question.setSection(section);
+				question.setTypeQuestion(typeQuestion);
+
+				questions.add(question);
+			}
+			connexion.close();
+			preparedStmt.close();
+			rs.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		try {
+			preparedStmt.close();
+			rs.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return questions;
+	}
+	
+	@Override
+	public ArrayList<Question> getQuestion_By_All_Param(Question questionParam) {
+		ArrayList<Question> questions = new ArrayList<Question>();
+		Connection connexion = null;
+		PreparedStatement preparedStmt = null;
+		ResultSet rs = null;
+
+		try {
+			connexion = daoFactory.getConnection();
+			String requete = "SELECT * FROM `question` WHERE id LIKE '?%' AND Designation LIKE '?%' AND intitule LIKE '?%' AND id_section LIKE '?%' id_typeQuestion LIKE '?%' ";
+			preparedStmt = connexion.prepareStatement(requete);
+			preparedStmt.setInt(1, questionParam.getId());
+			preparedStmt.setString(2, questionParam.getDesignation());
+			preparedStmt.setString(3, questionParam.getIntitule());
+			preparedStmt.setInt(4, questionParam.getSection().getId());
+			preparedStmt.setInt(5, questionParam.getTypeQuestion().getId());
 			rs = preparedStmt.executeQuery();
 
 			while (rs.next()) {

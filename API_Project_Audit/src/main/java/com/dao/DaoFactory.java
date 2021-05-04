@@ -30,6 +30,7 @@ public class DaoFactory {
 		}
 		System.out.println("");
 		return DriverManager.getConnection("jdbc:mariadb://localhost:3306/projetGL","essai","network");
+
 	}
 
 	// Récupération du Dao
@@ -79,5 +80,13 @@ public class DaoFactory {
 
 	public LieuDao getLieuDao() {
 		return new LieuDaoImpl(this);
+	}
+	
+	public ReponseMultipleDao getReponseMultipleDao() {
+		return new ReponseMultipleDaoImpl(this);
+	}
+
+	public ReponseDao getReponseDao() {
+		return new ReponseDaoImpl(this);
 	}
 }

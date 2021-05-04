@@ -12,4 +12,6 @@ public interface SectionDao {
 	void addSection(String Designation, int id_Modele);
 	void updateSection(int id, String Designation, int id_Modele);
 	ArrayList<Section> getSectionByIdModele(String id_Modele);
+	ArrayList<Section> getSectionByNom(String designationPara);
+	ArrayList<Section> getSection_By_All_Param(Section sectionParam);
 }
