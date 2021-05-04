@@ -20,7 +20,7 @@ public class ReponseDaoImpl implements ReponseDao {
 	ReponseDaoImpl(DaoFactory daoFactory) {
 		this.daoFactory = daoFactory;
 	}
-
+/*
 	@Override
 	public ArrayList<Reponse> getReponse() {
 		ArrayList<Reponse> reponses = new ArrayList<Reponse>();
@@ -61,7 +61,7 @@ public class ReponseDaoImpl implements ReponseDao {
 		
 		return reponses;
 	}
-	
+	*/
 	
 	
 	
