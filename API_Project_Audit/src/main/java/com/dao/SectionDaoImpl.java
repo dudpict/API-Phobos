@@ -260,7 +260,7 @@ public class SectionDaoImpl implements SectionDao {
 		}
 		return sections;
 	}
-	/*
+	
 	@Override
 	public ArrayList<Section> getSection_By_All_Param(Section sectionParam) {
 		ArrayList<Section> sections = new ArrayList<Section>();
@@ -271,12 +271,12 @@ public class SectionDaoImpl implements SectionDao {
 		try {
 			connexion = daoFactory.getConnection();
 			
-			String requete = "SELECT * FROM section WHERE id LIKE ?% AND designation LIKE ?% id_Modele LIKE ?%";
+			String requete = "SELECT * FROM section WHERE id LIKE '?%' AND designation LIKE '?%' AND id_Modele LIKE '?%'";
 			
 			preparedStmt = connexion.prepareStatement(requete);
 			preparedStmt.setInt(1, sectionParam.getId());
 			preparedStmt.setString(2, sectionParam.getDesignation());
-			preparedStmt.setString(3, sectionParam.get);
+			preparedStmt.setInt(3, sectionParam.getModele().getId());
 			rs = preparedStmt.executeQuery();
 			connexion.close();
 			
@@ -289,7 +289,6 @@ public class SectionDaoImpl implements SectionDao {
 				ModeleDao modeleDao = daoFactory.getModeleDao();
 				Modele modele = modeleDao.getModeleById(modeleID);
 
-				// TODO IMPLEMENTER EQUIPE ET ROLE MODELE
 				Section section = new Section();
 				section.setId(id);
 				section.setDesignation(designation);
@@ -303,12 +302,11 @@ public class SectionDaoImpl implements SectionDao {
 			preparedStmt.close();
 			rs.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return sections;
 	}
-	*/
+	
 	
 
 }

@@ -2,12 +2,14 @@ package com.controller;
 
 import java.util.ArrayList;
 
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.beans.Audit;
 import com.beans.Section;
 import com.dao.DaoFactory;
 import com.dao.SectionDao;
@@ -85,6 +87,15 @@ public class PhobosControllerSection {
 		ArrayList<Section> allSection = sectionDao.getSectionByNom(designation);
 		return allSection;
 
+	}
+	
+	@RequestMapping(value = "/getSection_By_All_Param", method = RequestMethod.GET)
+	@ResponseBody
+	public ArrayList<Section> getSection_By_All_Param(@RequestBody Section section) {
+		DaoFactory fact = new DaoFactory();
+		SectionDao sectionDao = fact.getSectionDao();
+		ArrayList<Section> allSection = sectionDao.getSection_By_All_Param(section);
+		return allSection;
 	}
 	
 	// METHODE DELETE
