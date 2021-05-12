@@ -24,20 +24,37 @@ public class PhobosControllerReponseMultiple {
 
 		DaoFactory fact = new DaoFactory();
 		ReponseMultipleDao reponseMultipleDao = fact.getReponseMultipleDao();
-		ArrayList<ReponseMultiple> reponseMultiples = reponseMultipleDao.getReponseMultipleByIdReponse(id);
-		return reponseMultiples;
+		
+		return reponseMultipleDao.getReponseMultipleByIdReponse(id);
 	}
 	
 	@RequestMapping(value = "/addReponseMultiple", method = RequestMethod.POST)
 	@ResponseBody
-	public void appelPOST_addReponseMultiple(@RequestBody ReponseMultiple reponseMultiple,
-											@RequestBody String idReponse) {
+	public void appelPOST_addReponseMultiple(@RequestBody ReponseMultiple reponseMultiple,@RequestBody String idReponse) {
 		System.out.println("Appel addReponseMultiple ");
 
 		DaoFactory fact = new DaoFactory();
 		ReponseMultipleDao reponseMultipleDao = fact.getReponseMultipleDao();
-		reponseMultipleDao.addReponseMultiple(reponseMultiple, idReponse);;
+		reponseMultipleDao.addReponseMultiple(reponseMultiple, idReponse);
 	}
 	
+	@RequestMapping(value = "/updateReponseMultiple", method = RequestMethod.POST)
+	@ResponseBody
+	public void appelPOST_updateReponseMultiple(@RequestBody ReponseMultiple reponseMultiple) {
+		System.out.println("Appel updateReponseMultiple ");
 
+		DaoFactory fact = new DaoFactory();
+		ReponseMultipleDao reponseMultipleDao = fact.getReponseMultipleDao();
+		reponseMultipleDao.updateReponseMultiple(reponseMultiple);
+	}
+	
+	@RequestMapping(value = "/deleteReponseMultiple", method = RequestMethod.DELETE)
+	@ResponseBody
+	public void appelPOST_deleteReponseMultiple(@RequestBody ReponseMultiple reponseMultiple) {
+		System.out.println("Appel updateReponseMultiple ");
+
+		DaoFactory fact = new DaoFactory();
+		ReponseMultipleDao reponseMultipleDao = fact.getReponseMultipleDao();
+		reponseMultipleDao.deleteReponseMultiple(reponseMultiple);
+	}
 }

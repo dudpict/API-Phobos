@@ -1,7 +1,5 @@
 package com.beans;
 
-import java.util.ArrayList;
-
 public class ReponseMultiple {
 	private int id;
 	private String reponse;	
@@ -15,7 +13,6 @@ public class ReponseMultiple {
 	}
 	
 	public ReponseMultiple(String reponse){
-		//super();
 		this.reponse=reponse;
 	}
 	

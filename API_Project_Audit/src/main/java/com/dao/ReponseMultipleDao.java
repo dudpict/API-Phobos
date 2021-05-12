@@ -9,5 +9,9 @@ public interface ReponseMultipleDao {
 	ArrayList<ReponseMultiple> getReponseMultipleByIdReponse(String idReponse);
 
 	void addReponseMultiple(ReponseMultiple reponsepultiple, String idReponse);
+
+	void updateReponseMultiple(ReponseMultiple reponsepultiple);
+
+	void deleteReponseMultiple(ReponseMultiple reponsepultiple);
 	
 }
