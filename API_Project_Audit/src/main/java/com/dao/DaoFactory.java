@@ -29,7 +29,7 @@ public class DaoFactory {
 			e.printStackTrace();
 		}
 		System.out.println("");
-		return DriverManager.getConnection("jdbc:mariadb://localhost:3306/projetGL","essai","network");
+		return DriverManager.getConnection("jdbc:mariadb://localhost/projetGL","essai","network");
 
 	}
 
