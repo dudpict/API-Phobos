@@ -7,12 +7,16 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 import com.beans.Etudiant;
 import com.beans.Personne;
+import com.beans.ReponseMultiple;
 
 public class EtudiantDaoImpl implements EtudiantDao {
 
-	
+	private static final Logger logger = Logger.getLogger(ReponseMultipleDaoImpl.class);
 	private DaoFactory daoFactory;
 
 	EtudiantDaoImpl(DaoFactory daoFactory) {
@@ -128,4 +132,52 @@ public class EtudiantDaoImpl implements EtudiantDao {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	
+	@Override
+	public ArrayList<Etudiant> etudiantByStr(String search){
+		DaoFactory fact = new DaoFactory();		
+		
+		ArrayList<Etudiant> etudiants = new ArrayList<Etudiant>();
+		Connection connexion = null;
+		Statement statement = null;
+		ResultSet resultat = null;
+		PreparedStatement preparedStmt = null;
+
+		try {
+			connexion = daoFactory.getConnection();
+			statement = connexion.createStatement();
+			preparedStmt = connexion.prepareStatement("SELECT * FROM Etudiant e INNER JOIN Personne p ON p.id = e.id_Personne WHERE LOWER(p.nom) LIKE \"%?%\" OR  LOWER(p.prenom) LIKE \"%?%\";");
+			preparedStmt.setString(1, search);
+			preparedStmt.setString(2, search);
+			resultat = preparedStmt.executeQuery();
+			
+			while (resultat.next()) {
+				
+				String id = resultat.getString("id");
+                String classe = resultat.getString("classe");
+                String promo = resultat.getString("promo");
+                int personneID = resultat.getInt("id_Personne");
+
+        		PersonneDao personneDao = daoFactory.getPersonneDao();
+        		Personne personne  = personneDao.getPersonneById(personneID);
+				
+				Etudiant etudiant = new Etudiant();
+                etudiant.setId(Integer.valueOf(id));
+                etudiant.setPromo(promo);
+                etudiant.setClasse(classe);
+                etudiant.setPersonne(personne);
+	            etudiants.add(etudiant);
+			}
+		} catch (SQLException e) {
+			logger.log(Level.INFO, "sql problem", e);
+
+		}finally {
+			fact.close(connexion,statement,preparedStmt,resultat);			
+		}
+		
+		return etudiants;
+	}	
+	
+
 }

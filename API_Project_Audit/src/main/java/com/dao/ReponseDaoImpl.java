@@ -109,7 +109,7 @@ public class ReponseDaoImpl implements ReponseDao {
 		Statement statement2 = null;
 		ResultSet resultat2 = null;
 		PreparedStatement preparedStmt2 = null;
-
+		DaoFactory fact = new DaoFactory();
 
 		try {			
 			connexion = daoFactory.getConnection();
@@ -135,7 +135,6 @@ public class ReponseDaoImpl implements ReponseDao {
 				while (resultat2.next()) {
 					String idTypeQuestion = resultat2.getString("id_typeQuestion");
 					if(idTypeQuestion.equals("4")) {
-						DaoFactory fact = new DaoFactory();
 						ReponseMultipleDao reponseMultipleDao = fact.getReponseMultipleDao();
 						reponseMultiples = reponseMultipleDao.getReponseMultipleByIdReponse(Integer.toString(idReponse));
 					}
@@ -150,53 +149,36 @@ public class ReponseDaoImpl implements ReponseDao {
 				reponses.add(reponse);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.log(Level.INFO, "sql probleme add rep", e);
 		}finally {
-			if(connexion!= null || statement!= null || resultat!= null || connexion2!= null || statement2!= null || resultat2!= null) {
-				try {
-					connexion.close();
-					statement.close();
-					resultat.close();
-					connexion2.close();
-					statement2.close();
-					resultat2.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}	
+			fact.close(connexion,statement,preparedStmt,resultat);
+			fact.close(connexion2,statement2,preparedStmt2,resultat2);
 		}
 		
 		return reponses;
 	}
 	
 	@Override
-	public void addReponse (Reponse reponse, String idQuestion) {
+	public void addReponse (String ReponseLongue, int Note, Boolean ReponseCourte, String idQuestion) {
 		Connection connexion = null;
 		Statement statement = null;
 		PreparedStatement preparedStmt = null;
-		
+		DaoFactory fact = new DaoFactory();
 		
 		try {			
 			connexion = daoFactory.getConnection();
 			statement = connexion.createStatement();
 			preparedStmt = connexion.prepareStatement("INSERT INTO Reponse (ReponseLongue, Note, ReponseCourte, ID_question) VALUES (?,?,?,?);");
-			preparedStmt.setString(1, reponse.getReponseLongue());
-			preparedStmt.setInt(2, reponse.getNote());
-			preparedStmt.setBoolean(3, reponse.getReponseCourte());
+			preparedStmt.setString(1, ReponseLongue);
+			preparedStmt.setInt(2, Note);
+			preparedStmt.setBoolean(3, ReponseCourte);
 			preparedStmt.setString(4, idQuestion);
 			preparedStmt.executeQuery();
 			
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.log(Level.INFO, "sql probleme add rep", e);
 		}finally {
-			if(connexion!= null || statement!= null ) {
-				try {
-					connexion.close();
-					statement.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}	
+			fact.close(connexion,statement,preparedStmt,null);			
 		}
 	}
 	

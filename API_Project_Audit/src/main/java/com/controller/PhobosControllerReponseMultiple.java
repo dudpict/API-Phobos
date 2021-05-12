@@ -30,12 +30,14 @@ public class PhobosControllerReponseMultiple {
 	
 	@RequestMapping(value = "/addReponseMultiple", method = RequestMethod.POST)
 	@ResponseBody
-	public void appelPOST_addReponseMultiple(@RequestBody ReponseMultiple reponseMultiple,@RequestBody String idReponse) {
+	public void appelPOST_addReponseMultiple(@RequestParam(required = true, value = "reponse") String reponse,
+												@RequestParam(required = true, value = "idReponse") String idReponse) {
+
 		System.out.println("Appel addReponseMultiple ");
 
 		DaoFactory fact = new DaoFactory();
 		ReponseMultipleDao reponseMultipleDao = fact.getReponseMultipleDao();
-		reponseMultipleDao.addReponseMultiple(reponseMultiple, idReponse);
+		reponseMultipleDao.addReponseMultiple(reponse, idReponse);
 	}
 	
 	@RequestMapping(value = "/updateReponseMultiple", method = RequestMethod.POST)

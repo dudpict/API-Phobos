@@ -56,20 +56,19 @@ public class ReponseMultipleDaoImpl implements ReponseMultipleDao {
 	}	
 	
 	@Override
-	public void addReponseMultiple(ReponseMultiple reponsepultiple, String idQuestion) {
+	public void addReponseMultiple(String reponse, String idQuestion) {
 		Connection connexion = null;
 		Statement statement = null;
 		PreparedStatement preparedStmt = null;
 		int idReponse = 0;
-		
-		Reponse reponse = new Reponse();		
+				
 		DaoFactory fact = new DaoFactory();
 		ReponseDao reponseDao = fact.getReponseDao();
 		
 		
 		ArrayList<Reponse> reponses = reponseDao.getReponsesByQuestionId(idQuestion);
 		if (reponses !=null) {
-			reponseDao.addReponse(reponse, idQuestion);
+			reponseDao.addReponse(null,-1,null, idQuestion);
 			reponses = reponseDao.getReponsesByQuestionId(idQuestion);
 		}
 		for(Reponse reponseL : reponses) {
@@ -80,7 +79,7 @@ public class ReponseMultipleDaoImpl implements ReponseMultipleDao {
 			connexion = daoFactory.getConnection();
 			statement = connexion.createStatement();
 			preparedStmt = connexion.prepareStatement("INSERT INTO ReponseMultiple(ReponseMultiple, id_Reponse) VALUES (?,?);");
-			preparedStmt.setString(1, reponsepultiple.getReponse());
+			preparedStmt.setString(1, reponse);
 			preparedStmt.setInt(2, idReponse);
 			preparedStmt.executeQuery();
 		} catch (SQLException e) {
