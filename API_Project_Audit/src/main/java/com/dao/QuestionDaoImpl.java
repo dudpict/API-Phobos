@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import com.beans.Modele;
 import com.beans.Question;
 import com.beans.Section;
 import com.beans.TypeQuestion;
@@ -22,6 +21,7 @@ public class QuestionDaoImpl implements QuestionDao {
 
 	@Override
 	public ArrayList<Question> getQuestions() {
+		DaoFactory fact = new DaoFactory();
 		ArrayList<Question> questions = new ArrayList<Question>();
 		Connection connexion = null;
 		Statement statement = null;
@@ -59,14 +59,10 @@ public class QuestionDaoImpl implements QuestionDao {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally {
+			fact.close(connexion,statement,null,resultat);			
 		}
-		try {
-			statement.close();
-			resultat.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 		return questions;
 	}
 
@@ -88,7 +84,6 @@ public class QuestionDaoImpl implements QuestionDao {
 			try {
 				preparedStmt.close();
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 	}
