@@ -25,7 +25,6 @@ public class AuditDaoImpl implements AuditDao {
 	public ArrayList<Audit> getAudits(){
 		ArrayList<Audit> audits = new ArrayList<Audit>();
 		Connection connexion = null;
-		Statement statement = null;
 		ResultSet resultat = null;
 		
 		try {
@@ -85,11 +84,9 @@ public class AuditDaoImpl implements AuditDao {
 		try {
 			connexion = daoFactory.getConnection();
 			if(publies.equals("true")) {
-				preparedStatement = connexion
-						.prepareStatement("SELECT * FROM Audit WHERE etat = 'publie' and id_Matiere = ? ;");
+				preparedStatement = connexion.prepareStatement("SELECT * FROM Audit WHERE etat = 'publie' and id_Matiere = ? ;");
 			}else {
-				preparedStatement = connexion
-						.prepareStatement("SELECT * FROM Audit WHERE etat <> 'publie' and id_Matiere = ? ;");
+				preparedStatement = connexion.prepareStatement("SELECT * FROM Audit WHERE etat <> 'publie' and id_Matiere = ? ;");
 			}
 			
 			preparedStatement.setInt(1, matiere);
@@ -130,7 +127,6 @@ public class AuditDaoImpl implements AuditDao {
 			}
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return audits;
@@ -139,7 +135,6 @@ public class AuditDaoImpl implements AuditDao {
 	@Override
 	public Audit getAuditById(String id) {
 		Connection connexion = null;
-		Statement statement = null;
 		ResultSet resultat = null;
 		Audit audit = new Audit();
 

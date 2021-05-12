@@ -2,7 +2,10 @@ package com.dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import org.springframework.context.annotation.Configuration;
 @Configuration
@@ -88,5 +91,26 @@ public class DaoFactory {
 
 	public ReponseDao getReponseDao() {
 		return new ReponseDaoImpl(this);
+	}
+	
+	public void close (Connection connexion, Statement statement, PreparedStatement preparedStmt,ResultSet resultat) {
+		try {
+			if(connexion!=null) {			
+				connexion.close();
+			}
+			if(statement!=null) {
+				statement.close();
+			}
+			if(preparedStmt!=null) {
+				preparedStmt.close();
+			}
+			if(resultat!=null) {
+				resultat.close();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		
 	}
 }
