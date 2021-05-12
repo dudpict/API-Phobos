@@ -4,8 +4,7 @@ import java.util.ArrayList;
 
 public class ReponseMultiple {
 	private int id;
-	private String reponse;
-	
+	private String reponse;	
 	
 	/**
 	 * Constructeur d'une réponse de type reponseMultiple

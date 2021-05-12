@@ -2,6 +2,7 @@ package com.controller;
 
 import java.util.ArrayList;
 
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,6 +26,17 @@ public class PhobosControllerReponseMultiple {
 		ReponseMultipleDao reponseMultipleDao = fact.getReponseMultipleDao();
 		ArrayList<ReponseMultiple> reponseMultiples = reponseMultipleDao.getReponseMultipleByIdReponse(id);
 		return reponseMultiples;
+	}
+	
+	@RequestMapping(value = "/addReponseMultiple", method = RequestMethod.POST)
+	@ResponseBody
+	public void appelPOST_addReponseMultiple(@RequestBody ReponseMultiple reponseMultiple,
+											@RequestBody String idReponse) {
+		System.out.println("Appel addReponseMultiple ");
+
+		DaoFactory fact = new DaoFactory();
+		ReponseMultipleDao reponseMultipleDao = fact.getReponseMultipleDao();
+		reponseMultipleDao.addReponseMultiple(reponseMultiple, idReponse);;
 	}
 	
 
