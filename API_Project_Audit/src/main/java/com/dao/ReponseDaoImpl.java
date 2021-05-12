@@ -7,12 +7,16 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 import com.beans.Reponse;
 import com.beans.ReponseMultiple;
 
 public class ReponseDaoImpl implements ReponseDao {
 
 	private DaoFactory daoFactory;
+	private static final Logger logger = Logger.getLogger(ReponseMultipleDaoImpl.class);
 
 	ReponseDaoImpl(DaoFactory daoFactory) {
 		this.daoFactory = daoFactory;
@@ -193,6 +197,54 @@ public class ReponseDaoImpl implements ReponseDao {
 					e.printStackTrace();
 				}
 			}	
+		}
+	}
+	
+	@Override
+	public void updateReponse (Reponse reponse, String idQuestion) {
+		Connection connexion = null;
+		Statement statement = null;
+		PreparedStatement preparedStmt = null;
+		
+		DaoFactory fact = new DaoFactory();
+
+		try {			
+			connexion = daoFactory.getConnection();
+			statement = connexion.createStatement();
+			preparedStmt = connexion.prepareStatement("UPDATE Reponse SET ReponseLongue=?,Note=?,ReponseCourte=?,ID_question=? WHERE id=?;");
+			preparedStmt.setString(1, reponse.getReponseLongue());
+			preparedStmt.setInt(2, reponse.getNote());
+			preparedStmt.setBoolean(3, reponse.getReponseCourte());
+			preparedStmt.setString(4, idQuestion);
+			preparedStmt.setInt(5, reponse.getId());
+			preparedStmt.executeQuery();
+			
+		} catch (SQLException e) {
+			logger.log(Level.INFO, "sql problem", e);
+		}finally {
+			fact.close(connexion,statement,preparedStmt,null);			
+		}
+	}
+	
+	@Override
+	public void deleteReponse (Reponse reponse) {
+		Connection connexion = null;
+		Statement statement = null;
+		PreparedStatement preparedStmt = null;
+		
+		DaoFactory fact = new DaoFactory();
+
+		try {			
+			connexion = daoFactory.getConnection();
+			statement = connexion.createStatement();
+			preparedStmt = connexion.prepareStatement("DELETE * FROM Reponse WHERE id=?;");
+			preparedStmt.setInt(1, reponse.getId());
+			preparedStmt.executeQuery();
+			
+		} catch (SQLException e) {
+			logger.log(Level.INFO, "sql problem", e);
+		}finally {
+			fact.close(connexion,statement,preparedStmt,null);			
 		}
 	}
 }
