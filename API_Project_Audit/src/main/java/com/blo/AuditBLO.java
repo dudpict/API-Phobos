@@ -21,9 +21,6 @@ public class AuditBLO {
 		return auditDao.getAudits();
 	}
 	
-	public ArrayList<Audit> getAudits(String id,String publie){
-		return auditDao.getAudits(Integer.parseInt(id), publie);
-	}
 	
 	public Audit setAuditDate(Audit audit) {
 		return auditDao.setAuditDate(audit);
@@ -44,6 +41,10 @@ public class AuditBLO {
 	public Audit updateAudit(Audit audit) {
 		return auditDao.updateAudit(audit);
 		
+	}
+	
+	public  ArrayList<Audit> getFilteredAudit(String matiereId, String lieuId, String titre, String juryId,String etat,String id, String role){
+		return auditDao.getFilteredAudits(matiereId,lieuId,titre,juryId,etat, id,role);
 	}
 	
 	

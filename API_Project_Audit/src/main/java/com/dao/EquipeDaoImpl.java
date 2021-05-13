@@ -1,6 +1,7 @@
 package com.dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -49,6 +50,39 @@ public class EquipeDaoImpl implements EquipeDao {
 			e.printStackTrace();
 		}
         return equipes;
+    }
+    
+    @Override
+    public Equipe getEquipeById(String id) {
+    	Connection connexion = null;
+        PreparedStatement statement = null;
+        ResultSet resultat = null;
+        Equipe equipe = new Equipe();
+        
+        try {
+            connexion = daoFactory.getConnection();
+            statement = connexion.prepareStatement("SELECT id,designation FROM Equipe WHERE id = ? ;");
+            statement.setString(1, id);
+            resultat = statement.executeQuery();
+            while (resultat.next()) {
+            	equipe.setId(Integer.parseInt(id));
+            	equipe.setDesignation(resultat.getString("designation"));
+            }
+            
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        try {
+			resultat.close();
+			statement.close();
+			connexion.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        return equipe;
+    	
     }
 
 }

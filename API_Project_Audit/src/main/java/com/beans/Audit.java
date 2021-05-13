@@ -20,6 +20,7 @@ public class Audit {
 	Boolean publie;
 	String semaineAudit;
 	String modeDate;
+	Equipe equipe; 
 	int note;
 	
 
@@ -164,7 +165,7 @@ public class Audit {
 	}
 
 	public Lieu getLieu() {
-		return lieu;
+		return this.lieu;
 	}
 
 	public void setLieu(Lieu lieu) {
@@ -187,6 +188,13 @@ public class Audit {
 		this.note=note;
 	}
 	
+	public void setEquipe(Equipe equipe) {
+		this.equipe=equipe;
+	}
+	
+	public Equipe getEquipe() {
+		return this.equipe;
+	}
 	
 	
 	
