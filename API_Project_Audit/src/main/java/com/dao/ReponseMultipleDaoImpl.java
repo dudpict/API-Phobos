@@ -7,19 +7,24 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
+import com.beans.Reponse;
 import com.beans.ReponseMultiple;
 
 public class ReponseMultipleDaoImpl implements ReponseMultipleDao {
 
 	private DaoFactory daoFactory;
-
+	private static final Logger logger = Logger.getLogger(ReponseMultipleDaoImpl.class);
+	
 	ReponseMultipleDaoImpl(DaoFactory daoFactory) {
 		this.daoFactory = daoFactory;
 	}
 
 	@Override
 	public ArrayList<ReponseMultiple> getReponseMultipleByIdReponse(String idReponse){
-		
+		DaoFactory fact = new DaoFactory();
 		ArrayList<ReponseMultiple> reponsesMultiples = new ArrayList<ReponseMultiple>();
 		Connection connexion = null;
 		Statement statement = null;
@@ -34,29 +39,96 @@ public class ReponseMultipleDaoImpl implements ReponseMultipleDao {
 			resultat = preparedStmt.executeQuery();
 			
 			while (resultat.next()) {
-				int id = resultat.getInt("ID");
-                String ReponseMultiple = resultat.getString("ReponseMultiple");
-				
+				int id = resultat.getInt("ID");				
 				ReponseMultiple reponseMultiple = new ReponseMultiple();
 				reponseMultiple.setId(id);
-				reponseMultiple.setReponse(ReponseMultiple);
+				reponseMultiple.setReponse(resultat.getString("ReponseMultiple"));
 				reponsesMultiples.add(reponseMultiple);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.log(Level.INFO, "sql problem", e);
+
 		}finally {
-			if(connexion!= null || statement!= null || resultat!= null) {
-				try {
-					connexion.close();
-					statement.close();
-					resultat.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}			
+			fact.close(connexion,statement,preparedStmt,resultat);			
 		}
 		
 		return reponsesMultiples;
 	}	
 	
+	@Override
+	public void addReponseMultiple(String reponse, String idQuestion) {
+		Connection connexion = null;
+		Statement statement = null;
+		PreparedStatement preparedStmt = null;
+		int idReponse = 0;
+				
+		DaoFactory fact = new DaoFactory();
+		ReponseDao reponseDao = fact.getReponseDao();
+		
+		
+		ArrayList<Reponse> reponses = reponseDao.getReponsesByQuestionId(idQuestion);
+		if (reponses !=null) {
+			reponseDao.addReponse(null,-1,null, idQuestion);
+			reponses = reponseDao.getReponsesByQuestionId(idQuestion);
+		}
+		for(Reponse reponseL : reponses) {
+			idReponse = reponseL.getId();
+		}
+		
+		try {
+			connexion = daoFactory.getConnection();
+			statement = connexion.createStatement();
+			preparedStmt = connexion.prepareStatement("INSERT INTO ReponseMultiple(ReponseMultiple, id_Reponse) VALUES (?,?);");
+			preparedStmt.setString(1, reponse);
+			preparedStmt.setInt(2, idReponse);
+			preparedStmt.executeQuery();
+		} catch (SQLException e) {
+			logger.log(Level.INFO, "sql problem", e);
+		}finally {
+			fact.close(connexion,statement,preparedStmt,null);			
+		}
+	}
+	
+	@Override
+	public void updateReponseMultiple(ReponseMultiple reponsepultiple) {
+		Connection connexion = null;
+		Statement statement = null;
+		PreparedStatement preparedStmt = null;
+		
+		DaoFactory fact = new DaoFactory();
+				
+		try {
+			connexion = daoFactory.getConnection();
+			statement = connexion.createStatement();
+			preparedStmt = connexion.prepareStatement("UPDATE ReponseMultiple SET ReponseMultiple=? WHERE ID=?;");
+			preparedStmt.setString(1, reponsepultiple.getReponse());
+			preparedStmt.setInt(2, reponsepultiple.getId());
+			preparedStmt.executeQuery();
+		} catch (SQLException e) {
+			logger.log(Level.INFO, "sql problem", e);
+		}finally {
+			fact.close(connexion,statement,preparedStmt,null);			
+		}
+	}
+	
+	@Override
+	public void deleteReponseMultiple(ReponseMultiple reponsepultiple) {
+		Connection connexion = null;
+		Statement statement = null;
+		PreparedStatement preparedStmt = null;
+		
+		DaoFactory fact = new DaoFactory();
+				
+		try {
+			connexion = daoFactory.getConnection();
+			statement = connexion.createStatement();
+			preparedStmt = connexion.prepareStatement("DELETE * FROM ReponseMultiple WHERE ID=?;");
+			preparedStmt.setInt(1, reponsepultiple.getId());
+			preparedStmt.executeQuery();
+		} catch (SQLException e) {
+			logger.log(Level.INFO, "sql problem", e);
+		}finally {
+			fact.close(connexion,statement,preparedStmt,null);			
+		}
+	}	
 }

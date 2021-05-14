@@ -2,6 +2,7 @@ package com.controller;
 
 import java.util.ArrayList;
 
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,7 +17,7 @@ import com.dao.ReponseDao;
 @RestController
 public class PhobosControllerReponse {
 	
-	@RequestMapping(value = "/reponseByIdReponse", method = RequestMethod.GET)
+	@RequestMapping(value = "/reponseById", method = RequestMethod.GET)
 	@ResponseBody
 	public ArrayList<Reponse> appelGET_reponseByIdReponse(@RequestParam(required = true, value = "id") String id) {
 		System.out.println("Appel reponse  GET by ID reponse");
@@ -38,5 +39,39 @@ public class PhobosControllerReponse {
 		return reponseMultiples;
 	}
 	
+	@RequestMapping(value = "/addReponse", method = RequestMethod.POST)
+	@ResponseBody
+	public void appelPOST_ReponsesByQuestionId(@RequestParam(required = true, value = "ReponseLongue") String ReponseLongue,
+												@RequestParam(required = true, value = "Note") int Note,
+												@RequestParam(required = true, value = "ReponseCourte") Boolean ReponseCourte,
+												@RequestParam(required = true, value = "idQuestion") String idQuestion) {
+			
+		System.out.println("Appel POST  addReponse");
+
+		DaoFactory fact = new DaoFactory();
+		ReponseDao reponseDao = fact.getReponseDao();
+		reponseDao.addReponse(ReponseLongue, Note, ReponseCourte, idQuestion);;
+	}
+	
+	@RequestMapping(value = "/updateReponse", method = RequestMethod.POST)
+	@ResponseBody
+	public void appelPOST_updateReponse(@RequestBody Reponse reponse,
+																@RequestBody String idQuestion) {
+		System.out.println("Appel POST  updateReponse");
+
+		DaoFactory fact = new DaoFactory();
+		ReponseDao reponseDao = fact.getReponseDao();
+		reponseDao.updateReponse(reponse, idQuestion);
+	}
+	
+	@RequestMapping(value = "/deleteReponse", method = RequestMethod.DELETE)
+	@ResponseBody
+	public void appelPOST_deleteReponse(@RequestBody Reponse reponse) {
+		System.out.println("Appel POST  deleteReponse");
+
+		DaoFactory fact = new DaoFactory();
+		ReponseDao reponseDao = fact.getReponseDao();
+		reponseDao.deleteReponse(reponse);;
+	}
 
 }

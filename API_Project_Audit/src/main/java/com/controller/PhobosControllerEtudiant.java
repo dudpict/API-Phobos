@@ -38,6 +38,16 @@ public class PhobosControllerEtudiant {
 		Etudiant etudiant = etudiantDao.getEtudiantById(id);
 		return etudiant;
 	}
+	
+	@RequestMapping(value = "/etudiantByStr", method = RequestMethod.GET)
+	@ResponseBody
+	public ArrayList<Etudiant> appelGET_etudiantByStr(@RequestParam(required = true, value = "search") String search) {
+		System.out.println("Appel GET etudiantByStr");
+
+		DaoFactory fact = new DaoFactory();
+		EtudiantDao etudiantDao = fact.getEtudiantDao();
+		return etudiantDao.etudiantByStr(search);
+	}
 
 	@RequestMapping(value = "/etudiant", method = RequestMethod.POST)
 	@ResponseBody

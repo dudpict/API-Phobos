@@ -26,7 +26,6 @@ public class AuditDaoImpl implements AuditDao {
 	public ArrayList<Audit> getAudits(){
 		ArrayList<Audit> audits = new ArrayList<Audit>();
 		Connection connexion = null;
-		Statement statement = null;
 		ResultSet resultat = null;
 		
 		try {
@@ -82,10 +81,10 @@ public class AuditDaoImpl implements AuditDao {
 	}
 
 
+
 	@Override
 	public Audit getAuditById(String id) {
 		Connection connexion = null;
-		Statement statement = null;
 		ResultSet resultat = null;
 		Audit audit = new Audit();
 

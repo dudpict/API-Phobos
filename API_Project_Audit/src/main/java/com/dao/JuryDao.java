@@ -10,4 +10,6 @@ public interface JuryDao {
 
 	Jury getJuryById(String juryID);
 
+	Jury getJurybyidAudit(String idAudit);
+
 }

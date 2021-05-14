@@ -2,6 +2,7 @@ package com.controller;
 
 import java.util.ArrayList;
 
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,9 +24,39 @@ public class PhobosControllerReponseMultiple {
 
 		DaoFactory fact = new DaoFactory();
 		ReponseMultipleDao reponseMultipleDao = fact.getReponseMultipleDao();
-		ArrayList<ReponseMultiple> reponseMultiples = reponseMultipleDao.getReponseMultipleByIdReponse(id);
-		return reponseMultiples;
+		
+		return reponseMultipleDao.getReponseMultipleByIdReponse(id);
 	}
 	
+	@RequestMapping(value = "/addReponseMultiple", method = RequestMethod.POST)
+	@ResponseBody
+	public void appelPOST_addReponseMultiple(@RequestParam(required = true, value = "reponse") String reponse,
+												@RequestParam(required = true, value = "idReponse") String idReponse) {
 
+		System.out.println("Appel addReponseMultiple ");
+
+		DaoFactory fact = new DaoFactory();
+		ReponseMultipleDao reponseMultipleDao = fact.getReponseMultipleDao();
+		reponseMultipleDao.addReponseMultiple(reponse, idReponse);
+	}
+	
+	@RequestMapping(value = "/updateReponseMultiple", method = RequestMethod.POST)
+	@ResponseBody
+	public void appelPOST_updateReponseMultiple(@RequestBody ReponseMultiple reponseMultiple) {
+		System.out.println("Appel updateReponseMultiple ");
+
+		DaoFactory fact = new DaoFactory();
+		ReponseMultipleDao reponseMultipleDao = fact.getReponseMultipleDao();
+		reponseMultipleDao.updateReponseMultiple(reponseMultiple);
+	}
+	
+	@RequestMapping(value = "/deleteReponseMultiple", method = RequestMethod.DELETE)
+	@ResponseBody
+	public void appelPOST_deleteReponseMultiple(@RequestBody ReponseMultiple reponseMultiple) {
+		System.out.println("Appel updateReponseMultiple ");
+
+		DaoFactory fact = new DaoFactory();
+		ReponseMultipleDao reponseMultipleDao = fact.getReponseMultipleDao();
+		reponseMultipleDao.deleteReponseMultiple(reponseMultiple);
+	}
 }
