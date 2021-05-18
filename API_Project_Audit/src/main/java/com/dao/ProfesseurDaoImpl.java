@@ -7,12 +7,16 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 import com.beans.Audit;
+import com.beans.Etudiant;
 import com.beans.Personne;
 import com.beans.Professeur;
 
 public class ProfesseurDaoImpl implements ProfesseurDao {
-
+	private static final Logger logger = Logger.getLogger(ReponseMultipleDaoImpl.class);
 	private DaoFactory daoFactory;
 
 	ProfesseurDaoImpl(DaoFactory daoFactory) {
@@ -107,6 +111,49 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 
 	}
 
+	@Override
+	public ArrayList<Professeur>  professeurByAudit(String id_Audit){
+		ArrayList<Professeur> professeurs = new ArrayList<Professeur>();
+		Connection connexion = null;
+		Statement statement = null;
+		ResultSet resultat = null;
+		PreparedStatement preparedStmt = null;
+
+		try {
+			connexion = daoFactory.getConnection();
+			statement = connexion.createStatement();
+			preparedStmt = connexion.prepareStatement("SELECT * FROM Professeur WHERE id IN (SELECT id_professeur FROM appartient ap WHERE ap.id = (SELECT id_jury from Audit WHERE id = ?));");
+			preparedStmt.setString(1, id_Audit);
+			resultat = preparedStmt.executeQuery();
+			
+			while (resultat.next()) {
+				String id = resultat.getString("id");
+				String bureau = resultat.getString("bureau");
+				int personneID = resultat.getInt("id_Personne");
+
+				// Récupére l'instance de Prsonne via l'id
+				PersonneDao personneDao = daoFactory.getPersonneDao();
+				Personne personne = personneDao.getPersonneById(personneID);
+
+				Professeur professeur = new Professeur();
+				professeur.setId(Integer.valueOf(id));
+				professeur.setBureau(bureau);
+				professeur.setPersonne(personne);
+				professeurs.add(professeur);
+			}
+		} catch (SQLException e) {
+			logger.log(Level.INFO, "sql problem", e);
+
+		}finally {
+			daoFactory.close(connexion,statement,preparedStmt,resultat);			
+		}
+		
+		return professeurs;
+	}	
+	
+	
+	
+	
 	@Override
 	public void deleteProfesseur(String id) {
 		Connection connexion = null;
@@ -231,4 +278,94 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 		return matiere;
 	}
 
+	@Override
+	public ArrayList<Professeur> getprofesseurByStr(String search) {
+		DaoFactory fact = new DaoFactory();	
+		
+		ArrayList<Professeur> professeurs = new ArrayList<Professeur>();
+		Connection connexion = null;
+		Statement statement = null;
+		ResultSet resultat = null;
+		PreparedStatement preparedStmt = null;
+		
+		try {
+			connexion = daoFactory.getConnection();
+			statement = connexion.createStatement();
+			preparedStmt = connexion.prepareStatement("SELECT * FROM Professeur pr INNER JOIN Personne p ON p.id = pr.id_Personne WHERE LOWER(p.nom) LIKE ? OR  LOWER(p.prenom) LIKE ?;");
+			preparedStmt.setString(1, "%"+search+"%");
+			preparedStmt.setString(2, "%"+search+"%");
+			resultat = preparedStmt.executeQuery();
+			connexion.close();
+
+			while (resultat.next()) {
+				String id = resultat.getString("id");
+				String bureau = resultat.getString("bureau");
+				int personneID = resultat.getInt("id_Personne");
+
+				// Récupére l'instance de Prsonne via l'id
+				PersonneDao personneDao = daoFactory.getPersonneDao();
+				Personne personne = personneDao.getPersonneById(personneID);
+
+				Professeur professeur = new Professeur();
+				professeur.setId(Integer.valueOf(id));
+				professeur.setBureau(bureau);
+				professeur.setPersonne(personne);
+				professeurs.add(professeur);
+
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			fact.close(connexion,statement,preparedStmt,resultat);	
+		}
+		
+		return professeurs;
+	}
+	
+	@Override
+	public void addProfesseurToJuryId(String Id_Jury,String id_Professeur) {
+		
+		Connection connexion = null;
+		Statement statement = null;
+		PreparedStatement preparedStmt = null;
+		
+		try {
+			connexion = daoFactory.getConnection();
+			statement = connexion.createStatement();
+			preparedStmt = connexion.prepareStatement("INSERT INTO appartient (id, id_Professeur) VALUES (?,?);");
+			preparedStmt.setString(1, Id_Jury);
+			preparedStmt.setString(2, id_Professeur);
+			preparedStmt.executeQuery();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			daoFactory.close(connexion,statement,preparedStmt,null);	
+		}
+	}
+	
+	@Override
+	public void removeProfesseurToJuryId(String Id_Jury,String id_Professeur) {
+		
+		Connection connexion = null;
+		Statement statement = null;
+		PreparedStatement preparedStmt = null;
+		
+		try {
+			connexion = daoFactory.getConnection();
+			statement = connexion.createStatement();
+			preparedStmt = connexion.prepareStatement("DELETE FROM appartient WHERE id_Professeur = ? AND id = ?;");
+			preparedStmt.setString(1, Id_Jury);
+			preparedStmt.setString(2, id_Professeur);
+			preparedStmt.executeQuery();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			daoFactory.close(connexion,statement,preparedStmt,null);	
+		}
+
+	}
+	
+	
 }
