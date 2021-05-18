@@ -31,32 +31,34 @@ public class PhobosControllerReponseMultiple {
 	@RequestMapping(value = "/addReponseMultiple", method = RequestMethod.POST)
 	@ResponseBody
 	public void appelPOST_addReponseMultiple(@RequestParam(required = true, value = "reponse") String reponse,
-												@RequestParam(required = true, value = "idReponse") String idReponse) {
+												@RequestParam(required = true, value = "idQuestion") String idQuestion,
+												@RequestParam(required = true, value = "cochee") Boolean cochee) {
 
 		System.out.println("Appel addReponseMultiple ");
 
 		DaoFactory fact = new DaoFactory();
 		ReponseMultipleDao reponseMultipleDao = fact.getReponseMultipleDao();
-		reponseMultipleDao.addReponseMultiple(reponse, idReponse);
+		reponseMultipleDao.addReponseMultiple(reponse, idQuestion,cochee);
 	}
 	
 	@RequestMapping(value = "/updateReponseMultiple", method = RequestMethod.POST)
 	@ResponseBody
-	public void appelPOST_updateReponseMultiple(@RequestBody ReponseMultiple reponseMultiple) {
+	public void appelPOST_updateReponseMultiple(@RequestParam(required = true, value = "ReponseMultiple") String ReponseMultiple,
+												@RequestParam(required = true, value = "id") int id) {
 		System.out.println("Appel updateReponseMultiple ");
 
 		DaoFactory fact = new DaoFactory();
 		ReponseMultipleDao reponseMultipleDao = fact.getReponseMultipleDao();
-		reponseMultipleDao.updateReponseMultiple(reponseMultiple);
+		reponseMultipleDao.updateReponseMultiple(ReponseMultiple,id);
 	}
 	
 	@RequestMapping(value = "/deleteReponseMultiple", method = RequestMethod.DELETE)
 	@ResponseBody
-	public void appelPOST_deleteReponseMultiple(@RequestBody ReponseMultiple reponseMultiple) {
-		System.out.println("Appel updateReponseMultiple ");
+	public void appelPOST_deleteReponseMultiple(@RequestParam(required = true, value = "id") String id) {
+		System.out.println("Appel deleteReponseMultiple ");
 
 		DaoFactory fact = new DaoFactory();
 		ReponseMultipleDao reponseMultipleDao = fact.getReponseMultipleDao();
-		reponseMultipleDao.deleteReponseMultiple(reponseMultiple);
+		reponseMultipleDao.deleteReponseMultiple(id);
 	}
 }

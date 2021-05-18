@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.beans.Audit;
 import com.blo.AuditBLO;
+import com.dao.AuditDao;
+import com.dao.DaoFactory;
+import com.dao.ProfesseurDao;
 @CrossOrigin(origins = "*")
 @RestController
 public class PhobosControllerAudit {
@@ -44,6 +47,26 @@ public class PhobosControllerAudit {
 
 		Audit audit = auditBLO.getAuditById(id);
 		return audit;
+	}
+	
+	@RequestMapping(value = "/auditByEtudiantId", method = RequestMethod.GET)
+	@ResponseBody
+	public ArrayList<Audit> appelGET_auditByEtudiantId(@RequestParam(required = true, value = "id_Etudiant") String id_Etudiant) {
+		System.out.println("appelGET_auditByEtudiantId");
+
+		DaoFactory fact = new DaoFactory();
+		AuditDao AuditDao = fact.getAuditDao();
+		return AuditDao.auditByEtudiantId(id_Etudiant);
+	}
+	
+	@RequestMapping(value = "/auditByProfesseurId", method = RequestMethod.GET)
+	@ResponseBody
+	public ArrayList<Audit> appelGET_auditByProfesseurId(@RequestParam(required = true, value = "id_Professeur") String id_Professeur) {
+		System.out.println("appelGET_auditByProfesseurId");
+
+		DaoFactory fact = new DaoFactory();
+		AuditDao AuditDao = fact.getAuditDao();
+		return AuditDao.auditByProfesseurId(id_Professeur);
 	}
 
 	@RequestMapping(value = "/deleteAudit", method = RequestMethod.DELETE)
@@ -84,5 +107,47 @@ public class PhobosControllerAudit {
 		auditBLO.updateAudit(audit);
 		return audit;
 	}
+	
+	@RequestMapping(value = "/addEquipeToAudit", method = RequestMethod.POST)
+	@ResponseBody
+	public void  appelPost_addEquipeToAudit(@RequestParam(required = true, value = "id_Equipe") String id_Equipe,
+											@RequestParam(required = true, value = "id_Audit") String id_Audit) {
+		System.out.println("appelPost_addEquipeToAudit");
 
+		DaoFactory fact = new DaoFactory();
+		AuditDao AuditDao = fact.getAuditDao();
+		AuditDao.addEquipeToAudit(id_Equipe, id_Audit);
+	}
+	
+	@RequestMapping(value = "/removeEquipeToAudit", method = RequestMethod.POST)
+	@ResponseBody
+	public void  appelPost_removeEquipeToAudit(@RequestParam(required = true, value = "id_Audit") String id_Audit) {
+		System.out.println("appelPost_removeEquipeToAudit");
+
+		DaoFactory fact = new DaoFactory();
+		AuditDao AuditDao = fact.getAuditDao();
+		AuditDao.removeEquipeToAudit(id_Audit);
+	}
+	
+	@RequestMapping(value = "/addJuryToAudit", method = RequestMethod.POST)
+	@ResponseBody
+	public void  appelPost_addJuryToAudit(@RequestParam(required = true, value = "id_Jury") String id_Jury,
+												@RequestParam(required = true, value = "id_Audit") String id_Audit) {
+		System.out.println("appelPost_addJuryToAudit");
+
+		DaoFactory fact = new DaoFactory();
+		AuditDao AuditDao = fact.getAuditDao();
+		AuditDao.addJuryToAudit(id_Jury, id_Audit);
+	}
+	
+	@RequestMapping(value = "/removeJuryToAudit", method = RequestMethod.POST)
+	@ResponseBody
+	public void  appelPost_removeJuryToAudit(@RequestParam(required = true, value = "id_Audit") String id_Audit) {
+		System.out.println("appelPost_removeJuryToAudit");
+
+		DaoFactory fact = new DaoFactory();
+		AuditDao AuditDao = fact.getAuditDao();
+		AuditDao.removeJuryToAudit(id_Audit);
+	}
+	
 }
