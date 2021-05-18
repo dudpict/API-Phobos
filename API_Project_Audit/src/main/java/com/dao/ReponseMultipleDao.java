@@ -8,10 +8,10 @@ public interface ReponseMultipleDao {
 
 	ArrayList<ReponseMultiple> getReponseMultipleByIdReponse(String idReponse);
 
-	void updateReponseMultiple(ReponseMultiple reponsepultiple);
+	void addReponseMultiple(String reponse, String idQuestion, Boolean cochee);
 
-	void deleteReponseMultiple(ReponseMultiple reponsepultiple);
+	void deleteReponseMultiple(String id);
 
-	void addReponseMultiple(String reponse, String idQuestion);
+	void updateReponseMultiple(String ReponseMultiple, int id);
 	
 }
