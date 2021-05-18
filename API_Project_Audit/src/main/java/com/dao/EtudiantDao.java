@@ -11,5 +11,8 @@ public interface EtudiantDao {
     void updateEtudiant(String id, Etudiant etudiantUpdated);
 	Etudiant getEtudiantById(String id);
 	ArrayList<Etudiant> etudiantByStr(String search);
+	void addEtudiantToEquipeId(String id_Equipe, String id);
+	void removeEtudiantToEquipeId(String id);
+	ArrayList<Etudiant> etudiantByAudit(String id_Audit);
 
 }
