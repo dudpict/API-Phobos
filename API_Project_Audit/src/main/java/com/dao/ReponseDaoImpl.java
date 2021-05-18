@@ -183,7 +183,7 @@ public class ReponseDaoImpl implements ReponseDao {
 	}
 	
 	@Override
-	public void updateReponse (Reponse reponse, String idQuestion) {
+	public void updateReponse (int id,String ReponseLongue, int note, Boolean ReponseCourte, String idQuestion) {
 		Connection connexion = null;
 		Statement statement = null;
 		PreparedStatement preparedStmt = null;
@@ -194,11 +194,11 @@ public class ReponseDaoImpl implements ReponseDao {
 			connexion = daoFactory.getConnection();
 			statement = connexion.createStatement();
 			preparedStmt = connexion.prepareStatement("UPDATE Reponse SET ReponseLongue=?,Note=?,ReponseCourte=?,ID_question=? WHERE id=?;");
-			preparedStmt.setString(1, reponse.getReponseLongue());
-			preparedStmt.setInt(2, reponse.getNote());
-			preparedStmt.setBoolean(3, reponse.getReponseCourte());
+			preparedStmt.setString(1, ReponseLongue);
+			preparedStmt.setInt(2, note);
+			preparedStmt.setBoolean(3, ReponseCourte);
 			preparedStmt.setString(4, idQuestion);
-			preparedStmt.setInt(5, reponse.getId());
+			preparedStmt.setInt(5,id);
 			preparedStmt.executeQuery();
 			
 		} catch (SQLException e) {
@@ -209,7 +209,7 @@ public class ReponseDaoImpl implements ReponseDao {
 	}
 	
 	@Override
-	public void deleteReponse (Reponse reponse) {
+	public void deleteReponse (String id) {
 		Connection connexion = null;
 		Statement statement = null;
 		PreparedStatement preparedStmt = null;
@@ -219,8 +219,8 @@ public class ReponseDaoImpl implements ReponseDao {
 		try {			
 			connexion = daoFactory.getConnection();
 			statement = connexion.createStatement();
-			preparedStmt = connexion.prepareStatement("DELETE * FROM Reponse WHERE id=?;");
-			preparedStmt.setInt(1, reponse.getId());
+			preparedStmt = connexion.prepareStatement("DELETE FROM Reponse WHERE id=?;");
+			preparedStmt.setString(1, id);
 			preparedStmt.executeQuery();
 			
 		} catch (SQLException e) {
