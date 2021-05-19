@@ -19,13 +19,24 @@ public class PhobosControllerProfesseur {
 	@CrossOrigin(origins = "*")
 	@RequestMapping(value = "/professeur", method = RequestMethod.GET)
 	@ResponseBody
-	public ArrayList<Professeur> appelGET_professeur(@RequestParam(required = false, value = "id") String id) {
+	public ArrayList<Professeur> appelGET_professeur() {
 		System.out.println("Appel GET");
 
 		DaoFactory fact = new DaoFactory();
 		ProfesseurDao professeurDao = fact.getProfesseurDao();
 		ArrayList<Professeur> allProfesseur = professeurDao.getProfesseurs();
 		return allProfesseur;
+	}
+	
+	@RequestMapping(value = "/professeurByAudit", method = RequestMethod.GET)
+	@ResponseBody
+	public  ArrayList<Professeur> appelGET_professeurByAudit(@RequestParam(required = true, value = "id_Audit") String id_Audit) {
+		System.out.println("appelGET_professeurByAudit");
+
+		DaoFactory fact = new DaoFactory();
+		ProfesseurDao professeurDao = fact.getProfesseurDao();
+		ArrayList<Professeur> professeurs = professeurDao.professeurByAudit(id_Audit);
+		return professeurs;
 	}
 
 	@RequestMapping(value = "/professeurById", method = RequestMethod.GET)
@@ -36,6 +47,17 @@ public class PhobosControllerProfesseur {
 		DaoFactory fact = new DaoFactory();
 		ProfesseurDao professeurDao = fact.getProfesseurDao();
 		Professeur professeur = professeurDao.getProfesseurById(id);
+		return professeur;
+	}
+	
+	@RequestMapping(value = "/professeurByStr", method = RequestMethod.GET)
+	@ResponseBody
+	public  ArrayList<Professeur> appelGET_professeurByStr(@RequestParam(required = true, value = "search") String search) {
+		System.out.println("appelGET_professeurByStr");
+
+		DaoFactory fact = new DaoFactory();
+		ProfesseurDao professeurDao = fact.getProfesseurDao();
+		ArrayList<Professeur> professeur = professeurDao.getprofesseurByStr(search);
 		return professeur;
 	}
 
@@ -52,6 +74,17 @@ public class PhobosControllerProfesseur {
 		ProfesseurDao professeurDao = fact.getProfesseurDao();
 		professeurDao.addProfesseur(professeurDao);
 	}
+	
+	@RequestMapping(value = "/addProfesseurToJuryId", method = RequestMethod.POST)
+	@ResponseBody
+	public void appelPost_addProfesseurToJuryId(@RequestParam(required = true, value = "Id_Jury") String Id_Jury,
+										@RequestParam(required = true, value = "id_Professeur") String id_Professeur) {
+
+		System.out.println("addProfesseurToJuryId");
+		DaoFactory fact = new DaoFactory();
+		ProfesseurDao professeurDao = fact.getProfesseurDao();
+		professeurDao.addProfesseurToJuryId(Id_Jury, id_Professeur);
+	}
 
 	@RequestMapping(value = "/professeur", method = RequestMethod.DELETE)
 	@ResponseBody
@@ -61,5 +94,16 @@ public class PhobosControllerProfesseur {
 		DaoFactory fact = new DaoFactory();
 		ProfesseurDao professeurDao = fact.getProfesseurDao();
 		professeurDao.deleteProfesseur(id);
+	}
+	
+	@RequestMapping(value = "/removeProfesseurToJuryId", method = RequestMethod.DELETE)
+	@ResponseBody
+	public void appelDELETE_removeProfesseurToJuryId(@RequestParam(required = true, value = "Id_Jury") String Id_Jury,
+													@RequestParam(required = true, value = "id_Professeur") String id_Professeur) {
+		System.out.println("Appel DELETE removeProfesseurToJuryId");
+
+		DaoFactory fact = new DaoFactory();
+		ProfesseurDao professeurDao = fact.getProfesseurDao();
+		professeurDao.removeProfesseurToJuryId(Id_Jury, id_Professeur);;
 	}
 }

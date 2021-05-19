@@ -56,7 +56,7 @@ public class ReponseMultipleDaoImpl implements ReponseMultipleDao {
 	}	
 	
 	@Override
-	public void addReponseMultiple(String reponse, String idQuestion) {
+	public void addReponseMultiple(String reponse, String idQuestion, Boolean cochee ) {
 		Connection connexion = null;
 		Statement statement = null;
 		PreparedStatement preparedStmt = null;
@@ -67,20 +67,24 @@ public class ReponseMultipleDaoImpl implements ReponseMultipleDao {
 		
 		
 		ArrayList<Reponse> reponses = reponseDao.getReponsesByQuestionId(idQuestion);
-		if (reponses !=null) {
-			reponseDao.addReponse(null,-1,null, idQuestion);
+		if (reponses.size() ==0) {
+			reponseDao.addReponse(null,-1,false, idQuestion);
 			reponses = reponseDao.getReponsesByQuestionId(idQuestion);
+			System.out.println("reponse null");
 		}
+		System.out.println("reponse pas null");
 		for(Reponse reponseL : reponses) {
 			idReponse = reponseL.getId();
+			System.out.println("idReponse"+idReponse);
 		}
 		
 		try {
 			connexion = daoFactory.getConnection();
 			statement = connexion.createStatement();
-			preparedStmt = connexion.prepareStatement("INSERT INTO ReponseMultiple(ReponseMultiple, id_Reponse) VALUES (?,?);");
+			preparedStmt = connexion.prepareStatement("INSERT INTO ReponseMultiple(ReponseMultiple, id_Reponse,cochee) VALUES (?,?,?);");
 			preparedStmt.setString(1, reponse);
 			preparedStmt.setInt(2, idReponse);
+			preparedStmt.setBoolean(3, cochee);
 			preparedStmt.executeQuery();
 		} catch (SQLException e) {
 			logger.log(Level.INFO, "sql problem", e);
@@ -90,7 +94,7 @@ public class ReponseMultipleDaoImpl implements ReponseMultipleDao {
 	}
 	
 	@Override
-	public void updateReponseMultiple(ReponseMultiple reponsepultiple) {
+	public void updateReponseMultiple(String ReponseMultiple, int id ) {
 		Connection connexion = null;
 		Statement statement = null;
 		PreparedStatement preparedStmt = null;
@@ -101,8 +105,8 @@ public class ReponseMultipleDaoImpl implements ReponseMultipleDao {
 			connexion = daoFactory.getConnection();
 			statement = connexion.createStatement();
 			preparedStmt = connexion.prepareStatement("UPDATE ReponseMultiple SET ReponseMultiple=? WHERE ID=?;");
-			preparedStmt.setString(1, reponsepultiple.getReponse());
-			preparedStmt.setInt(2, reponsepultiple.getId());
+			preparedStmt.setString(1, ReponseMultiple);
+			preparedStmt.setInt(2, id);
 			preparedStmt.executeQuery();
 		} catch (SQLException e) {
 			logger.log(Level.INFO, "sql problem", e);
@@ -112,7 +116,7 @@ public class ReponseMultipleDaoImpl implements ReponseMultipleDao {
 	}
 	
 	@Override
-	public void deleteReponseMultiple(ReponseMultiple reponsepultiple) {
+	public void deleteReponseMultiple(String id) {
 		Connection connexion = null;
 		Statement statement = null;
 		PreparedStatement preparedStmt = null;
@@ -122,8 +126,8 @@ public class ReponseMultipleDaoImpl implements ReponseMultipleDao {
 		try {
 			connexion = daoFactory.getConnection();
 			statement = connexion.createStatement();
-			preparedStmt = connexion.prepareStatement("DELETE * FROM ReponseMultiple WHERE ID=?;");
-			preparedStmt.setInt(1, reponsepultiple.getId());
+			preparedStmt = connexion.prepareStatement("DELETE FROM ReponseMultiple WHERE ID=?;");
+			preparedStmt.setString(1, id);
 			preparedStmt.executeQuery();
 		} catch (SQLException e) {
 			logger.log(Level.INFO, "sql problem", e);

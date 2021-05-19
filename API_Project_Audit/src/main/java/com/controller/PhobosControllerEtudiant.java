@@ -48,6 +48,16 @@ public class PhobosControllerEtudiant {
 		EtudiantDao etudiantDao = fact.getEtudiantDao();
 		return etudiantDao.etudiantByStr(search);
 	}
+	
+	@RequestMapping(value = "/etudiantByAudit", method = RequestMethod.GET)
+	@ResponseBody
+	public ArrayList<Etudiant> appelGET_etudiantByAudit(@RequestParam(required = true, value = "id_Audit") String id_Audit) {
+		System.out.println("appelGET_etudiantByAudit");
+
+		DaoFactory fact = new DaoFactory();
+		EtudiantDao etudiantDao = fact.getEtudiantDao();
+		return etudiantDao.etudiantByAudit(id_Audit);
+	}
 
 	@RequestMapping(value = "/etudiant", method = RequestMethod.POST)
 	@ResponseBody
@@ -66,6 +76,26 @@ public class PhobosControllerEtudiant {
 
 		EtudiantDao etudiantDao = fact.getEtudiantDao();
 		etudiantDao.addEtudiant(etudiantToAdd);
+	}
+	
+	
+	@RequestMapping(value = "/addEtudiantToEquipeId", method = RequestMethod.POST)
+	@ResponseBody
+	public void appelPost_addEtudiantToEquipeId(@RequestParam(required = true, value = "id_Equipe") String id_Equipe,
+									@RequestParam(required = true, value = "id") String id) {
+		System.out.println("appelPost_addEtudiantToEquipeId");
+		DaoFactory fact = new DaoFactory();
+		EtudiantDao etudiantDao = fact.getEtudiantDao();
+		etudiantDao.addEtudiantToEquipeId(id_Equipe, id);
+	}
+	
+	@RequestMapping(value = "/removeEtudiantToEquipeId", method = RequestMethod.POST)
+	@ResponseBody
+	public void appelPost_removeEtudiantToEquipeId(@RequestParam(required = true, value = "id") String id) {
+		System.out.println("appelPost_removeEtudiantToEquipeId");
+		DaoFactory fact = new DaoFactory();
+		EtudiantDao etudiantDao = fact.getEtudiantDao();
+		etudiantDao.removeEtudiantToEquipeId(id);;
 	}
 
 	@RequestMapping(value = "/etudiant", method = RequestMethod.DELETE)

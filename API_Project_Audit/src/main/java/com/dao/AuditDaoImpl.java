@@ -23,6 +23,7 @@ public class AuditDaoImpl implements AuditDao {
 	AuditDaoImpl(DaoFactory daoFactory) {
 		this.daoFactory = daoFactory;
 	}
+	
 	public ArrayList<Audit> getAudits(){
 		ArrayList<Audit> audits = new ArrayList<Audit>();
 		Connection connexion = null;
@@ -79,9 +80,133 @@ public class AuditDaoImpl implements AuditDao {
 		}
 		return audits;
 	}
+	
+	@Override
+	public ArrayList<Audit> auditByEtudiantId(String id_Etudiant){
+		ArrayList<Audit> audits = new ArrayList<Audit>();
+		Connection connexion = null;
+		Statement statement = null;
+		PreparedStatement preparedStmt = null;
+		ResultSet resultat = null;
+		
+		try {
+			
+			connexion = daoFactory.getConnection();
+			statement = connexion.createStatement();
+			preparedStmt = connexion.prepareStatement("SELECT * FROM Audit a INNER JOIN Etudiant e ON a.id_Equipe = e.id_Equipe WHERE e.id = ?;");
+			preparedStmt.setString(1, id_Etudiant);
+			resultat= preparedStmt.executeQuery();
 
+			while (resultat.next()) {
+				String modeleID = resultat.getString("id_Modele");
+				String juryID = resultat.getString("id_Jury");
+				String matiereID = resultat.getString("id_Matiere");
+				String lieuID = resultat.getString("id_Lieu");
+				String equipeID = resultat.getString(("id_Equipe"));
 
+				Audit audit = new Audit();
+				audit.setId(resultat.getInt("id"));
+				audit.setDesignation(resultat.getString("designation"));
+				audit.setEtat(resultat.getString("etat"));
+				audit.setDateDebut(resultat.getString("dateDebut"));
+				audit.setDateFin(resultat.getString("dateFin"));
+				audit.setDateLimite(resultat.getString("dateLimite"));
+				audit.setModeDate(resultat.getString("dateMode"));
+				// TODO Implementer un object Matiere, Jury, Modele et Lieu
+				// Récupére l'instance de Prsonne via l'id
+				MatiereDao matiereDao = daoFactory.getMatiereDao();
+				Matiere matiereInstance = matiereDao.getMatiereById(matiereID);
+				audit.setMatiere(matiereInstance);
 
+				JuryDao juryDao = daoFactory.getJuryDao();
+				Jury jury = juryDao.getJuryById(juryID);
+				audit.setJury(jury);
+
+				ModeleDao modeleDao = daoFactory.getModeleDao();
+				Modele modele = modeleDao.getModeleById(modeleID);
+				audit.setModele(modele);
+
+				LieuDao lieuDao = daoFactory.getLieuDao();
+				Lieu lieu = lieuDao.getLieuById(lieuID);
+				audit.setLieu(lieu);
+				
+				EquipeDao equipeDao = daoFactory.getEquipeDao();
+				Equipe equipe = equipeDao.getEquipeById(equipeID);
+				audit.setEquipe(equipe);
+				audits.add(audit);
+			}
+
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			daoFactory.close(connexion,statement,preparedStmt,null);	
+		}
+		return audits;
+	}
+
+	@Override
+	public ArrayList<Audit> auditByProfesseurId(String id_Professeur){
+		ArrayList<Audit> audits = new ArrayList<Audit>();
+		Connection connexion = null;
+		Statement statement = null;
+		PreparedStatement preparedStmt = null;
+		ResultSet resultat = null;
+		
+		try {
+			
+			connexion = daoFactory.getConnection();
+			statement = connexion.createStatement();
+			preparedStmt = connexion.prepareStatement("SELECT * FROM Audit a INNER JOIN appartient ap ON a.id_Jury = ap.id WHERE ap.id IN (SELECT id FROM appartient ap WHERE ap.id_Professeur =?) GROUP BY a.id;");
+			preparedStmt.setString(1, id_Professeur);
+			resultat= preparedStmt.executeQuery();
+
+			while (resultat.next()) {
+				String modeleID = resultat.getString("id_Modele");
+				String juryID = resultat.getString("id_Jury");
+				String matiereID = resultat.getString("id_Matiere");
+				String lieuID = resultat.getString("id_Lieu");
+				String equipeID = resultat.getString(("id_Equipe"));
+
+				Audit audit = new Audit();
+				audit.setId(resultat.getInt("id"));
+				audit.setDesignation(resultat.getString("designation"));
+				audit.setEtat(resultat.getString("etat"));
+				audit.setDateDebut(resultat.getString("dateDebut"));
+				audit.setDateFin(resultat.getString("dateFin"));
+				audit.setDateLimite(resultat.getString("dateLimite"));
+				audit.setModeDate(resultat.getString("dateMode"));
+				// TODO Implementer un object Matiere, Jury, Modele et Lieu
+				// Récupére l'instance de Prsonne via l'id
+				MatiereDao matiereDao = daoFactory.getMatiereDao();
+				Matiere matiereInstance = matiereDao.getMatiereById(matiereID);
+				audit.setMatiere(matiereInstance);
+
+				JuryDao juryDao = daoFactory.getJuryDao();
+				Jury jury = juryDao.getJuryById(juryID);
+				audit.setJury(jury);
+
+				ModeleDao modeleDao = daoFactory.getModeleDao();
+				Modele modele = modeleDao.getModeleById(modeleID);
+				audit.setModele(modele);
+
+				LieuDao lieuDao = daoFactory.getLieuDao();
+				Lieu lieu = lieuDao.getLieuById(lieuID);
+				audit.setLieu(lieu);
+				
+				EquipeDao equipeDao = daoFactory.getEquipeDao();
+				Equipe equipe = equipeDao.getEquipeById(equipeID);
+				audit.setEquipe(equipe);
+				audits.add(audit);
+			}
+
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			daoFactory.close(connexion,statement,preparedStmt,null);	
+		}
+		return audits;
+	}
+	
 	@Override
 	public Audit getAuditById(String id) {
 		Connection connexion = null;
@@ -447,8 +572,96 @@ public class AuditDaoImpl implements AuditDao {
 		}
 		return audits;
 	}
+
+	@Override
+	public void addEquipeToAudit(String id_Equipe,String id_Audit) {
 		
+		Connection connexion = null;
+		Statement statement = null;
+		PreparedStatement preparedStmt = null;
 		
+		try {
+			connexion = daoFactory.getConnection();
+			statement = connexion.createStatement();
+			preparedStmt = connexion.prepareStatement("UPDATE Audit a SET a.id_Equipe = ? WHERE a.id = ?;");
+			preparedStmt.setString(1, id_Equipe);
+			preparedStmt.setString(2, id_Audit);
+			preparedStmt.executeQuery();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			daoFactory.close(connexion,statement,preparedStmt,null);	
+		}
+
+	}
+	
+	@Override
+	public void removeEquipeToAudit(String id_Audit) {
+		
+		Connection connexion = null;
+		Statement statement = null;
+		PreparedStatement preparedStmt = null;
+		
+		try {
+			connexion = daoFactory.getConnection();
+			statement = connexion.createStatement();
+			preparedStmt = connexion.prepareStatement("UPDATE Audit a SET a.id_Equipe = null WHERE a.id = ?");
+			preparedStmt.setString(1, id_Audit);
+			preparedStmt.executeQuery();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			daoFactory.close(connexion,statement,preparedStmt,null);	
+		}
+
+	}
+
+	@Override
+	public void addJuryToAudit(String id_Jury, String id_Audit) {
+		
+		Connection connexion = null;
+		Statement statement = null;
+		PreparedStatement preparedStmt = null;
+		
+		try {
+			connexion = daoFactory.getConnection();
+			statement = connexion.createStatement();
+			preparedStmt = connexion.prepareStatement("UPDATE Audit a SET a.id_Jury = ? WHERE a.id = ?");
+			preparedStmt.setString(1, id_Jury);
+			preparedStmt.setString(2, id_Audit);
+			preparedStmt.executeQuery();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			daoFactory.close(connexion,statement,preparedStmt,null);	
+		}
+
+	}
+	
+	@Override
+	public void removeJuryToAudit(String id_Audit) {
+		
+		Connection connexion = null;
+		Statement statement = null;
+		PreparedStatement preparedStmt = null;
+		
+		try {
+			connexion = daoFactory.getConnection();
+			statement = connexion.createStatement();
+			preparedStmt = connexion.prepareStatement("UPDATE Audit a SET a.id_Jury = null WHERE a.id =?");
+			preparedStmt.setString(1, id_Audit);
+			preparedStmt.executeQuery();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			daoFactory.close(connexion,statement,preparedStmt,null);	
+		}
+
+	}
 }
 	
 

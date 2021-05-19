@@ -135,9 +135,49 @@ public class EtudiantDaoImpl implements EtudiantDao {
 	
 	
 	@Override
+	public void addEtudiantToEquipeId(String id_Equipe, String id) {
+		Connection connexion = null;
+		Statement statement = null;
+		PreparedStatement preparedStmt = null;
+	
+		try {
+			connexion = daoFactory.getConnection();
+			statement = connexion.createStatement();
+			preparedStmt = connexion.prepareStatement("UPDATE Etudiant e SET e.id_Equipe = ? WHERE e.id = ?;");
+			preparedStmt.setString(1,id_Equipe );
+			preparedStmt.setString(2,id);
+			preparedStmt.executeQuery();
+		} catch (SQLException e) {
+			logger.log(Level.INFO, "sql problem", e);
+
+		}finally {
+			daoFactory.close(connexion,statement,preparedStmt,null);			
+		}
+	}
+	
+	@Override
+	public void removeEtudiantToEquipeId(String id) {
+		Connection connexion = null;
+		Statement statement = null;
+		PreparedStatement preparedStmt = null;
+	
+		try {
+			connexion = daoFactory.getConnection();
+			statement = connexion.createStatement();
+			preparedStmt = connexion.prepareStatement("UPDATE Etudiant e SET e.id_Equipe = null WHERE e.id = ?;");
+			preparedStmt.setString(1,id);
+			preparedStmt.executeQuery();
+		} catch (SQLException e) {
+			logger.log(Level.INFO, "sql problem", e);
+
+		}finally {
+			daoFactory.close(connexion,statement,preparedStmt,null);			
+		}
+	}
+	
+	
+	@Override
 	public ArrayList<Etudiant> etudiantByStr(String search){
-		DaoFactory fact = new DaoFactory();		
-		
 		ArrayList<Etudiant> etudiants = new ArrayList<Etudiant>();
 		Connection connexion = null;
 		Statement statement = null;
@@ -147,9 +187,9 @@ public class EtudiantDaoImpl implements EtudiantDao {
 		try {
 			connexion = daoFactory.getConnection();
 			statement = connexion.createStatement();
-			preparedStmt = connexion.prepareStatement("SELECT * FROM Etudiant e INNER JOIN Personne p ON p.id = e.id_Personne WHERE LOWER(p.nom) LIKE \"%?%\" OR  LOWER(p.prenom) LIKE \"%?%\";");
-			preparedStmt.setString(1, search);
-			preparedStmt.setString(2, search);
+			preparedStmt = connexion.prepareStatement("SELECT * FROM Etudiant e INNER JOIN Personne p ON p.id = e.id_Personne WHERE LOWER(p.nom) LIKE ? OR  LOWER(p.prenom) LIKE ?;");
+			preparedStmt.setString(1, "%"+search+"%");
+			preparedStmt.setString(2, "%"+search+"%");
 			resultat = preparedStmt.executeQuery();
 			
 			while (resultat.next()) {
@@ -173,11 +213,51 @@ public class EtudiantDaoImpl implements EtudiantDao {
 			logger.log(Level.INFO, "sql problem", e);
 
 		}finally {
-			fact.close(connexion,statement,preparedStmt,resultat);			
+			daoFactory.close(connexion,statement,preparedStmt,resultat);			
 		}
 		
 		return etudiants;
 	}	
 	
+	@Override
+	public ArrayList<Etudiant> etudiantByAudit(String id_Audit){
+		ArrayList<Etudiant> etudiants = new ArrayList<Etudiant>();
+		Connection connexion = null;
+		Statement statement = null;
+		ResultSet resultat = null;
+		PreparedStatement preparedStmt = null;
 
+		try {
+			connexion = daoFactory.getConnection();
+			statement = connexion.createStatement();
+			preparedStmt = connexion.prepareStatement("SELECT * FROM Etudiant WHERE id_Equipe IN (SELECT id FROM Equipe eq WHERE eq.id = (SELECT id_Equipe from Audit WHERE id = ?));");
+			preparedStmt.setString(1, id_Audit);
+			resultat = preparedStmt.executeQuery();
+			
+			while (resultat.next()) {
+				
+				String id = resultat.getString("id");
+                String classe = resultat.getString("classe");
+                String promo = resultat.getString("promo");
+                int personneID = resultat.getInt("id_Personne");
+
+        		PersonneDao personneDao = daoFactory.getPersonneDao();
+        		Personne personne  = personneDao.getPersonneById(personneID);
+				
+				Etudiant etudiant = new Etudiant();
+                etudiant.setId(Integer.valueOf(id));
+                etudiant.setPromo(promo);
+                etudiant.setClasse(classe);
+                etudiant.setPersonne(personne);
+	            etudiants.add(etudiant);
+			}
+		} catch (SQLException e) {
+			logger.log(Level.INFO, "sql problem", e);
+
+		}finally {
+			daoFactory.close(connexion,statement,preparedStmt,resultat);			
+		}
+		
+		return etudiants;
+	}	
 }

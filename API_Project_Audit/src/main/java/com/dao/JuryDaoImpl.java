@@ -147,4 +147,6 @@ public class JuryDaoImpl implements JuryDao {
 		}
         return jury;
 	}
+
+	
 }
