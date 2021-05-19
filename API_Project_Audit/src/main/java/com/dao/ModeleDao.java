@@ -10,6 +10,6 @@ public interface ModeleDao {
 	void deleteModele(String id);
 	Modele getModeleById(String modeleID);
 	Modele getModeleByNom(String Designation);
-	void addModele(String Designation);
+	void addModele(Modele modele);
 	void updateModele(int id, String Designation);
 }

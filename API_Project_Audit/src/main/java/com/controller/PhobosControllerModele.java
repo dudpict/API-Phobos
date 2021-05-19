@@ -2,6 +2,7 @@ package com.controller;
 
 import java.util.ArrayList;
 
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,11 +19,10 @@ public class PhobosControllerModele {
 	// INSERT d'un Modele 
 	@RequestMapping(value = "/addModele", method = RequestMethod.POST)
 	@ResponseBody
-	public void appelPost_question_addModele(@RequestParam(required = false, value = "Designation") String Designation) {
-		System.out.println("méthode POST, add Modele");
+	public void appelPost_question_addModele(@RequestBody Modele modele) {
 		DaoFactory fact = new DaoFactory();
 		ModeleDao modeleDao = fact.getModeleDao();
-		modeleDao.addModele(Designation);
+		modeleDao.addModele(modele);
 	}
 	
 	// UPDATE d'un Modele

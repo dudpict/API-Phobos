@@ -8,7 +8,7 @@ public interface JuryDao {
 
     ArrayList<Jury> getJurys();
 
-	Jury getJuryById(String juryID);
+    public Jury getJuryById(String juryID);
 
 	Jury getJurybyidAudit(String idAudit);
 

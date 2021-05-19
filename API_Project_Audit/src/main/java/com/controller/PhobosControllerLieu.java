@@ -8,29 +8,27 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.beans.Jury;
+import com.beans.Lieu;
 import com.dao.DaoFactory;
-import com.dao.JuryDao;
+import com.dao.LieuDao;
 
 @RestController
-public class PhobosControllerJury {
+public class PhobosControllerLieu {
 	
 	
-	@RequestMapping (value = "/jurys", method = RequestMethod.GET)
+	@RequestMapping (value = "/lieux",method= RequestMethod.GET)
 	@ResponseBody
-	public ArrayList<Jury> getJurys(@RequestParam(required = false , value = "juryId ") String juryId){
+	public ArrayList<Lieu> getLieux(@RequestParam(required= false, value = "lieuId") String lieuId){
 		DaoFactory fact = new DaoFactory();
-		JuryDao juryDao = fact.getJuryDao();
-		ArrayList<Jury> jurys = new ArrayList<Jury>();
-		if (juryId == null ) {
-			jurys = juryDao.getJurys();
+		LieuDao lieuDao = fact.getLieuDao();
+		ArrayList<Lieu> lieux = new ArrayList<Lieu>(); 
+		if (lieuId == null ) {
+			 lieux = lieuDao.getLieux();
 		}else {
-			jurys.add(juryDao.getJuryById(juryId));
+			lieux . add( lieuDao.getLieuById(lieuId));
 		}
-		
-		return jurys;
+		return lieux;
 		
 		
 	}
-
 }

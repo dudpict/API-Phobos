@@ -111,7 +111,7 @@ public class ModeleDaoImpl implements ModeleDao {
 	}
 
 	@Override
-	public void addModele(String Designation) {
+	public void addModele(Modele modele) {
 		Connection connexion = null;
 		PreparedStatement preparedStmt = null;
 
@@ -119,7 +119,7 @@ public class ModeleDaoImpl implements ModeleDao {
 			connexion = daoFactory.getConnection();
 			String requete = "INSERT INTO `Modele`(`designation`) VALUES (?)";
 			preparedStmt = connexion.prepareStatement(requete);
-			preparedStmt.setString(1, Designation);
+			preparedStmt.setString(1, modele.getDesignation());
 			preparedStmt.execute();
 			connexion.close();
 

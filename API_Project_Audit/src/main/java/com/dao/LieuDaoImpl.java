@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 import com.beans.Lieu;
 
@@ -18,43 +19,81 @@ public class LieuDaoImpl implements LieuDao {
 	@Override
 	public Lieu getLieuById(String lieuID) {
 		Connection connexion = null;
-        Statement statement = null;
-        ResultSet resultat = null;
-        Lieu lieu = new Lieu();
-        
-        try {
-            connexion = daoFactory.getConnection();
-            statement = connexion.createStatement();
-            resultat = statement.executeQuery("SELECT * FROM Lieu WHERE id="+lieuID+";");
-            
-            connexion.close();
+		Statement statement = null;
+		ResultSet resultat = null;
+		Lieu lieu = new Lieu();
 
-            while (resultat.next()) {
-            	String ville=resultat.getString("Ville");
-            	String etablissement = resultat.getString("Etablissement");
-                String bat = resultat.getString("Batiment");
-                String etage = resultat.getString("Etage");
-                String nomSalle = resultat.getString("NomSalle");
-                String numSalle = resultat.getString("NumSalle");
-                lieu.setId(Integer.parseInt(lieuID));
-                lieu.setVille(ville);
-                lieu.setEtablissement(etablissement);
-                lieu.setEtage(etage);
-                lieu.setBatiment(bat);
-                lieu.setNomSalle(nomSalle);
-                lieu.setNumSalle(numSalle);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        try {
+		try {
+			connexion = daoFactory.getConnection();
+			statement = connexion.createStatement();
+			resultat = statement.executeQuery("SELECT * FROM Lieu WHERE id=" + lieuID + ";");
+
+			connexion.close();
+
+			while (resultat.next()) {
+				String ville = resultat.getString("Ville");
+				String etablissement = resultat.getString("Etablissement");
+				String bat = resultat.getString("Batiment");
+				String etage = resultat.getString("Etage");
+				String nomSalle = resultat.getString("NomSalle");
+				String numSalle = resultat.getString("NumSalle");
+				lieu.setId(Integer.parseInt(lieuID));
+				lieu.setVille(ville);
+				lieu.setEtablissement(etablissement);
+				lieu.setEtage(etage);
+				lieu.setBatiment(bat);
+				lieu.setNomSalle(nomSalle);
+				lieu.setNumSalle(numSalle);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		try {
 			resultat.close();
 			statement.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-        return lieu;
+		return lieu;
+	}
+
+	public ArrayList<Lieu> getLieux() {
+		ArrayList<Lieu> lieux = new ArrayList<Lieu>();
+		Connection connexion = null;
+		Statement statement = null;
+		ResultSet resultat = null;
+		
+
+		try {
+			connexion = daoFactory.getConnection();
+			statement = connexion.createStatement();
+			resultat = statement.executeQuery("SELECT * FROM Lieu ;");
+			while (resultat.next()) {
+				String id = resultat.getString("id");
+				String ville = resultat.getString("Ville");
+				String etablissement = resultat.getString("Etablissement");
+				String bat = resultat.getString("Batiment");
+				String etage = resultat.getString("Etage");
+				String nomSalle = resultat.getString("NomSalle");
+				String numSalle = resultat.getString("NumSalle");
+				Lieu lieu = new Lieu();
+				lieu.setId(Integer.parseInt(id));
+				lieu.setVille(ville);
+				lieu.setEtablissement(etablissement);
+				lieu.setEtage(etage);
+				lieu.setBatiment(bat);
+				lieu.setNomSalle(nomSalle);
+				lieu.setNumSalle(numSalle);
+				lieux.add(lieu);
+
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return lieux;
+
 	}
 
 }

@@ -59,6 +59,7 @@ public class JuryDaoImpl implements JuryDao {
         Statement statement = null;
         ResultSet resultat = null;
         Jury jury = new Jury();
+        ArrayList<Jury> jurys = new ArrayList<Jury>();
 
         try {
             connexion = daoFactory.getConnection();
@@ -72,6 +73,7 @@ public class JuryDaoImpl implements JuryDao {
                
                 jury.setId(Integer.valueOf(id));
                 jury.setDesignation(designation);
+                jurys.add(jury);
             }
         } catch (SQLException e) {
             e.printStackTrace();

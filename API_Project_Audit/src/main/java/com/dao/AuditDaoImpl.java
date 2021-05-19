@@ -414,6 +414,7 @@ public class AuditDaoImpl implements AuditDao {
 				auditTemp.setDateDebut(resultat.getString("dateDebut"));
 				auditTemp.setDateFin(resultat.getString("dateFin"));
 				auditTemp.setDateLimite(resultat.getString("dateLimite"));
+				auditTemp.setModeDate(resultat.getString("dateMode"));
 				// TODO Implementer un object Matiere, Jury, Modele et Lieu
 				// Récupére l'instance de Prsonne via l'id
 				MatiereDao matiereDao = daoFactory.getMatiereDao();
