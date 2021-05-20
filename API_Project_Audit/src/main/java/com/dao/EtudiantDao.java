@@ -3,6 +3,7 @@ package com.dao;
 import java.util.ArrayList;
 
 import com.beans.Etudiant;
+import com.beans.Personne;
 
 public interface EtudiantDao {
     ArrayList<Etudiant> getEtudiants();
@@ -11,8 +12,10 @@ public interface EtudiantDao {
     void updateEtudiant(String id, Etudiant etudiantUpdated);
 	Etudiant getEtudiantById(String id);
 	ArrayList<Etudiant> etudiantByStr(String search);
-	void addEtudiantToEquipeId(String id_Equipe, String id);
+	void addEtudiantToEquipeId(String idEquipe, String id);
 	void removeEtudiantToEquipeId(String id);
-	ArrayList<Etudiant> etudiantByAudit(String id_Audit);
+	ArrayList<Etudiant> etudiantByAudit(String idAudit);
+	void addEtudiant(String promo, String classe, int idPersonne, int idEquipe, int idroleUtilisateur,
+			Personne personne);
 
 }

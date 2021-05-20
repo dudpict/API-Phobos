@@ -6,6 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,39 +22,44 @@ import com.beans.Modele;
 public class AuditDaoImpl implements AuditDao {
 	@Autowired
 	private DaoFactory daoFactory;
-
+	private static final Logger logger = Logger.getLogger(AuditDaoImpl.class);
+	private String sqlSelectAll = "SELECT * FROM Audit;";
+	private String [] sqlParamTable = {"id_Modele","id_Jury","id_Lieu","id_Equipe","id_Matiere"};
+	private String [] sqlParamAudit = {"id","designation","etat","dateDebut","dateFin","dateLimite","dateMode"};
+	
 	AuditDaoImpl(DaoFactory daoFactory) {
 		this.daoFactory = daoFactory;
 	}
 	
 	public ArrayList<Audit> getAudits(){
-		ArrayList<Audit> audits = new ArrayList<Audit>();
+		ArrayList<Audit> audits = new ArrayList<>();
 		Connection connexion = null;
 		ResultSet resultat = null;
+		Statement statement = null;
+		PreparedStatement preparedStatement = null;
 		
 		try {
 			connexion = daoFactory.getConnection();
-			PreparedStatement preparedStatement = connexion
-					.prepareStatement("SELECT * FROM Audit;");
+			statement = connexion.createStatement();
+			preparedStatement = connexion.prepareStatement(sqlSelectAll);
 			resultat = preparedStatement.executeQuery();
 
 			while (resultat.next()) {
-				String modeleID = resultat.getString("id_Modele");
-				String juryID = resultat.getString("id_Jury");
-				String matiereID = resultat.getString("id_Matiere");
-				String lieuID = resultat.getString("id_Lieu");
-				String equipeID = resultat.getString(("id_Equipe"));
+				String modeleID = resultat.getString(sqlParamTable[0]);
+				String juryID = resultat.getString(sqlParamTable[1]);
+				String matiereID = resultat.getString(sqlParamTable[4]);
+				String lieuID = resultat.getString(sqlParamTable[2]);
+				String equipeID = resultat.getString(sqlParamTable[3]);
 
 				Audit audit = new Audit();
-				audit.setId(resultat.getInt("id"));
-				audit.setDesignation(resultat.getString("designation"));
-				audit.setEtat(resultat.getString("etat"));
-				audit.setDateDebut(resultat.getString("dateDebut"));
-				audit.setDateFin(resultat.getString("dateFin"));
-				audit.setDateLimite(resultat.getString("dateLimite"));
-				audit.setModeDate(resultat.getString("dateMode"));
-				// TODO Implementer un object Matiere, Jury, Modele et Lieu
-				// Récupére l'instance de Prsonne via l'id
+				audit.setId(resultat.getInt(sqlParamAudit[0]));
+				audit.setDesignation(resultat.getString(sqlParamAudit[1]));
+				audit.setEtat(resultat.getString(sqlParamAudit[2]));
+				audit.setDateDebut(resultat.getString(sqlParamAudit[3]));
+				audit.setDateFin(resultat.getString(sqlParamAudit[4]));
+				audit.setDateLimite(resultat.getString(sqlParamAudit[5]));
+				audit.setModeDate(resultat.getString(sqlParamAudit[6]));
+				
 				MatiereDao matiereDao = daoFactory.getMatiereDao();
 				Matiere matiereInstance = matiereDao.getMatiereById(matiereID);
 				audit.setMatiere(matiereInstance);
@@ -75,15 +83,16 @@ public class AuditDaoImpl implements AuditDao {
 			}
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.log(Level.INFO, "sql problem getAudits", e);
+		}finally {
+			daoFactory.close(connexion,statement,preparedStatement,resultat);	
 		}
 		return audits;
 	}
 	
 	@Override
-	public ArrayList<Audit> auditByEtudiantId(String id_Etudiant){
-		ArrayList<Audit> audits = new ArrayList<Audit>();
+	public ArrayList<Audit> auditByEtudiantId(String idEtudiant){
+		ArrayList<Audit> audits = new ArrayList<>();
 		Connection connexion = null;
 		Statement statement = null;
 		PreparedStatement preparedStmt = null;
@@ -94,26 +103,25 @@ public class AuditDaoImpl implements AuditDao {
 			connexion = daoFactory.getConnection();
 			statement = connexion.createStatement();
 			preparedStmt = connexion.prepareStatement("SELECT * FROM Audit a INNER JOIN Etudiant e ON a.id_Equipe = e.id_Equipe WHERE e.id = ?;");
-			preparedStmt.setString(1, id_Etudiant);
+			preparedStmt.setString(1, idEtudiant);
 			resultat= preparedStmt.executeQuery();
 
 			while (resultat.next()) {
-				String modeleID = resultat.getString("id_Modele");
-				String juryID = resultat.getString("id_Jury");
-				String matiereID = resultat.getString("id_Matiere");
-				String lieuID = resultat.getString("id_Lieu");
-				String equipeID = resultat.getString(("id_Equipe"));
+				String modeleID = resultat.getString(sqlParamTable[0]);
+				String juryID = resultat.getString(sqlParamTable[1]);
+				String matiereID = resultat.getString(sqlParamTable[4]);
+				String lieuID = resultat.getString(sqlParamTable[2]);
+				String equipeID = resultat.getString(sqlParamTable[3]);
 
 				Audit audit = new Audit();
-				audit.setId(resultat.getInt("id"));
-				audit.setDesignation(resultat.getString("designation"));
-				audit.setEtat(resultat.getString("etat"));
-				audit.setDateDebut(resultat.getString("dateDebut"));
-				audit.setDateFin(resultat.getString("dateFin"));
-				audit.setDateLimite(resultat.getString("dateLimite"));
-				audit.setModeDate(resultat.getString("dateMode"));
-				// TODO Implementer un object Matiere, Jury, Modele et Lieu
-				// Récupére l'instance de Prsonne via l'id
+				audit.setId(resultat.getInt(sqlParamAudit[0]));
+				audit.setDesignation(resultat.getString(sqlParamAudit[1]));
+				audit.setEtat(resultat.getString(sqlParamAudit[2]));
+				audit.setDateDebut(resultat.getString(sqlParamAudit[3]));
+				audit.setDateFin(resultat.getString(sqlParamAudit[4]));
+				audit.setDateLimite(resultat.getString(sqlParamAudit[5]));
+				audit.setModeDate(resultat.getString(sqlParamAudit[6]));
+
 				MatiereDao matiereDao = daoFactory.getMatiereDao();
 				Matiere matiereInstance = matiereDao.getMatiereById(matiereID);
 				audit.setMatiere(matiereInstance);
@@ -137,16 +145,16 @@ public class AuditDaoImpl implements AuditDao {
 			}
 
 		}catch (SQLException e) {
-			e.printStackTrace();
+			logger.log(Level.INFO, "sql problem auditByProfesseurId", e);
 		}finally {
-			daoFactory.close(connexion,statement,preparedStmt,null);	
+			daoFactory.close(connexion,statement,preparedStmt,resultat);	
 		}
 		return audits;
 	}
 
 	@Override
-	public ArrayList<Audit> auditByProfesseurId(String id_Professeur){
-		ArrayList<Audit> audits = new ArrayList<Audit>();
+	public ArrayList<Audit> auditByProfesseurId(String idProfesseur){
+		ArrayList<Audit> audits = new ArrayList<>();
 		Connection connexion = null;
 		Statement statement = null;
 		PreparedStatement preparedStmt = null;
@@ -157,25 +165,25 @@ public class AuditDaoImpl implements AuditDao {
 			connexion = daoFactory.getConnection();
 			statement = connexion.createStatement();
 			preparedStmt = connexion.prepareStatement("SELECT * FROM Audit a INNER JOIN appartient ap ON a.id_Jury = ap.id WHERE ap.id IN (SELECT id FROM appartient ap WHERE ap.id_Professeur =?) GROUP BY a.id;");
-			preparedStmt.setString(1, id_Professeur);
+			preparedStmt.setString(1, idProfesseur);
 			resultat= preparedStmt.executeQuery();
 
 			while (resultat.next()) {
-				String modeleID = resultat.getString("id_Modele");
-				String juryID = resultat.getString("id_Jury");
-				String matiereID = resultat.getString("id_Matiere");
-				String lieuID = resultat.getString("id_Lieu");
-				String equipeID = resultat.getString(("id_Equipe"));
-
+				String modeleID = resultat.getString(sqlParamTable[0]);
+				String juryID = resultat.getString(sqlParamTable[1]);
+				String matiereID = resultat.getString(sqlParamTable[4]);
+				String lieuID = resultat.getString(sqlParamTable[2]);
+				String equipeID = resultat.getString(sqlParamTable[3]);
+				
 				Audit audit = new Audit();
-				audit.setId(resultat.getInt("id"));
-				audit.setDesignation(resultat.getString("designation"));
-				audit.setEtat(resultat.getString("etat"));
-				audit.setDateDebut(resultat.getString("dateDebut"));
-				audit.setDateFin(resultat.getString("dateFin"));
-				audit.setDateLimite(resultat.getString("dateLimite"));
-				audit.setModeDate(resultat.getString("dateMode"));
-				// TODO Implementer un object Matiere, Jury, Modele et Lieu
+				audit.setId(resultat.getInt(sqlParamAudit[0]));
+				audit.setDesignation(resultat.getString(sqlParamAudit[1]));
+				audit.setEtat(resultat.getString(sqlParamAudit[2]));
+				audit.setDateDebut(resultat.getString(sqlParamAudit[3]));
+				audit.setDateFin(resultat.getString(sqlParamAudit[4]));
+				audit.setDateLimite(resultat.getString(sqlParamAudit[5]));
+				audit.setModeDate(resultat.getString(sqlParamAudit[6]));
+				// Implementer un object Matiere, Jury, Modele et Lieu
 				// Récupére l'instance de Prsonne via l'id
 				MatiereDao matiereDao = daoFactory.getMatiereDao();
 				Matiere matiereInstance = matiereDao.getMatiereById(matiereID);
@@ -200,9 +208,9 @@ public class AuditDaoImpl implements AuditDao {
 			}
 
 		}catch (SQLException e) {
-			e.printStackTrace();
+			logger.log(Level.INFO, "sql problem auditByProfesseurId", e);
 		}finally {
-			daoFactory.close(connexion,statement,preparedStmt,null);	
+			daoFactory.close(connexion,statement,preparedStmt,resultat);	
 		}
 		return audits;
 	}
@@ -211,29 +219,31 @@ public class AuditDaoImpl implements AuditDao {
 	public Audit getAuditById(String id) {
 		Connection connexion = null;
 		ResultSet resultat = null;
+		Statement statement = null;
+		PreparedStatement preparedStatement = null;
 		Audit audit = new Audit();
 
 		try {
 			connexion = daoFactory.getConnection();
-			PreparedStatement preparedStatement = connexion.prepareStatement("SELECT * FROM Audit WHERE id = ? ;");
+			statement = connexion.createStatement();
+			preparedStatement = connexion.prepareStatement("SELECT * FROM Audit WHERE id = ? ;");
 			preparedStatement.setString(1, id);
 			resultat = preparedStatement.executeQuery();
 
 			while (resultat.next()) {
-				String modeleID = resultat.getString("id_Modele");
-				String juryID = resultat.getString("id_Jury");
-				String matiereID = resultat.getString("id_Matiere");
-				String lieuID = resultat.getString("id_Lieu");
-
-				audit.setId(resultat.getInt("id"));
-				audit.setDesignation(resultat.getString("designation"));
-				audit.setEtat(resultat.getString("etat"));
-				audit.setDateDebut(resultat.getString("dateDebut"));
-				audit.setDateFin(resultat.getString("dateFin"));
-				audit.setDateLimite(resultat.getString("dateLimite"));
-				audit.setModeDate(resultat.getString("dateMode"));
-				audit.setSemaineAudit(resultat.getString("semaineAudit"));
-				// TODO Implementer un object Matiere, Jury, Modele et Lieu
+				String modeleID = resultat.getString(sqlParamTable[0]);
+				String juryID = resultat.getString(sqlParamTable[1]);
+				String matiereID = resultat.getString(sqlParamTable[4]);
+				String lieuID = resultat.getString(sqlParamTable[2]);
+				
+				audit.setId(resultat.getInt(sqlParamAudit[0]));
+				audit.setDesignation(resultat.getString(sqlParamAudit[1]));
+				audit.setEtat(resultat.getString(sqlParamAudit[2]));
+				audit.setDateDebut(resultat.getString(sqlParamAudit[3]));
+				audit.setDateFin(resultat.getString(sqlParamAudit[4]));
+				audit.setDateLimite(resultat.getString(sqlParamAudit[5]));
+				audit.setModeDate(resultat.getString(sqlParamAudit[6]));
+				// Implementer un object Matiere, Jury, Modele et Lieu
 				// Récupére l'instance de Prsonne via l'id
 				MatiereDao matiereDao = daoFactory.getMatiereDao();
 				Matiere matiereInstance = matiereDao.getMatiereById(matiereID);
@@ -253,8 +263,9 @@ public class AuditDaoImpl implements AuditDao {
 			}
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.log(Level.INFO, "sql problem getAuditById", e);
+		}finally {
+			daoFactory.close(connexion,statement,preparedStatement,resultat);	
 		}
 		return audit;
 	}
@@ -264,14 +275,12 @@ public class AuditDaoImpl implements AuditDao {
 	public Audit addAudit(Audit audit) {
 		Connection connexion = null;
 		Statement statement = null;
-		ResultSet resultat = null;
 		PreparedStatement preparedStatement = null;
 
 		try {
 			connexion = daoFactory.getConnection();
 			statement = connexion.createStatement();
-			preparedStatement = connexion
-					.prepareStatement("INSERT INTO Audit (designation, etat,dateDebut,dateFin,dateLimite,dateModif,note,id_Modele,id_Jury,id_Matiere,id_Lieu) VALUES (?,?,?,?,?,?,?,?,?,?,?);");
+			preparedStatement = connexion.prepareStatement("INSERT INTO Audit (designation, etat,dateDebut,dateFin,dateLimite,dateModif,note,id_Modele,id_Jury,id_Matiere,id_Lieu) VALUES (?,?,?,?,?,?,?,?,?,?,?);");
 			preparedStatement.setString(1, audit.getDesignation());
 			preparedStatement.setString(2, audit.getEtat());
 			preparedStatement.setString(3, audit.getDateDebut());
@@ -283,23 +292,13 @@ public class AuditDaoImpl implements AuditDao {
 			preparedStatement.setInt(9, audit.getJury().getId());
 			preparedStatement.setInt(10, audit.getMatiere().getId());
 			preparedStatement.setInt(11, audit.getLieu().getId());
-			
-			
-			
-			resultat = preparedStatement.executeQuery();
+						
+			preparedStatement.executeQuery();
 
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		try {
-			resultat.close();
-			preparedStatement.close();
-			statement.close();
-			connexion.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		}  catch (SQLException e) {
+			logger.log(Level.INFO, "sql problem addAudit", e);
+		}finally {
+			daoFactory.close(connexion,statement,preparedStatement,null);	
 		}
 		return audit;
 
@@ -308,15 +307,19 @@ public class AuditDaoImpl implements AuditDao {
 	@Override
 	public void deleteAudit(String id) {
 		Connection connexion = null;
+		PreparedStatement preparedStmt = null;
+		Statement statement = null;
 		try {
 			connexion = daoFactory.getConnection();
+			statement = connexion.createStatement();
 			String requete = "DELETE * FROM audit WHERE id=?";
-			PreparedStatement preparedStmt = connexion.prepareStatement(requete);
+			preparedStmt = connexion.prepareStatement(requete);
 			preparedStmt.setString(1, id);
 			preparedStmt.execute();
-			connexion.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
+		}  catch (SQLException e) {
+			logger.log(Level.INFO, "sql problem deleteAudit", e);
+		}finally {
+			daoFactory.close(connexion,statement,preparedStmt,null);	
 		}
 
 	}
@@ -332,24 +335,15 @@ public class AuditDaoImpl implements AuditDao {
 		try {
 			connexion = daoFactory.getConnection();
 			statement = connexion.createStatement();
-			preparedStatement = connexion
-					.prepareStatement("SET dateDebut = to_date('?', 'YYYY/MM/DD HH24:MI') FROM audit WHERE id = ? ;");
+			preparedStatement = connexion.prepareStatement("SET dateDebut = to_date('?', 'YYYY/MM/DD HH24:MI') FROM audit WHERE id = ? ;");
 			preparedStatement.setString(1, audit.getDateDebut());
 			preparedStatement.setInt(2, audit.getId());
 			resultat = preparedStatement.executeQuery();
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		try {
-			resultat.close();
-			preparedStatement.close();
-			statement.close();
-			connexion.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.log(Level.INFO, "sql problem setHeureAudits", e);
+		}finally {
+			daoFactory.close(connexion,statement,preparedStatement,resultat);	
 		}
 	}
 	
@@ -384,17 +378,9 @@ public class AuditDaoImpl implements AuditDao {
 			resultat = preparedStatement.executeQuery();
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		try {
-			resultat.close();
-			preparedStatement.close();
-			statement.close();
-			connexion.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.log(Level.INFO, "sql problem updateAudit", e);
+		}finally {
+			daoFactory.close(connexion,statement,preparedStatement,resultat);	
 		}
 		return audit;
 		
@@ -417,17 +403,9 @@ public class AuditDaoImpl implements AuditDao {
 			resultat = preparedStatement.executeQuery();
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		try {
-			resultat.close();
-			preparedStatement.close();
-			statement.close();
-			connexion.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.log(Level.INFO, "sql problem setAuditDate", e);
+		}finally {
+			daoFactory.close(connexion,statement,preparedStatement,resultat);	
 		}
 		
 		return audit;
@@ -443,30 +421,21 @@ public class AuditDaoImpl implements AuditDao {
 		try {
 			connexion = daoFactory.getConnection();
 			statement = connexion.createStatement();
-			preparedStatement = connexion
-					.prepareStatement("UPDATE Audit SET semaineAudit = ? , dateMode='WEEK' WHERE id = ? ;");
+			preparedStatement = connexion.prepareStatement("UPDATE Audit SET semaineAudit = ? , dateMode='WEEK' WHERE id = ? ;");
 			preparedStatement.setString(1, audit.getSemaineAudit());
 			preparedStatement.setInt(2, audit.getId());
 			resultat = preparedStatement.executeQuery();
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		try {
-			resultat.close();
-			preparedStatement.close();
-			statement.close();
-			connexion.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.log(Level.INFO, "sql problem setSemaineAudit", e);
+		}finally {
+			daoFactory.close(connexion,statement,preparedStatement,resultat);	
 		}
 		return audit;
 	}
 	
 	public ArrayList<Audit> getFilteredAudits(String matiereId, String lieuId, String titre, String juryId, String etat,String id, String role){
-		ArrayList<Audit> audits = new ArrayList<Audit>();
+		ArrayList<Audit> audits = new ArrayList<>();
 		Connection connexion = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultat = null;
@@ -493,7 +462,7 @@ public class AuditDaoImpl implements AuditDao {
 				break;
 			default :
 				preparedStatement = connexion
-				.prepareStatement("SELECT * FROM Audit;");
+				.prepareStatement(sqlSelectAll);
 				break;
 			
 			}
@@ -522,7 +491,7 @@ public class AuditDaoImpl implements AuditDao {
 			}else {
 				preparedStatement.setString(5, "%");
 			}
-			System.out.print(preparedStatement);
+			logger.log(Level.INFO, preparedStatement);
 			resultat = preparedStatement.executeQuery();
 
 			while (resultat.next()) {
@@ -567,14 +536,15 @@ public class AuditDaoImpl implements AuditDao {
 			}
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.log(Level.INFO, "sql problem filter Audit", e);
+		}finally {
+			daoFactory.close(connexion,null,preparedStatement,resultat);	
 		}
 		return audits;
 	}
 
 	@Override
-	public void addEquipeToAudit(String id_Equipe,String id_Audit) {
+	public void addEquipeToAudit(String idEquipe,String idAudit) {
 		
 		Connection connexion = null;
 		Statement statement = null;
@@ -584,12 +554,12 @@ public class AuditDaoImpl implements AuditDao {
 			connexion = daoFactory.getConnection();
 			statement = connexion.createStatement();
 			preparedStmt = connexion.prepareStatement("UPDATE Audit a SET a.id_Equipe = ? WHERE a.id = ?;");
-			preparedStmt.setString(1, id_Equipe);
-			preparedStmt.setString(2, id_Audit);
+			preparedStmt.setString(1, idEquipe);
+			preparedStmt.setString(2, idAudit);
 			preparedStmt.executeQuery();
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.log(Level.INFO, "sql problem add equipe Audit", e);
 		}finally {
 			daoFactory.close(connexion,statement,preparedStmt,null);	
 		}
@@ -597,7 +567,7 @@ public class AuditDaoImpl implements AuditDao {
 	}
 	
 	@Override
-	public void removeEquipeToAudit(String id_Audit) {
+	public void removeEquipeToAudit(String idAudit) {
 		
 		Connection connexion = null;
 		Statement statement = null;
@@ -607,11 +577,11 @@ public class AuditDaoImpl implements AuditDao {
 			connexion = daoFactory.getConnection();
 			statement = connexion.createStatement();
 			preparedStmt = connexion.prepareStatement("UPDATE Audit a SET a.id_Equipe = null WHERE a.id = ?");
-			preparedStmt.setString(1, id_Audit);
+			preparedStmt.setString(1, idAudit);
 			preparedStmt.executeQuery();
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.log(Level.INFO, "sql problem remove equipe Audit", e);
 		}finally {
 			daoFactory.close(connexion,statement,preparedStmt,null);	
 		}
@@ -619,7 +589,7 @@ public class AuditDaoImpl implements AuditDao {
 	}
 
 	@Override
-	public void addJuryToAudit(String id_Jury, String id_Audit) {
+	public void addJuryToAudit(String idJury, String idAudit) {
 		
 		Connection connexion = null;
 		Statement statement = null;
@@ -629,12 +599,12 @@ public class AuditDaoImpl implements AuditDao {
 			connexion = daoFactory.getConnection();
 			statement = connexion.createStatement();
 			preparedStmt = connexion.prepareStatement("UPDATE Audit a SET a.id_Jury = ? WHERE a.id = ?");
-			preparedStmt.setString(1, id_Jury);
-			preparedStmt.setString(2, id_Audit);
+			preparedStmt.setString(1, idJury);
+			preparedStmt.setString(2, idAudit);
 			preparedStmt.executeQuery();
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.log(Level.INFO, "sql problem", e);
 		}finally {
 			daoFactory.close(connexion,statement,preparedStmt,null);	
 		}
@@ -642,7 +612,7 @@ public class AuditDaoImpl implements AuditDao {
 	}
 	
 	@Override
-	public void removeJuryToAudit(String id_Audit) {
+	public void removeJuryToAudit(String idAudit) {
 		
 		Connection connexion = null;
 		Statement statement = null;
@@ -652,11 +622,11 @@ public class AuditDaoImpl implements AuditDao {
 			connexion = daoFactory.getConnection();
 			statement = connexion.createStatement();
 			preparedStmt = connexion.prepareStatement("UPDATE Audit a SET a.id_Jury = null WHERE a.id =?");
-			preparedStmt.setString(1, id_Audit);
+			preparedStmt.setString(1, idAudit);
 			preparedStmt.executeQuery();
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.log(Level.INFO, "sql problem", e);
 		}finally {
 			daoFactory.close(connexion,statement,preparedStmt,null);	
 		}

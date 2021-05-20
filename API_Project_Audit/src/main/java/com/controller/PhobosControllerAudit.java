@@ -15,7 +15,6 @@ import com.beans.Audit;
 import com.blo.AuditBLO;
 import com.dao.AuditDao;
 import com.dao.DaoFactory;
-import com.dao.ProfesseurDao;
 @CrossOrigin(origins = "*")
 @RestController
 public class PhobosControllerAudit {
@@ -25,8 +24,7 @@ public class PhobosControllerAudit {
 
 	
 	@RequestMapping(value = "/audits", method = RequestMethod.GET)
-	@ResponseBody
-	
+	@ResponseBody	
 	public ArrayList<Audit> triAudit(@RequestParam(required = false, value="matiereId") String matiereId, 
 			@RequestParam(required = false, value="lieuId") String lieuId ,
 			@RequestParam(required = false, value="titre") String titre,
@@ -36,6 +34,13 @@ public class PhobosControllerAudit {
 			@RequestParam(required = true, value = "role") String role) {
 		
 		return auditBLO.getFilteredAudit(matiereId,lieuId,titre,juryId,etat,id,role);
+		
+	}
+	
+	@RequestMapping(value = "/auditsAll", method = RequestMethod.GET)
+	@ResponseBody	
+	public ArrayList<Audit> auditsAll() {		
+		return auditBLO.getAllAudits();
 		
 	}
 

@@ -31,10 +31,7 @@ public class DaoFactory {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-		System.out.println("");
-		return DriverManager.getConnection("jdbc:mariadb://localhost:3306/projetGL","essai","network");
-
-
+		return DriverManager.getConnection("jdbc:mariadb://172.24.1.9:3306/projetGL","essai","network");
 	}
 
 	// Récupération du Dao
@@ -92,6 +89,10 @@ public class DaoFactory {
 
 	public ReponseDao getReponseDao() {
 		return new ReponseDaoImpl(this);
+	}
+	
+	public NotificationDao getNotificationDao() {
+		return new NotificationDaoImpl(this);
 	}
 	
 	public void close (Connection connexion, Statement statement, PreparedStatement preparedStmt,ResultSet resultat) {

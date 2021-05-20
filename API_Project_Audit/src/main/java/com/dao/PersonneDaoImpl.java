@@ -1,25 +1,30 @@
 package com.dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 import com.beans.Personne;
 
 public class PersonneDaoImpl implements PersonneDao {
 
 	private DaoFactory daoFactory;
-
+	private static final Logger logger = Logger.getLogger(PersonneDaoImpl.class);
+	
     PersonneDaoImpl(DaoFactory daoFactory) {
         this.daoFactory = daoFactory;
     }
     
     @Override
     public ArrayList<Personne> getPersonnes(String role) {
-        List<Personne> personnes = new ArrayList<Personne>();
+        List<Personne> personnes = new ArrayList<>();
         Connection connexion = null;
         Statement statement = null;
         ResultSet resultat = null;
@@ -46,15 +51,9 @@ public class PersonneDaoImpl implements PersonneDao {
                 personnes.add(personne);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        try {
-        	connexion.close();
-			statement.close();
-			resultat.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.log(Level.INFO, "sql problem getPersonneByMail", e);
+		}finally {
+			daoFactory.close(connexion,statement,null,resultat);	
 		}
         return (ArrayList<Personne>) personnes;
     }
@@ -86,24 +85,74 @@ public class PersonneDaoImpl implements PersonneDao {
                 personne.setEmail(email);
                 personne.setTelephone(tel);
                 
-//                connexion.close();
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }try {
-			statement.close();
-			resultat.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+        }catch (SQLException e) {
+			logger.log(Level.INFO, "sql problem getPersonneById", e);
+		}finally {
+			daoFactory.close(connexion,statement,null,resultat);	
 		}
         return personne;
     }
 
-	@Override
-	public void ajouter(Personne personne) {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public Personne getPersonneByMail(String mail) {
+        Personne personne = new Personne();
+        Connection connexion = null;
+        Statement statement = null;
+        ResultSet resultat = null;
+        PreparedStatement preparedStatement= null;
+        
+		try {
+        	connexion = daoFactory.getConnection();
+			statement = connexion.createStatement();
+			preparedStatement = connexion.prepareStatement("SELECT * FROM Personne WHERE email=? ;");
+			preparedStatement.setString(1, mail);
+			resultat = preparedStatement.executeQuery();
+			while (resultat.next()) {
+            	String id = resultat.getString("id");
+                String nom = resultat.getString("nom");
+                String prenom = resultat.getString("prenom");
+                String email = resultat.getString("email");
+                String tel = resultat.getString("tel");	     
+            
+                personne.setId(Integer.valueOf(id));
+                personne.setNom(nom);
+                personne.setPrenom(prenom);
+                personne.setEmail(email);
+                personne.setTelephone(tel);	                
+           }
+            
+        } catch (SQLException e) {
+			logger.log(Level.INFO, "sql problem getPersonneByMail", e);
+		}finally {
+			daoFactory.close(connexion,statement,preparedStatement,resultat);	
+		}
+        return personne;
+    }
+    
+    @Override
+    public void addPersonne(String nom, String prenom, String email, String tel) {
+        Connection connexion = null;
+        Statement statement = null;
+        PreparedStatement preparedStatement= null;
+        
+		try {
+        	connexion = daoFactory.getConnection();
+			statement = connexion.createStatement();
+			preparedStatement = connexion.prepareStatement("INSERT INTO Personne(nom, prenom, email, tel) VALUES (?,?,?,?) ;");
+			preparedStatement.setString(1, nom);
+			preparedStatement.setString(2, prenom);
+			preparedStatement.setString(3, email);
+			preparedStatement.setString(4, tel);
+			preparedStatement.executeQuery();
+			
+            
+        } catch (SQLException e) {
+			logger.log(Level.INFO, "sql problem addPersonne", e);
+		}finally {
+			daoFactory.close(connexion,statement,preparedStatement,null);	
+		}
+    }
+    
     
 }

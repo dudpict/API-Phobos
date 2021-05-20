@@ -105,12 +105,6 @@ public class EtudiantDaoImpl implements EtudiantDao {
 	}
 
 	@Override
-	public void addEtudiant(Etudiant etudiant) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void deleteEtudiant(String id) {
 		Connection connexion = null;
 
@@ -128,14 +122,39 @@ public class EtudiantDaoImpl implements EtudiantDao {
 	}
 
 	@Override
-	public void updateEtudiant(String id, Etudiant etudiantUpdated) {
-		// TODO Auto-generated method stub
+	public void addEtudiant(String promo, String classe, int idPersonne, int idEquipe,  int idroleUtilisateur, Personne personne ) {
+		Connection connexion = null;
+		Statement statement = null;
+		ResultSet resultat = null;
+		PreparedStatement preparedStmt = null;
+		
+		
+		
+		
+		try {
+			connexion = daoFactory.getConnection();
+			statement = connexion.createStatement();
+			preparedStmt = connexion.prepareStatement("INSERT INTO Etudiant(promo, classe, id_Personne, id_Equipe, id_roleUtilisateur) VALUES (?,?,?,?,?);");
+			preparedStmt.setString(1, promo);
+			preparedStmt.setString(2, classe);
+			preparedStmt.setInt(3, idPersonne);
+			preparedStmt.setInt(4, idEquipe);
+			preparedStmt.setInt(5, idroleUtilisateur);
+			resultat = preparedStmt.executeQuery();
+			
+			
+		} catch (SQLException e) {
+			logger.log(Level.INFO, "sql problem addEtudiant", e);
+
+		}finally {
+			daoFactory.close(connexion,statement,preparedStmt,resultat);			
+		}
 		
 	}
 	
 	
 	@Override
-	public void addEtudiantToEquipeId(String id_Equipe, String id) {
+	public void addEtudiantToEquipeId(String idEquipe, String id) {
 		Connection connexion = null;
 		Statement statement = null;
 		PreparedStatement preparedStmt = null;
@@ -144,11 +163,11 @@ public class EtudiantDaoImpl implements EtudiantDao {
 			connexion = daoFactory.getConnection();
 			statement = connexion.createStatement();
 			preparedStmt = connexion.prepareStatement("UPDATE Etudiant e SET e.id_Equipe = ? WHERE e.id = ?;");
-			preparedStmt.setString(1,id_Equipe );
+			preparedStmt.setString(1,idEquipe );
 			preparedStmt.setString(2,id);
 			preparedStmt.executeQuery();
 		} catch (SQLException e) {
-			logger.log(Level.INFO, "sql problem", e);
+			logger.log(Level.INFO, "sql problem addEtudiantToEquipeId", e);
 
 		}finally {
 			daoFactory.close(connexion,statement,preparedStmt,null);			
@@ -168,7 +187,7 @@ public class EtudiantDaoImpl implements EtudiantDao {
 			preparedStmt.setString(1,id);
 			preparedStmt.executeQuery();
 		} catch (SQLException e) {
-			logger.log(Level.INFO, "sql problem", e);
+			logger.log(Level.INFO, "sql problem removeEtudiantToEquipeId", e);
 
 		}finally {
 			daoFactory.close(connexion,statement,preparedStmt,null);			
@@ -178,7 +197,7 @@ public class EtudiantDaoImpl implements EtudiantDao {
 	
 	@Override
 	public ArrayList<Etudiant> etudiantByStr(String search){
-		ArrayList<Etudiant> etudiants = new ArrayList<Etudiant>();
+		ArrayList<Etudiant> etudiants = new ArrayList<>();
 		Connection connexion = null;
 		Statement statement = null;
 		ResultSet resultat = null;
@@ -220,8 +239,8 @@ public class EtudiantDaoImpl implements EtudiantDao {
 	}	
 	
 	@Override
-	public ArrayList<Etudiant> etudiantByAudit(String id_Audit){
-		ArrayList<Etudiant> etudiants = new ArrayList<Etudiant>();
+	public ArrayList<Etudiant> etudiantByAudit(String idAudit){
+		ArrayList<Etudiant> etudiants = new ArrayList<>();
 		Connection connexion = null;
 		Statement statement = null;
 		ResultSet resultat = null;
@@ -231,7 +250,7 @@ public class EtudiantDaoImpl implements EtudiantDao {
 			connexion = daoFactory.getConnection();
 			statement = connexion.createStatement();
 			preparedStmt = connexion.prepareStatement("SELECT * FROM Etudiant WHERE id_Equipe IN (SELECT id FROM Equipe eq WHERE eq.id = (SELECT id_Equipe from Audit WHERE id = ?));");
-			preparedStmt.setString(1, id_Audit);
+			preparedStmt.setString(1, idAudit);
 			resultat = preparedStmt.executeQuery();
 			
 			while (resultat.next()) {
@@ -259,5 +278,17 @@ public class EtudiantDaoImpl implements EtudiantDao {
 		}
 		
 		return etudiants;
+	}
+
+	@Override
+	public void addEtudiant(Etudiant etudiant) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void updateEtudiant(String id, Etudiant etudiantUpdated) {
+		// TODO Auto-generated method stub
+		
 	}	
 }
