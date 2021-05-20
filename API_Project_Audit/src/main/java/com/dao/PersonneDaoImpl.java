@@ -96,7 +96,7 @@ public class PersonneDaoImpl implements PersonneDao {
 
     @Override
     public Personne getPersonneByMail(String mail) {
-        Personne personne = new Personne();
+        Personne personne = null;
         Connection connexion = null;
         Statement statement = null;
         ResultSet resultat = null;
@@ -109,6 +109,7 @@ public class PersonneDaoImpl implements PersonneDao {
 			preparedStatement.setString(1, mail);
 			resultat = preparedStatement.executeQuery();
 			while (resultat.next()) {
+				personne= new Personne();
             	String id = resultat.getString("id");
                 String nom = resultat.getString("nom");
                 String prenom = resultat.getString("prenom");
