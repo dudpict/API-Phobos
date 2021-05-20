@@ -2,6 +2,8 @@ package com.controller;
 
 import java.util.ArrayList;
 
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -9,7 +11,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.beans.Etudiant;
-import com.beans.Personne;
 import com.dao.DaoFactory;
 import com.dao.EtudiantDao;
 
@@ -49,6 +50,16 @@ public class PhobosControllerEtudiant {
 		return etudiantDao.etudiantByStr(search);
 	}
 	
+	@RequestMapping(value = "/EtudiantByPersonneID", method = RequestMethod.GET)
+	@ResponseBody
+	public Etudiant appelGET_EtudiantByPersonneID(@RequestParam(required = true, value = "idPersonne") String idPersonne) {
+		System.out.println("Appel GET EtudiantByPersonneID");
+
+		DaoFactory fact = new DaoFactory();
+		EtudiantDao etudiantDao = fact.getEtudiantDao();
+		return etudiantDao.getEtudiantByPersonneID(idPersonne);
+	}
+	
 	@RequestMapping(value = "/etudiantByAudit", method = RequestMethod.GET)
 	@ResponseBody
 	public ArrayList<Etudiant> appelGET_etudiantByAudit(@RequestParam(required = true, value = "id_Audit") String id_Audit) {
@@ -59,23 +70,14 @@ public class PhobosControllerEtudiant {
 		return etudiantDao.etudiantByAudit(id_Audit);
 	}
 
-	@RequestMapping(value = "/etudiant", method = RequestMethod.POST)
+	@PostMapping(value = "/addetudiant")
 	@ResponseBody
-	public void appelPost_etudiant(@RequestParam(required = false, value = "promo") String promo,
-			@RequestParam(required = false, value = "id") String id,
-			@RequestParam(required = false, value = "classe") String classe,
-			@RequestParam(required = false, value = "nom") String nom,
-			@RequestParam(required = false, value = "prenom") String prenom,
-			@RequestParam(required = false, value = "email") String email,
-			@RequestParam(required = false, value = "tel") String tel) {
-
-		Personne personneToAdd = new Personne(nom, prenom, email, tel);
-		Etudiant etudiantToAdd = new Etudiant(promo, classe, personneToAdd);
+	public void appelPost_addetudiant(@RequestBody Etudiant etudiant) {
+		System.out.println("appelPost_addetudiant");
 
 		DaoFactory fact = new DaoFactory();
-
 		EtudiantDao etudiantDao = fact.getEtudiantDao();
-		etudiantDao.addEtudiant(etudiantToAdd);
+		etudiantDao.addEtudiant(etudiant);
 	}
 	
 	

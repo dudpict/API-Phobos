@@ -171,7 +171,7 @@ public class ReponseDaoImpl implements ReponseDao {
 			preparedStmt = connexion.prepareStatement("INSERT INTO Reponse (ReponseLongue, Note, ReponseCourte, ID_question) VALUES (?,?,?,?);");
 			preparedStmt.setString(1, ReponseLongue);
 			preparedStmt.setInt(2, Note);
-			preparedStmt.setBoolean(3, ReponseCourte);
+			preparedStmt.setBoolean(3,ReponseCourte);
 			preparedStmt.setString(4, idQuestion);
 			preparedStmt.executeQuery();
 			

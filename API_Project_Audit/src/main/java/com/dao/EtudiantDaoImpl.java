@@ -12,7 +12,6 @@ import org.apache.log4j.Logger;
 
 import com.beans.Etudiant;
 import com.beans.Personne;
-import com.beans.ReponseMultiple;
 
 public class EtudiantDaoImpl implements EtudiantDao {
 
@@ -122,24 +121,33 @@ public class EtudiantDaoImpl implements EtudiantDao {
 	}
 
 	@Override
-	public void addEtudiant(String promo, String classe, int idPersonne, int idEquipe,  int idroleUtilisateur, Personne personne ) {
+	public void addEtudiant(Etudiant etudiant) {
+		
 		Connection connexion = null;
 		Statement statement = null;
 		ResultSet resultat = null;
 		PreparedStatement preparedStmt = null;
 		
+		DaoFactory fact = new DaoFactory();
+		PersonneDao personneDao = fact.getPersonneDao();
 		
+		
+		System.out.println("promo "+etudiant.getClasse());
+		System.out.println("id personne "+etudiant.getPersonne().getId());
+		Personne personne1 = personneDao.getPersonneById(etudiant.getPersonne().getId());
+		if (personne1 ==null) {
+			personneDao.addPersonne(etudiant.getPersonne());
+			personne1 = personneDao.getPersonneByMail(etudiant.getPersonne().getEmail());
+		}
 		
 		
 		try {
 			connexion = daoFactory.getConnection();
 			statement = connexion.createStatement();
-			preparedStmt = connexion.prepareStatement("INSERT INTO Etudiant(promo, classe, id_Personne, id_Equipe, id_roleUtilisateur) VALUES (?,?,?,?,?);");
-			preparedStmt.setString(1, promo);
-			preparedStmt.setString(2, classe);
-			preparedStmt.setInt(3, idPersonne);
-			preparedStmt.setInt(4, idEquipe);
-			preparedStmt.setInt(5, idroleUtilisateur);
+			preparedStmt = connexion.prepareStatement("INSERT INTO Etudiant(promo, classe, id_Personne) VALUES (?,?,?);");
+			preparedStmt.setString(1, etudiant.getPromo());
+			preparedStmt.setString(2, etudiant.getClasse());
+			preparedStmt.setInt(3, personne1.getId());
 			resultat = preparedStmt.executeQuery();
 			
 			
@@ -279,12 +287,48 @@ public class EtudiantDaoImpl implements EtudiantDao {
 		
 		return etudiants;
 	}
-
+	
 	@Override
-	public void addEtudiant(Etudiant etudiant) {
-		// TODO Auto-generated method stub
+	public Etudiant getEtudiantByPersonneID(String idPersonne){
+		Etudiant etudiant = null;
+		Connection connexion = null;
+		Statement statement = null;
+		ResultSet resultat = null;
+		PreparedStatement preparedStmt = null;
+
+		try {
+			connexion = daoFactory.getConnection();
+			statement = connexion.createStatement();
+			preparedStmt = connexion.prepareStatement("SELECT * FROM Etudiant WHERE id_Personne = ?;");
+			preparedStmt.setString(1, idPersonne);
+			resultat = preparedStmt.executeQuery();
+			
+			while (resultat.next()) {
+				int id = resultat.getInt("id");
+                String classe = resultat.getString("classe");
+                String promo = resultat.getString("promo");
+                int personneID = resultat.getInt("id_Personne");
+
+        		PersonneDao personneDao = daoFactory.getPersonneDao();
+        		Personne personne  = personneDao.getPersonneById(personneID);
+        		etudiant = new Etudiant();
+                etudiant.setId(id);
+                etudiant.setPromo(promo);
+                etudiant.setClasse(classe);
+                etudiant.setPersonne(personne);
+	           
+			}
+		} catch (SQLException e) {
+			logger.log(Level.INFO, "sql problem", e);
+
+		}finally {
+			daoFactory.close(connexion,statement,preparedStmt,resultat);			
+		}
 		
+		return etudiant;
 	}
+
+	
 
 	@Override
 	public void updateEtudiant(String id, Etudiant etudiantUpdated) {
