@@ -132,7 +132,7 @@ public class PersonneDaoImpl implements PersonneDao {
     }
     
     @Override
-    public void addPersonne(String nom, String prenom, String email, String tel) {
+    public Personne addPersonne(Personne personne) {
         Connection connexion = null;
         Statement statement = null;
         PreparedStatement preparedStatement= null;
@@ -141,10 +141,10 @@ public class PersonneDaoImpl implements PersonneDao {
         	connexion = daoFactory.getConnection();
 			statement = connexion.createStatement();
 			preparedStatement = connexion.prepareStatement("INSERT INTO Personne(nom, prenom, email, tel) VALUES (?,?,?,?) ;");
-			preparedStatement.setString(1, nom);
-			preparedStatement.setString(2, prenom);
-			preparedStatement.setString(3, email);
-			preparedStatement.setString(4, tel);
+			preparedStatement.setString(1, personne.getNom());
+			preparedStatement.setString(2, personne.getPrenom());
+			preparedStatement.setString(3, personne.getEmail());
+			preparedStatement.setString(4, personne.getTelephone());
 			preparedStatement.executeQuery();
 			
             
@@ -153,6 +153,7 @@ public class PersonneDaoImpl implements PersonneDao {
 		}finally {
 			daoFactory.close(connexion,statement,preparedStatement,null);	
 		}
+		return personne;
     }
     
     

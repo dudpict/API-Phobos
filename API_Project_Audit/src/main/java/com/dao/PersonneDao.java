@@ -9,5 +9,5 @@ public interface PersonneDao {
 	Personne getPersonneById(int id);
 
 	Personne getPersonneByMail(String mail);
-	void addPersonne(String nom, String prenom, String email, String tel);
+	public Personne addPersonne(Personne personne);
 }
