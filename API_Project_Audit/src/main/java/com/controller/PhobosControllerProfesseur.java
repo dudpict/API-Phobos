@@ -15,8 +15,9 @@ import com.dao.DaoFactory;
 import com.dao.ProfesseurDao;
 
 @RestController
+@CrossOrigin(origins = "*")
 public class PhobosControllerProfesseur {
-	@CrossOrigin(origins = "*")
+	
 	@RequestMapping(value = "/professeur", method = RequestMethod.GET)
 	@ResponseBody
 	public ArrayList<Professeur> appelGET_professeur() {

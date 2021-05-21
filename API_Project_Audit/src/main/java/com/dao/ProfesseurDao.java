@@ -18,4 +18,5 @@ public interface ProfesseurDao {
 	void addProfesseurToJuryId(String AppartientId, String id_Professeur);
 	void removeProfesseurToJuryId(String Id_Jury, String id_Professeur);
 	ArrayList<Professeur> professeurByAudit(String id_Audit);	
+	public String getRoleProf ( String id);
 }
