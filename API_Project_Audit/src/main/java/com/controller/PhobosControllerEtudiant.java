@@ -95,7 +95,7 @@ public class PhobosControllerEtudiant {
 	}
 	
 	
-	@RequestMapping(value = "/addEtudiantToEquipeId", method = RequestMethod.POST)
+	@PostMapping(value = "/addEtudiantToEquipeId")
 	@ResponseBody
 	public void appelPost_addEtudiantToEquipeId(@RequestParam(required = true, value = "id_Equipe") String id_Equipe,
 									@RequestParam(required = true, value = "id") String id) {
@@ -105,7 +105,7 @@ public class PhobosControllerEtudiant {
 		etudiantDao.addEtudiantToEquipeId(id_Equipe, id);
 	}
 	
-	@RequestMapping(value = "/removeEtudiantToEquipeId", method = RequestMethod.POST)
+	@PostMapping(value = "/removeEtudiantToEquipeId")
 	@ResponseBody
 	public void appelPost_removeEtudiantToEquipeId(@RequestParam(required = true, value = "id") String id) {
 		System.out.println("appelPost_removeEtudiantToEquipeId");

@@ -2,8 +2,11 @@ package com.controller;
 
 import java.util.ArrayList;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -21,11 +24,13 @@ import com.dao.DaoFactory;
 @RestController
 public class PhobosControllerAudit {
 
+	private static final Logger logger = Logger.getLogger(PhobosControllerAudit.class);
+	
 	@Autowired
 	AuditBLO auditBLO;
 
 	
-	@RequestMapping(value = "/audits", method = RequestMethod.GET)
+	@GetMapping(value = "/audits")
 	@ResponseBody	
 	public ArrayList<Audit> triAudit(@RequestParam(required = false, value="matiereId") String matiereId, 
 			@RequestParam(required = false, value="lieuId") String lieuId ,
@@ -34,7 +39,7 @@ public class PhobosControllerAudit {
 			@RequestParam(required = false, value="etat") String etat,
 			@RequestParam(required = true, value = "id") String id,
 			@RequestParam(required = true, value = "role") String role) {
-		
+		logger.log(Level.INFO, "appel get triAudit");
 		return auditBLO.getFilteredAudit(matiereId,lieuId,titre,juryId,etat,id,role);
 		
 	}
@@ -48,6 +53,16 @@ public class PhobosControllerAudit {
 		DaoFactory fact = new DaoFactory();
 		AuditModifDao AuditModifDao = fact.getAuditModifDao();
 		return AuditModifDao.getModifiAudit(id);		
+	}
+	
+	@GetMapping(value = "/isPersonneIsInAudit")
+	@ResponseBody
+	public ArrayList<Audit> appelGET_isPersonneIsInAudit(@RequestParam(required = true, value = "idPersonne") String idPersonne) {
+		System.out.println("appelGET_isPersonneIsInAudit");
+
+		DaoFactory fact = new DaoFactory();
+		AuditDao auditDao = fact.getAuditDao();
+		return auditDao.isPersonneIsInAudit(idPersonne);
 	}
 	
 	@RequestMapping(value = "/auditsAll", method = RequestMethod.GET)

@@ -31,6 +31,16 @@ public class PhobosControllerNotification {
 		return notificationDao.getNotificationByAudit(idAudit);
 	}
 	
+	@GetMapping(value = "/getNotificationByPersonneId")
+	@ResponseBody
+	public ArrayList<Notification> getNotificationByPersonneId(@RequestParam(required = true, value = "idPersonne") String idPersonne) {
+		logger.log(Level.INFO, "appel get getNotificationByPersonneId");
+		DaoFactory fact = new DaoFactory();
+		NotificationDao notificationDao = fact.getNotificationDao();
+		
+		return notificationDao.getNotificationByPersonneId(idPersonne);
+	}
+	
 	@GetMapping(value = "/notificationByEquipe")
 	@ResponseBody
 	public ArrayList<Notification> getNotificationByEquipe(@RequestParam(required = true, value = "idEquipe") String idEquipe) {
@@ -44,7 +54,7 @@ public class PhobosControllerNotification {
 	@GetMapping(value = "/NotificationByMatiere")
 	@ResponseBody
 	public ArrayList<Notification> getNotificationByMatiere(@RequestParam(required = true, value = "idmatiere") String idmatiere) {
-		logger.log(Level.INFO, "appel get getNotificationByEquipe");
+		logger.log(Level.INFO, "appel get getNotificationByMatiere");
 		DaoFactory fact = new DaoFactory();
 		NotificationDao notificationDao = fact.getNotificationDao();
 		

@@ -19,7 +19,7 @@ public class PhobosControllerQuestion {
 	//APPEL GET
 	
 	// SELECT d'une question par son id de section
-	@RequestMapping(value = "/questionBySection", method = RequestMethod.GET)
+	@RequestMapping(value = "/questionBySectionId", method = RequestMethod.GET)
 	@ResponseBody
 	public ArrayList<Question> getQuestionsBySectionId(@RequestParam(required = false, value = "id") String id) {
 		System.out.println("méthode GET, getQuestionsBySectionId");

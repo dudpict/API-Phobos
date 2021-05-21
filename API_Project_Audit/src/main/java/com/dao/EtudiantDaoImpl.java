@@ -10,12 +10,13 @@ import java.util.ArrayList;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
+import com.beans.Equipe;
 import com.beans.Etudiant;
 import com.beans.Personne;
 
 public class EtudiantDaoImpl implements EtudiantDao {
 
-	private static final Logger logger = Logger.getLogger(ReponseMultipleDaoImpl.class);
+	private static final Logger logger = Logger.getLogger(EtudiantDaoImpl.class);
 	private DaoFactory daoFactory;
 
 	EtudiantDaoImpl(DaoFactory daoFactory) {
@@ -24,7 +25,7 @@ public class EtudiantDaoImpl implements EtudiantDao {
     
     @Override
     public ArrayList<Etudiant> getEtudiants() {
-    	ArrayList<Etudiant> etudiants = new ArrayList<Etudiant>();
+    	ArrayList<Etudiant> etudiants = new ArrayList<>();
         Connection connexion = null;
         Statement statement = null;
         ResultSet resultat = null;
@@ -40,28 +41,27 @@ public class EtudiantDaoImpl implements EtudiantDao {
                 String classe = resultat.getString("classe");
                 String promo = resultat.getString("promo");
                 int personneID = resultat.getInt("id_Personne");
-//                int equipeID = resultat.getInt("id_Equipe");
-//                int roleUserID = resultat.getInt("id_roleUtilisateur");
+
                 
                 //Récupére l'instance de Prsonne via l'id
         		PersonneDao personneDao = daoFactory.getPersonneDao();
         		Personne personne  = personneDao.getPersonneById(personneID);
         		        		
-        		//TODO IMPLEMENTER EQUIPE ET ROLE UTILISATEUR
                 Etudiant etudiant = new Etudiant();
                 etudiant.setId(Integer.valueOf(id));
                 etudiant.setPromo(promo);
                 etudiant.setClasse(classe);
                 etudiant.setPersonne(personne);
-                
-//                connexion.close();
 
                 etudiants.add(etudiant);
                 
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        }catch (SQLException e) {
+			logger.log(Level.INFO, "sql problem getEtudiantById", e);
+
+		}finally {
+			daoFactory.close(connexion,statement,null,resultat);			
+		}
         return etudiants;
     }
     
@@ -77,20 +77,17 @@ public class EtudiantDaoImpl implements EtudiantDao {
             statement = connexion.createStatement();
             resultat = statement.executeQuery("SELECT * FROM Etudiant WHERE id="+id+";");
             connexion.close();
-            System.out.println("apelle etudiant id "+id);
+           
             while (resultat.next()) {
             	String id2 = resultat.getString("id");
                 String classe = resultat.getString("classe");
                 String promo = resultat.getString("promo");
                 int personneID = resultat.getInt("id_Personne");
-                int equipeID = resultat.getInt("id_Equipe");
-                int roleUserID = resultat.getInt("id_roleUtilisateur");
                 
                 //Récupére l'instance de Prsonne via l'id
         		PersonneDao personneDao = daoFactory.getPersonneDao();
         		Personne personne  = personneDao.getPersonneById(personneID);
         		        		
-        		//TODO IMPLEMENTER EQUIPE ET ROLE UTILISATEUR
                 etudiant.setId(Integer.valueOf(id2));
                 etudiant.setPromo(promo);
                 etudiant.setClasse(classe);
@@ -98,24 +95,28 @@ public class EtudiantDaoImpl implements EtudiantDao {
                 
             }
         } catch (SQLException e) {
-            e.printStackTrace();
-        }
+			logger.log(Level.INFO, "sql problem getEtudiantById", e);
+
+		}finally {
+			daoFactory.close(connexion,statement,null,resultat);			
+		}
         return etudiant;
 	}
 
 	@Override
 	public void deleteEtudiant(String id) {
 		Connection connexion = null;
-
+		PreparedStatement preparedStmt = null;
 		try {
 			connexion = daoFactory.getConnection();
 			String requete = "DELETE * FROM Etudiant WHERE id=?";
-			PreparedStatement preparedStmt = connexion.prepareStatement(requete);
+			preparedStmt = connexion.prepareStatement(requete);
 			preparedStmt.setString(1, id);
 			preparedStmt.execute();
-			connexion.close();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.log(Level.INFO, "sql problem deleteEtudiant", e);
+		}finally {
+			daoFactory.close(connexion,null,preparedStmt,null);			
 		}
 		
 	}
@@ -131,19 +132,13 @@ public class EtudiantDaoImpl implements EtudiantDao {
 		DaoFactory fact = new DaoFactory();
 		PersonneDao personneDao = fact.getPersonneDao();
 		
-		
-		System.out.println("promo "+etudiant.getClasse());
-		System.out.println("id personne "+etudiant.getPersonne().getId());
-		
 		Personne personne1 = personneDao.getPersonneById(etudiant.getPersonne().getId());
 		
 		if (personne1.getId()==0) {
-			System.out.println("null ");
 			personneDao.addPersonne(etudiant.getPersonne());
 			personne1 = personneDao.getPersonneByMail(etudiant.getPersonne().getEmail());
 		}
 		
-		System.out.println("id personne "+personne1.getId());
 		try {
 			connexion = daoFactory.getConnection();
 			statement = connexion.createStatement();
@@ -162,7 +157,6 @@ public class EtudiantDaoImpl implements EtudiantDao {
 		}
 		
 	}
-	
 	
 	@Override
 	public void addEtudiantToEquipeId(String idEquipe, String id) {
@@ -204,8 +198,7 @@ public class EtudiantDaoImpl implements EtudiantDao {
 			daoFactory.close(connexion,statement,preparedStmt,null);			
 		}
 	}
-	
-	
+		
 	@Override
 	public ArrayList<Etudiant> etudiantByStr(String search){
 		ArrayList<Etudiant> etudiants = new ArrayList<>();
@@ -240,7 +233,7 @@ public class EtudiantDaoImpl implements EtudiantDao {
 	            etudiants.add(etudiant);
 			}
 		} catch (SQLException e) {
-			logger.log(Level.INFO, "sql problem", e);
+			logger.log(Level.INFO, "sql problem etudiantByStr", e);
 
 		}finally {
 			daoFactory.close(connexion,statement,preparedStmt,resultat);			
@@ -282,7 +275,7 @@ public class EtudiantDaoImpl implements EtudiantDao {
 	            etudiants.add(etudiant);
 			}
 		} catch (SQLException e) {
-			logger.log(Level.INFO, "sql problem", e);
+			logger.log(Level.INFO, "sql problem etudiantByAudit", e);
 
 		}finally {
 			daoFactory.close(connexion,statement,preparedStmt,resultat);			
@@ -330,12 +323,41 @@ public class EtudiantDaoImpl implements EtudiantDao {
 		
 		return etudiant;
 	}
-
 	
-
+	
 	@Override
-	public void updateEtudiant(String id, Etudiant etudiantUpdated) {
-		// TODO Auto-generated method stub
+	public Equipe isPersonneIsInTeam(String idPersonne){
+		String idTeam ="-1";
 		
-	}	
+		EquipeDao equipeDao = daoFactory.getEquipeDao();
+		Equipe equipe = new Equipe();
+		equipe=null;
+		
+		Connection connexion = null;
+		Statement statement = null;
+		ResultSet resultat = null;
+		PreparedStatement preparedStmt = null;
+
+		try {
+			connexion = daoFactory.getConnection();
+			statement = connexion.createStatement();
+			preparedStmt = connexion.prepareStatement("SELECT id_Equipe FROM Etudiant WHERE id_Personne = ?;");
+			preparedStmt.setString(1, idPersonne);
+			resultat = preparedStmt.executeQuery();
+			
+			while (resultat.next()) {
+				idTeam = resultat.getString("id_Equipe");
+				equipe = equipeDao.getEquipeById(idTeam);
+			}
+		} catch (SQLException e) {
+			logger.log(Level.INFO, "sql problem", e);
+
+		}finally {
+			daoFactory.close(connexion,statement,preparedStmt,resultat);			
+		}
+				
+		return equipe;
+		
+	}
+	
 }

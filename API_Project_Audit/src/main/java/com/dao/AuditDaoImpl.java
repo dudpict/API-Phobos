@@ -90,37 +90,42 @@ public class AuditDaoImpl implements AuditDao {
 		return audits;
 	}
 	
-	/*
 	@Override
-	public ArrayList<Audit> getAuditByPersonneId(String idPersonne){
+	public ArrayList<Audit> isPersonneIsInAudit(String idPersonne){
+		String idAudit ="-1";
+		
 		ArrayList<Audit> audits = new ArrayList<>();
+		AuditDao auditDao =daoFactory.getAuditDao(); 
+		
 		Connection connexion = null;
 		Statement statement = null;
 		ResultSet resultat = null;
 		PreparedStatement preparedStmt = null;
-        
-        try {
-        	connexion = daoFactory.getConnection();
-			statement = connexion.createStatement();
-			preparedStmt = connexion.prepareStatement("SELECT * FROM Etudiant WHERE id = ? ;");
-			preparedStmt.setString(1, idEtudiant);
-			resultat = preparedStmt.executeQuery();        	
-            
-            while (resultat.next()) {
-            	EquipeDao equipeDao = daoFactory.getEquipeDao();
-            	equipe = equipeDao.getEquipeById(resultat.getString("id_Equipe"));
-            	
-            }
-            
 
-        } catch (SQLException e) {
-			logger.log(Level.INFO, "sql problem", e);
+		try {
+			connexion = daoFactory.getConnection();
+			statement = connexion.createStatement();
+			preparedStmt = connexion.prepareStatement("SELECT id FROM Audit where id_Equipe IN (SELECT id_Equipe FROM Etudiant WHERE id_Personne =? ) OR id_Jury IN (SELECT a.id FROM appartient a, Professeur p WHERE a.id_Professeur=p.id AND p.id_Personne=?);");
+			preparedStmt.setString(1, idPersonne);
+			preparedStmt.setString(2, idPersonne);
+			resultat = preparedStmt.executeQuery();
+			
+			while (resultat.next()) {
+				idAudit = resultat.getString("id");
+				audits.add(auditDao.getAuditById(idAudit));
+	           
+			}
+		} catch (SQLException e) {
+			logger.log(Level.INFO, "sql problem isPersonneIsInAudit", e);
 
 		}finally {
 			daoFactory.close(connexion,statement,preparedStmt,resultat);			
 		}
+		if(idAudit.equals("-1")) {
+			audits = null;
+		}		
 		return audits;
-	}*/
+	}
 	
 	@Override
 	public ArrayList<Audit> auditByEtudiantId(String idEtudiant){
@@ -541,7 +546,6 @@ public class AuditDaoImpl implements AuditDao {
 				auditTemp.setDateFin(resultat.getString("dateFin"));
 				auditTemp.setDateLimite(resultat.getString("dateLimite"));
 				auditTemp.setModeDate(resultat.getString("dateMode"));
-				// TODO Implementer un object Matiere, Jury, Modele et Lieu
 				// Récupére l'instance de Prsonne via l'id
 				MatiereDao matiereDao = daoFactory.getMatiereDao();
 				Matiere matiereInstance = matiereDao.getMatiereById(matiereID);

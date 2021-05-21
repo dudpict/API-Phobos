@@ -15,5 +15,9 @@ public interface NotificationDao {
 	ArrayList<Notification> getNotificationByUe(String idUE);
 
 	void addNotification(Notification notification);
+
+	Notification getNotificationById(String idNotif);
+
+	ArrayList<Notification> getNotificationByPersonneId(String idPersonne);
 	
 }

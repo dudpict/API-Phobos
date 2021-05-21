@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.beans.Equipe;
 import com.beans.Personne;
 import com.dao.DaoFactory;
+import com.dao.EtudiantDao;
 import com.dao.PersonneDao;
 @CrossOrigin(origins = "*")
 @RestController
@@ -37,6 +39,16 @@ public class PhobosControllerPersonne {
 		PersonneDao personneDao = fact.getPersonneDao();
 	
 		return personneDao.addPersonne(personne);
+	}
+	
+	@GetMapping(value = "/isPersonneIsInTeam")
+	@ResponseBody
+	public Equipe appelgetIsPersonneIsInTeam(@RequestParam(required = true, value = "idPersonne") String idPersonne) {
+		logger.log(Level.INFO, " appelGet_isPersonneIsInTeam");
+
+		DaoFactory fact = new DaoFactory();
+		EtudiantDao etudiantDao = fact.getEtudiantDao();
+		return etudiantDao.isPersonneIsInTeam(idPersonne);
 	}
 	
 }

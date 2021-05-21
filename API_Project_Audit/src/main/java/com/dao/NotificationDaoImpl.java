@@ -26,6 +26,83 @@ public class NotificationDaoImpl implements NotificationDao {
 	}
 	
 	@Override
+	public Notification getNotificationById(String idNotif) {
+		Connection connexion = null;
+		ResultSet resultat = null;
+		Statement statement = null;
+		PreparedStatement preparedStatement = null;
+		Notification notification = new Notification();
+
+		try {
+			connexion = daoFactory.getConnection();
+			statement = connexion.createStatement();
+			preparedStatement = connexion.prepareStatement("SELECT * FROM Notification WHERE id = ? ;");
+			preparedStatement.setString(1, idNotif);
+			resultat = preparedStatement.executeQuery();
+
+			while (resultat.next()) {
+				
+				int id = resultat.getInt("id");
+				String typeNotif = resultat.getString("type_notif");
+				String designation = resultat.getString("designation");
+				String etat = resultat.getString("etat");
+				String dateDeNotification = resultat.getString("date_creation");
+				int idAuditRs = resultat.getInt("id_Audit");
+							
+				notification.setId(id);
+				notification.setTypeNotif(typeNotif);
+				notification.setDesignation(designation);
+				notification.setEtat(etat);
+				notification.setDateDeNotification(dateDeNotification);
+				notification.setId_audit(idAuditRs);
+			}
+
+		} catch (SQLException e) {
+			logger.log(Level.INFO, "sql problem getNotificationByAudit", e);
+		}finally {
+			daoFactory.close(connexion,statement,preparedStatement,resultat);	
+		}
+		return notification;
+	}
+		
+	@Override
+	public ArrayList<Notification> getNotificationByPersonneId(String idPersonne) {
+		int id = -1;
+		Connection connexion = null;
+		ResultSet resultat = null;
+		Statement statement = null;
+		PreparedStatement preparedStatement = null;
+		
+		ArrayList<Notification> notificationsList = new ArrayList<>();
+		NotificationDao notificationDao = daoFactory.getNotificationDao();
+
+		try {
+			connexion = daoFactory.getConnection();
+			statement = connexion.createStatement();
+			preparedStatement = connexion.prepareStatement("SELECT * FROM Notification WHERE id_Personne = ? ;");
+			preparedStatement.setString(1, idPersonne);
+			resultat = preparedStatement.executeQuery();
+
+			while (resultat.next()) {				
+				id = resultat.getInt("id");				
+				
+				Notification notification = notificationDao.getNotificationById(Integer.toString(id));
+				notificationsList.add(notification);
+			}
+
+		} catch (SQLException e) {
+			logger.log(Level.INFO, "sql problem getNotificationByAudit", e);
+		}finally {
+			daoFactory.close(connexion,statement,preparedStatement,resultat);	
+		}
+		if(id==-1) {
+			notificationsList=null;
+		}
+		return notificationsList;
+	}
+	
+	
+	@Override
 	public ArrayList<Notification> getNotificationByAudit(String idAudit) {
 		Connection connexion = null;
 		ResultSet resultat = null;
@@ -89,7 +166,7 @@ public class NotificationDaoImpl implements NotificationDao {
 			}
 
 		} catch (SQLException e) {
-			logger.log(Level.INFO, "sql problem getAuditById", e);
+			logger.log(Level.INFO, "sql problem getNotificationByEquipe", e);
 		}finally {
 			daoFactory.close(connexion,statement,preparedStatement,resultat);	
 		}
@@ -117,7 +194,7 @@ public class NotificationDaoImpl implements NotificationDao {
 			}
 
 		} catch (SQLException e) {
-			logger.log(Level.INFO, "sql problem getAuditById", e);
+			logger.log(Level.INFO, "sql problem getNotificationByUe", e);
 		}finally {
 			daoFactory.close(connexion,statement,preparedStatement,resultat);	
 		}
