@@ -7,13 +7,17 @@ import com.beans.Notification;
 public interface NotificationDao {
 
 	ArrayList<Notification> getNotificationByAudit(String idAudit);
-
-	void addNotification(String typeNotif, String designation, String etat, String dateDeNotification, int idAudit);
-
+	
 	ArrayList<Notification> getNotificationByEquipe(String idEquipe);
 
 	ArrayList<Notification> getNotificationByMatiere(String idmatiere);
 
 	ArrayList<Notification> getNotificationByUe(String idUE);
+
+	void addNotification(Notification notification);
+
+	Notification getNotificationById(String idNotif);
+
+	ArrayList<Notification> getNotificationByPersonneId(String idPersonne);
 	
 }

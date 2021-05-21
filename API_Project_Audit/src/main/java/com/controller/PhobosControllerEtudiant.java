@@ -2,15 +2,19 @@ package com.controller;
 
 import java.util.ArrayList;
 
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.beans.Equipe;
 import com.beans.Etudiant;
-import com.beans.Personne;
 import com.dao.DaoFactory;
+import com.dao.EquipeDao;
 import com.dao.EtudiantDao;
 
 @RestController
@@ -49,6 +53,16 @@ public class PhobosControllerEtudiant {
 		return etudiantDao.etudiantByStr(search);
 	}
 	
+	@RequestMapping(value = "/etudiantByPersonneId", method = RequestMethod.GET)
+	@ResponseBody
+	public Etudiant appelGET_EtudiantByPersonneID(@RequestParam(required = true, value = "idPersonne") String idPersonne) {
+		System.out.println("Appel GET EtudiantByPersonneID");
+
+		DaoFactory fact = new DaoFactory();
+		EtudiantDao etudiantDao = fact.getEtudiantDao();
+		return etudiantDao.getEtudiantByPersonneID(idPersonne);
+	}
+	
 	@RequestMapping(value = "/etudiantByAudit", method = RequestMethod.GET)
 	@ResponseBody
 	public ArrayList<Etudiant> appelGET_etudiantByAudit(@RequestParam(required = true, value = "id_Audit") String id_Audit) {
@@ -58,28 +72,30 @@ public class PhobosControllerEtudiant {
 		EtudiantDao etudiantDao = fact.getEtudiantDao();
 		return etudiantDao.etudiantByAudit(id_Audit);
 	}
-
-	@RequestMapping(value = "/etudiant", method = RequestMethod.POST)
+	
+	@GetMapping(value = "/equipeByEtudiantId")
 	@ResponseBody
-	public void appelPost_etudiant(@RequestParam(required = false, value = "promo") String promo,
-			@RequestParam(required = false, value = "id") String id,
-			@RequestParam(required = false, value = "classe") String classe,
-			@RequestParam(required = false, value = "nom") String nom,
-			@RequestParam(required = false, value = "prenom") String prenom,
-			@RequestParam(required = false, value = "email") String email,
-			@RequestParam(required = false, value = "tel") String tel) {
-
-		Personne personneToAdd = new Personne(nom, prenom, email, tel);
-		Etudiant etudiantToAdd = new Etudiant(promo, classe, personneToAdd);
+	public Equipe appelGet_getEquipeByEtudiantId(@RequestParam(required = true, value = "idEtudiant") String idEtudiant) {
+		System.out.println("appelGet_getEquipeByEtudiantId");
 
 		DaoFactory fact = new DaoFactory();
+		EquipeDao equipeDao = fact.getEquipeDao();
+		return equipeDao.getEquipeByEtudiantId(idEtudiant);
+	}
+	
 
+	@PostMapping(value = "/addetudiant")
+	@ResponseBody
+	public void appelPost_addetudiant(@RequestBody Etudiant etudiant) {
+		System.out.println("appelPost_addetudiant");
+
+		DaoFactory fact = new DaoFactory();
 		EtudiantDao etudiantDao = fact.getEtudiantDao();
-		etudiantDao.addEtudiant(etudiantToAdd);
+		etudiantDao.addEtudiant(etudiant);
 	}
 	
 	
-	@RequestMapping(value = "/addEtudiantToEquipeId", method = RequestMethod.POST)
+	@PostMapping(value = "/addEtudiantToEquipeId")
 	@ResponseBody
 	public void appelPost_addEtudiantToEquipeId(@RequestParam(required = true, value = "id_Equipe") String id_Equipe,
 									@RequestParam(required = true, value = "id") String id) {
@@ -89,7 +105,7 @@ public class PhobosControllerEtudiant {
 		etudiantDao.addEtudiantToEquipeId(id_Equipe, id);
 	}
 	
-	@RequestMapping(value = "/removeEtudiantToEquipeId", method = RequestMethod.POST)
+	@PostMapping(value = "/removeEtudiantToEquipeId")
 	@ResponseBody
 	public void appelPost_removeEtudiantToEquipeId(@RequestParam(required = true, value = "id") String id) {
 		System.out.println("appelPost_removeEtudiantToEquipeId");

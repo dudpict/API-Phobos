@@ -2,7 +2,6 @@ package com.beans;
 
 public class Personne {
 	
-	private static int idCount = 0;
 	int id;
 	String nom;
 	String prenom;
@@ -10,14 +9,11 @@ public class Personne {
 	String telephone;
 	
 	public Personne() {
-		this.id=idCount;
-		idCount++;
+			super();
 		}
 	
 	public Personne(String nom, String prenom, String email, String telephone) {
 		super();
-
-		this.id = idCount;
 		this.nom = nom;
 		this.prenom = prenom;
 		this.email = email;

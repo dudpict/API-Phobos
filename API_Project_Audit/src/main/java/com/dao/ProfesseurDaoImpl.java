@@ -11,7 +11,6 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import com.beans.Audit;
-import com.beans.Etudiant;
 import com.beans.Personne;
 import com.beans.Professeur;
 
@@ -67,6 +66,8 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 
 	@Override
 	public Professeur getProfesseurById(String id) {
+		
+		
 		Connection connexion = null;
 		Statement statement = null;
 		ResultSet resultat = null;
@@ -106,9 +107,80 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 	}
 
 	@Override
-	public void addProfesseur(ProfesseurDao professeurDao) {
-		// TODO Auto-generated method stub
+	public Professeur getProfesseurByPersonneID(String idPersonne){
+		Professeur professeur = null;
+		Connection connexion = null;
+		Statement statement = null;
+		ResultSet resultat = null;
+		PreparedStatement preparedStmt = null;
 
+		try {
+			connexion = daoFactory.getConnection();
+			statement = connexion.createStatement();
+			preparedStmt = connexion.prepareStatement("SELECT * FROM Professeur WHERE id_Personne = ?;");
+			preparedStmt.setString(1, idPersonne);
+			resultat = preparedStmt.executeQuery();
+			
+			while (resultat.next()) {
+				int id = resultat.getInt("id");
+				String bureau = resultat.getString("bureau");
+				int personneID = resultat.getInt("id_Personne");
+
+				PersonneDao personneDao = daoFactory.getPersonneDao();
+				Personne personne = personneDao.getPersonneById(personneID);
+				professeur = new Professeur();
+				professeur.setId(id);
+				professeur.setBureau(bureau);
+				professeur.setPersonne(personne);
+	           
+			}
+		} catch (SQLException e) {
+			logger.log(Level.INFO, "sql problem", e);
+
+		}finally {
+			daoFactory.close(connexion,statement,preparedStmt,resultat);			
+		}
+		
+		return professeur;
+	}
+	
+	
+	@Override
+	public void addProfesseur(Professeur professeur) {
+			
+		Connection connexion = null;
+		Statement statement = null;
+		ResultSet resultat = null;
+		PreparedStatement preparedStmt = null;
+		
+		DaoFactory fact = new DaoFactory();
+		PersonneDao personneDao = fact.getPersonneDao();
+		
+		
+		Personne personne1 = personneDao.getPersonneById(professeur.getPersonne().getId());
+		
+		if (personne1.getId()==0) {
+			personneDao.addPersonne(professeur.getPersonne());
+			personne1 = personneDao.getPersonneByMail(professeur.getPersonne().getEmail());
+		}
+		
+		System.out.println("id personne "+personne1.getId());
+		try {
+			connexion = daoFactory.getConnection();
+			statement = connexion.createStatement();
+			preparedStmt = connexion.prepareStatement("INSERT INTO Professeur(bureau, id_Personne) VALUES (?,?);");
+			preparedStmt.setString(1, professeur.getBureau());
+			preparedStmt.setInt(2, personne1.getId());
+			resultat = preparedStmt.executeQuery();
+			
+			
+		} catch (SQLException e) {
+			logger.log(Level.INFO, "sql problem addProfesseur", e);
+
+		}finally {
+			daoFactory.close(connexion,statement,preparedStmt,resultat);			
+		}
+		
 	}
 
 	@Override

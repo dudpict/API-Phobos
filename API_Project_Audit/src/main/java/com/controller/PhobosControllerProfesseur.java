@@ -73,7 +73,7 @@ public class PhobosControllerProfesseur {
 		Professeur professeurToAdd = new Professeur();
 		DaoFactory fact = new DaoFactory();
 		ProfesseurDao professeurDao = fact.getProfesseurDao();
-		professeurDao.addProfesseur(professeurDao);
+		professeurDao.addProfesseur(professeurToAdd);
 	}
 	
 	@RequestMapping(value = "/addProfesseurToJuryId", method = RequestMethod.POST)
@@ -106,5 +106,14 @@ public class PhobosControllerProfesseur {
 		DaoFactory fact = new DaoFactory();
 		ProfesseurDao professeurDao = fact.getProfesseurDao();
 		professeurDao.removeProfesseurToJuryId(Id_Jury, id_Professeur);;
+	}
+	
+	@RequestMapping(value= "/roleProfesseur" , method = RequestMethod.GET)
+	@ResponseBody
+	public String roleProf (@RequestParam(required= true) String id) {
+		DaoFactory fact = new DaoFactory();
+		ProfesseurDao professeurDao = fact.getProfesseurDao();
+		return professeurDao.getRoleProf ( id);
+		
 	}
 }
