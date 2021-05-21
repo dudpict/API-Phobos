@@ -122,7 +122,7 @@ public class EtudiantDaoImpl implements EtudiantDao {
 
 	@Override
 	public void addEtudiant(Etudiant etudiant) {
-		
+			
 		Connection connexion = null;
 		Statement statement = null;
 		ResultSet resultat = null;
@@ -134,13 +134,16 @@ public class EtudiantDaoImpl implements EtudiantDao {
 		
 		System.out.println("promo "+etudiant.getClasse());
 		System.out.println("id personne "+etudiant.getPersonne().getId());
+		
 		Personne personne1 = personneDao.getPersonneById(etudiant.getPersonne().getId());
-		if (personne1 ==null) {
+		
+		if (personne1.getId()==0) {
+			System.out.println("null ");
 			personneDao.addPersonne(etudiant.getPersonne());
 			personne1 = personneDao.getPersonneByMail(etudiant.getPersonne().getEmail());
 		}
 		
-		
+		System.out.println("id personne "+personne1.getId());
 		try {
 			connexion = daoFactory.getConnection();
 			statement = connexion.createStatement();

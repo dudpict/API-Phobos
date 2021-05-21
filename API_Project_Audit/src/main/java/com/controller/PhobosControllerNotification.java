@@ -1,8 +1,5 @@
 package com.controller;
 
-import java.sql.Date;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import org.apache.log4j.Level;
@@ -10,6 +7,7 @@ import org.apache.log4j.Logger;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -65,17 +63,12 @@ public class PhobosControllerNotification {
 	
 	@PostMapping(value = "/addNotification")
 	@ResponseBody
-	public void addNotification(@RequestParam(required = true, value = "typeNotif") String typeNotif,
-								@RequestParam(required = true, value = "designation") String designation,
-								@RequestParam(required = true, value = "etat") String etat,
-								@RequestParam(required = true, value = "dateDeNotification") Date dateDeNotification,
-								@RequestParam(required = true, value = "idAudit") int idAudit) {
+	public void addNotification(@RequestBody Notification notification) {
 		logger.log(Level.INFO, "appel get getnotificationByAudit");
 		DaoFactory fact = new DaoFactory();
 		NotificationDao notificationDao = fact.getNotificationDao();
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");  
 		
-		notificationDao.addNotification(typeNotif, designation, etat, dateFormat.format(dateDeNotification), idAudit);
+		notificationDao.addNotification(notification);
 	}
 	
 }

@@ -2,6 +2,7 @@ package com.controller;
 
 import java.util.ArrayList;
 
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,8 +11,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.beans.Equipe;
 import com.beans.Etudiant;
 import com.dao.DaoFactory;
+import com.dao.EquipeDao;
 import com.dao.EtudiantDao;
 
 @RestController
@@ -50,7 +53,7 @@ public class PhobosControllerEtudiant {
 		return etudiantDao.etudiantByStr(search);
 	}
 	
-	@RequestMapping(value = "/EtudiantByPersonneID", method = RequestMethod.GET)
+	@RequestMapping(value = "/etudiantByPersonneId", method = RequestMethod.GET)
 	@ResponseBody
 	public Etudiant appelGET_EtudiantByPersonneID(@RequestParam(required = true, value = "idPersonne") String idPersonne) {
 		System.out.println("Appel GET EtudiantByPersonneID");
@@ -69,6 +72,17 @@ public class PhobosControllerEtudiant {
 		EtudiantDao etudiantDao = fact.getEtudiantDao();
 		return etudiantDao.etudiantByAudit(id_Audit);
 	}
+	
+	@GetMapping(value = "/equipeByEtudiantId")
+	@ResponseBody
+	public Equipe appelGet_getEquipeByEtudiantId(@RequestParam(required = true, value = "idEtudiant") String idEtudiant) {
+		System.out.println("appelGet_getEquipeByEtudiantId");
+
+		DaoFactory fact = new DaoFactory();
+		EquipeDao equipeDao = fact.getEquipeDao();
+		return equipeDao.getEquipeByEtudiantId(idEtudiant);
+	}
+	
 
 	@PostMapping(value = "/addetudiant")
 	@ResponseBody

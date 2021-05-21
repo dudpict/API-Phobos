@@ -3,13 +3,15 @@ package com.controller;
 import java.util.ArrayList;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.beans.Personne;
 import com.beans.Professeur;
 import com.dao.DaoFactory;
 import com.dao.ProfesseurDao;
@@ -38,6 +40,15 @@ public class PhobosControllerProfesseur {
 		ArrayList<Professeur> professeurs = professeurDao.professeurByAudit(id_Audit);
 		return professeurs;
 	}
+	
+	@GetMapping(value = "/professeurByPersonneID")
+	@ResponseBody
+	public Professeur appelPost_getProfesseurByPersonneID(@RequestParam(required = true, value = "idPersonne") String idPersonne) {
+		System.out.println("Appel getProfesseurByPersonneID");
+		DaoFactory fact = new DaoFactory();
+		ProfesseurDao professeurDao = fact.getProfesseurDao();
+		return professeurDao.getProfesseurByPersonneID(idPersonne);
+	}
 
 	@RequestMapping(value = "/professeurById", method = RequestMethod.GET)
 	@ResponseBody
@@ -61,18 +72,13 @@ public class PhobosControllerProfesseur {
 		return professeur;
 	}
 
-	@RequestMapping(value = "/professeur", method = RequestMethod.POST)
+	@PostMapping(value = "/addProfesseur")
 	@ResponseBody
-	public void appelPost_professeur(@RequestParam(required = false, value = "nom") String nom,
-			@RequestParam(required = false, value = "prenom") String prenom,
-			@RequestParam(required = false, value = "email") String email,
-			@RequestParam(required = false, value = "tel") String tel) {
+	public void appelPost_addProfesseur(@RequestBody Professeur professeur) {
 
-		Personne personneToAdd = new Personne(nom, prenom, email, tel);
-		Professeur professeurToAdd = new Professeur();
 		DaoFactory fact = new DaoFactory();
 		ProfesseurDao professeurDao = fact.getProfesseurDao();
-		professeurDao.addProfesseur(professeurDao);
+		professeurDao.addProfesseur(professeur);
 	}
 	
 	@RequestMapping(value = "/addProfesseurToJuryId", method = RequestMethod.POST)

@@ -7,10 +7,13 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 import com.beans.Equipe;
 
 public class EquipeDaoImpl implements EquipeDao {
-	
+	private static final Logger logger = Logger.getLogger(ReponseMultipleDaoImpl.class);
 	private DaoFactory daoFactory;
 
 	EquipeDaoImpl(DaoFactory daoFactory) {
@@ -80,6 +83,39 @@ public class EquipeDaoImpl implements EquipeDao {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+        return equipe;
+    	
+    }
+    
+    
+    @Override
+    public Equipe getEquipeByEtudiantId(String idEtudiant) {
+    	Connection connexion = null;
+		Statement statement = null;
+		ResultSet resultat = null;
+		PreparedStatement preparedStmt = null;
+        Equipe equipe = new Equipe();
+        
+        try {
+        	connexion = daoFactory.getConnection();
+			statement = connexion.createStatement();
+			preparedStmt = connexion.prepareStatement("SELECT * FROM Etudiant WHERE id = ? ;");
+			preparedStmt.setString(1, idEtudiant);
+			resultat = preparedStmt.executeQuery();        	
+            
+            while (resultat.next()) {
+            	EquipeDao equipeDao = daoFactory.getEquipeDao();
+            	equipe = equipeDao.getEquipeById(resultat.getString("id_Equipe"));
+            	
+            }
+            
+
+        } catch (SQLException e) {
+			logger.log(Level.INFO, "sql problem", e);
+
+		}finally {
+			daoFactory.close(connexion,statement,preparedStmt,resultat);			
 		}
         return equipe;
     	

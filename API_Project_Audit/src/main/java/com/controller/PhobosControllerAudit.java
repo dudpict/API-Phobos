@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.beans.Audit;
+import com.beans.AuditModif;
 import com.blo.AuditBLO;
 import com.dao.AuditDao;
+import com.dao.AuditModifDao;
 import com.dao.DaoFactory;
 @CrossOrigin(origins = "*")
 @RestController
@@ -35,6 +37,17 @@ public class PhobosControllerAudit {
 		
 		return auditBLO.getFilteredAudit(matiereId,lieuId,titre,juryId,etat,id,role);
 		
+	}
+	
+	@RequestMapping(value = "/getModifiAuditByIdAudit", method = RequestMethod.GET)
+	@ResponseBody	
+	public ArrayList<AuditModif> getModifiAudit(@RequestParam(required = true, value="id") String id) {
+		System.out.println("Appel GET getModifiAudit");
+		
+		
+		DaoFactory fact = new DaoFactory();
+		AuditModifDao AuditModifDao = fact.getAuditModifDao();
+		return AuditModifDao.getModifiAudit(id);		
 	}
 	
 	@RequestMapping(value = "/auditsAll", method = RequestMethod.GET)

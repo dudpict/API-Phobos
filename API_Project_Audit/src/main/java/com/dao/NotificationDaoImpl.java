@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import org.apache.log4j.Level;
@@ -154,20 +156,23 @@ public class NotificationDaoImpl implements NotificationDao {
 	
 	
 	@Override
-	public void addNotification(String typeNotif, String designation, String etat, String dateDeNotification, int idAudit) {
+	public void addNotification(Notification notification) {
 		Connection connexion = null;
 		Statement statement = null;
 		PreparedStatement preparedStatement = null;
 
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");  
+		
 		try {
 			connexion = daoFactory.getConnection();
 			statement = connexion.createStatement();
-			preparedStatement = connexion.prepareStatement("INSERT INTO Notification(type_notif, designation, etat, date_creation, id_Audit) VALUES (?,?,?,?,?);");
-			preparedStatement.setString(1, typeNotif);
-			preparedStatement.setString(2, designation);
-			preparedStatement.setString(3, etat);
-			preparedStatement.setString(4, dateDeNotification);
-			preparedStatement.setInt(5, idAudit);
+			preparedStatement = connexion.prepareStatement("INSERT INTO Notification(type_notif, designation, etat, date_creation, id_Audit,id_Personne) VALUES (?,?,?,?,?,?);");
+			preparedStatement.setString(1, notification.getTypeNotif());
+			preparedStatement.setString(2,notification.getDateDeNotification());
+			preparedStatement.setString(3, notification.getEtat());
+			preparedStatement.setString(4, dateFormat.format(notification.getDateDeNotification()));
+			preparedStatement.setInt(5, notification.getId_audit());
+			preparedStatement.setInt(6,notification.getId_personne());
 			preparedStatement.executeQuery();
 		} catch (SQLException e) {
 			logger.log(Level.INFO, "sql problem getAuditById", e);

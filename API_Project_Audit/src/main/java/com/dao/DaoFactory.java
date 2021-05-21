@@ -95,6 +95,10 @@ public class DaoFactory {
 		return new NotificationDaoImpl(this);
 	}
 	
+	public AuditModifDao getAuditModifDao() {
+		return new AuditModifDaoImpl(this);
+	}
+	
 	public void close (Connection connexion, Statement statement, PreparedStatement preparedStmt,ResultSet resultat) {
 		try {
 			if(connexion!=null) {			

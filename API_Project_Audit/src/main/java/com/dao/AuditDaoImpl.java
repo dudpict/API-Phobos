@@ -90,6 +90,38 @@ public class AuditDaoImpl implements AuditDao {
 		return audits;
 	}
 	
+	/*
+	@Override
+	public ArrayList<Audit> getAuditByPersonneId(String idPersonne){
+		ArrayList<Audit> audits = new ArrayList<>();
+		Connection connexion = null;
+		Statement statement = null;
+		ResultSet resultat = null;
+		PreparedStatement preparedStmt = null;
+        
+        try {
+        	connexion = daoFactory.getConnection();
+			statement = connexion.createStatement();
+			preparedStmt = connexion.prepareStatement("SELECT * FROM Etudiant WHERE id = ? ;");
+			preparedStmt.setString(1, idEtudiant);
+			resultat = preparedStmt.executeQuery();        	
+            
+            while (resultat.next()) {
+            	EquipeDao equipeDao = daoFactory.getEquipeDao();
+            	equipe = equipeDao.getEquipeById(resultat.getString("id_Equipe"));
+            	
+            }
+            
+
+        } catch (SQLException e) {
+			logger.log(Level.INFO, "sql problem", e);
+
+		}finally {
+			daoFactory.close(connexion,statement,preparedStmt,resultat);			
+		}
+		return audits;
+	}*/
+	
 	@Override
 	public ArrayList<Audit> auditByEtudiantId(String idEtudiant){
 		ArrayList<Audit> audits = new ArrayList<>();

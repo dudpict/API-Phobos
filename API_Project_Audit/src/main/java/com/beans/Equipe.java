@@ -1,14 +1,13 @@
 package com.beans;
 
 public class Equipe {
-	private static int idCount = 0;
+	
 
 	int id;
 	String designation;
 	
 	public Equipe() {
-		this.id=idCount;
-		idCount++;
+		super();
 		}
 
 	public Equipe(int id, String designation) {

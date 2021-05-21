@@ -65,6 +65,7 @@ public class PersonneDaoImpl implements PersonneDao {
         ResultSet resultat = null;
         Personne personne=new Personne();
         
+        
         try {
             connexion = daoFactory.getConnection();
             statement = connexion.createStatement();
