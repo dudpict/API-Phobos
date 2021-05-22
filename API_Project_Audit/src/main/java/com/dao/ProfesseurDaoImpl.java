@@ -439,5 +439,31 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 
 	}
 	
+	public String getRoleProf ( String id) {
+		String res= "";
+		Connection connexion = null;
+		Statement statement = null;
+		PreparedStatement preparedStmt = null;
+		ResultSet resultat = null;
+		
+		try {
+			connexion = daoFactory.getConnection();
+			preparedStmt=connexion.prepareStatement("SELECT designation FROM RoleUtilisateur ro, Professeur pr  WHERE ro.id = pr.id_Role AND pr.id= ?  ");
+			preparedStmt.setInt(1, Integer.parseInt(id));
+			resultat = preparedStmt.executeQuery();
+			while (resultat.next()) {
+				res = resultat.getString("designation");
+			}
+			
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			daoFactory.close(connexion, statement, preparedStmt,null );
+		}
+		return res;
+	}
+	
+	
+	
 	
 }
