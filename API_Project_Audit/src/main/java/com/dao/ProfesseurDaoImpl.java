@@ -440,7 +440,7 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 	}
 	
 	public String getRoleProf ( String id) {
-		String res= "";
+		String res= null;
 		Connection connexion = null;
 		Statement statement = null;
 		PreparedStatement preparedStmt = null;
@@ -459,6 +459,31 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 			e.printStackTrace();
 		}finally {
 			daoFactory.close(connexion, statement, preparedStmt,null );
+		}
+		return res;
+	}
+	
+	public boolean isProf(String id) {
+		boolean res = false; 
+		Connection connexion = null;
+		PreparedStatement preparedStmt = null;
+		ResultSet resultat = null;
+		
+		try {
+			connexion=daoFactory.getConnection();
+			preparedStmt=connexion.prepareStatement("SELECT * FROM Professeur WHERE id_Personne = ? ") ;
+			preparedStmt.setString(1, id);
+			resultat=preparedStmt.executeQuery();
+			while(resultat.next()) {
+				res=true;
+				
+			}
+			
+			
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			daoFactory.close(connexion, null, preparedStmt,null );
 		}
 		return res;
 	}

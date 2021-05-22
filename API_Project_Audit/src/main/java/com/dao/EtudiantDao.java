@@ -16,5 +16,6 @@ public interface EtudiantDao {
 	void addEtudiant(Etudiant etudiant);
 	Etudiant getEtudiantByPersonneID(String idPersonne);
 	Equipe isPersonneIsInTeam(String idPersonne);
+	public boolean getRoleEtudiant(String id);
 
 }

@@ -20,5 +20,6 @@ public interface ProfesseurDao {
 	public String getRoleProf ( String id);
 	ArrayList<Professeur> professeurByAudit(String id_Audit);
 	void addProfesseur(Professeur professeur);
+	public boolean isProf(String id);
 
 }

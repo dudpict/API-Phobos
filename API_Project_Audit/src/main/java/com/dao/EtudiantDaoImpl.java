@@ -359,5 +359,30 @@ public class EtudiantDaoImpl implements EtudiantDao {
 		return equipe;
 		
 	}
+	public boolean getRoleEtudiant(String id) {
+		
+		boolean res= false;
+		Connection connexion = null;
+		Statement statement = null;
+		PreparedStatement preparedStmt = null;
+		ResultSet resultat = null;
+		
+		try {
+			connexion = daoFactory.getConnection();
+			preparedStmt=connexion.prepareStatement("SELECT * from Etudiant WHERE id_Personne = ? ");
+			preparedStmt.setInt(1, Integer.parseInt(id));
+			resultat = preparedStmt.executeQuery();
+			while (resultat.next()) {
+				res = true;
+			}
+			
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			daoFactory.close(connexion, statement, preparedStmt,null );
+		}
+		return res;
+		
+	}
 	
 }

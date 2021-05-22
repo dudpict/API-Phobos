@@ -123,4 +123,12 @@ public class PhobosControllerEtudiant {
 		EtudiantDao etudiantDao = fact.getEtudiantDao();
 		etudiantDao.deleteEtudiant(id);
 	}
+	
+	@RequestMapping(value = "/isStudentByPersonneId", method = RequestMethod.GET)
+	@ResponseBody
+	public boolean isEtudiant(@RequestParam(required= true, value ="id") String id ) {
+		DaoFactory fact = new DaoFactory();
+		EtudiantDao etudiantDao = fact.getEtudiantDao();
+		return etudiantDao.getRoleEtudiant(id);
+	}
 }
