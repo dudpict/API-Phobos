@@ -13,7 +13,7 @@ import org.apache.log4j.Logger;
 import com.beans.Equipe;
 
 public class EquipeDaoImpl implements EquipeDao {
-	private static final Logger logger = Logger.getLogger(ReponseMultipleDaoImpl.class);
+	private static final Logger logger = Logger.getLogger(EquipeDaoImpl.class);
 	private DaoFactory daoFactory;
 
 	EquipeDaoImpl(DaoFactory daoFactory) {
@@ -22,7 +22,7 @@ public class EquipeDaoImpl implements EquipeDao {
     
     @Override
     public ArrayList<Equipe> getEquipes() {
-    	ArrayList<Equipe> equipes = new ArrayList<Equipe>();
+    	ArrayList<Equipe> equipes = new ArrayList<>();
         Connection connexion = null;
         Statement statement = null;
         ResultSet resultat = null;
@@ -42,15 +42,10 @@ public class EquipeDaoImpl implements EquipeDao {
                 equipes.add(equipe);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        try {
-			resultat.close();
-			statement.close();
-			connexion.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.log(Level.INFO, "sql problem getEquipes", e);
+
+		}finally {
+			daoFactory.close(connexion,statement,null,resultat);			
 		}
         return equipes;
     }
@@ -74,15 +69,10 @@ public class EquipeDaoImpl implements EquipeDao {
             
 
         } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        try {
-			resultat.close();
-			statement.close();
-			connexion.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.log(Level.INFO, "sql problem getEquipeById", e);
+
+		}finally {
+			daoFactory.close(connexion,statement,null,resultat);			
 		}
         return equipe;
     	

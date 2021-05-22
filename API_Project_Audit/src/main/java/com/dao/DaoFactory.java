@@ -7,29 +7,31 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Configuration;
 @Configuration
 public class DaoFactory {
-
+	private static final Logger logger = Logger.getLogger(DaoFactory.class);
 	public DaoFactory() {
-
+		super();
 	}
 
 	public static DaoFactory getInstance() {
 		try {
 			Class.forName("org.mariadb.jdbc.Driver");
 		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+			logger.log(Level.INFO, "problem driver jdbc", e);
 		}
-		DaoFactory instance = new DaoFactory();
-		return instance;
+		
+		return  new DaoFactory();
 	}
 
 	public Connection getConnection() throws SQLException {
 		try {
 			Class.forName("org.mariadb.jdbc.Driver");
 		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+			logger.log(Level.INFO, "connection bdd problem", e);
 		}
 		return DriverManager.getConnection("jdbc:mariadb://172.24.1.9:3306/projetGL","essai","network");
 	}
@@ -114,7 +116,7 @@ public class DaoFactory {
 				resultat.close();
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.log(Level.INFO, "problem sql", e);
 		}
 		
 		
