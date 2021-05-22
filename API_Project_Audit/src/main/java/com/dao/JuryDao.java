@@ -12,4 +12,5 @@ public interface JuryDao {
 
 	Jury getJurybyidAudit(String idAudit);
 
+
 }

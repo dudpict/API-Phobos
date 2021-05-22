@@ -89,10 +89,6 @@ public class JuryDaoImpl implements JuryDao {
         ResultSet resultat = null;
         PreparedStatement preparedStmt = null;
                 
-        Connection connexion2 = null;
-        Statement statement2 = null;
-        ResultSet resultat2 = null;
-        PreparedStatement preparedStmt2 = null;
         
         Jury jury = new Jury();
 
@@ -104,26 +100,8 @@ public class JuryDaoImpl implements JuryDao {
 			resultat = preparedStmt.executeQuery();
 			
             while (resultat.next()) {
-            	try {
-	            	String idJury = resultat.getString("id_Jury");
-	            	connexion2 = daoFactory.getConnection();
-	    			statement2 = connexion2.createStatement();
-	    			preparedStmt2 = connexion2.prepareStatement("SELECT * FROM Jury where id=?;");
-	    			preparedStmt2.setString(1, idJury);
-	    			resultat2 = preparedStmt2.executeQuery();
-	    			
-	    			 while (resultat2.next()) {
-	    				 int id = resultat2.getInt("id");
-	    				 String designation = resultat2.getString("designation");
-	    				 jury.setId(id);
-	    				 jury.setDesignation(designation);
-	    			 }
-            	 }catch (SQLException e) {
-         			logger.log(Level.INFO, "sql problem getEtudiantById", e);
-
-         		}finally {
-         			daoFactory.close(connexion2,statement2,preparedStmt2,resultat2);	
-         		}
+            	String idJury = resultat.getString("id_Jury");
+	            jury = daoFactory.getJuryDao().getJuryById(idJury);
             	
             }
         }catch (SQLException e) {
@@ -133,35 +111,6 @@ public class JuryDaoImpl implements JuryDao {
 			daoFactory.close(connexion,statement,preparedStmt,resultat);
 		}
         return jury;
-	}
-	
-	@Override
-	public Jury  getJurybyid(String idJury) {
-		Connection connexion2 = null;
-        Statement statement2 = null;
-        ResultSet resultat2 = null;
-        PreparedStatement preparedStmt2 = null;
-		
-		try {
-        	String idJury = resultat.getString("id_Jury");
-        	connexion2 = daoFactory.getConnection();
-			statement2 = connexion2.createStatement();
-			preparedStmt2 = connexion2.prepareStatement("SELECT * FROM Jury where id=?;");
-			preparedStmt2.setString(1, idJury);
-			resultat2 = preparedStmt2.executeQuery();
-			
-			 while (resultat2.next()) {
-				 int id = resultat2.getInt("id");
-				 String designation = resultat2.getString("designation");
-				 jury.setId(id);
-				 jury.setDesignation(designation);
-			 }
-    	 }catch (SQLException e) {
- 			logger.log(Level.INFO, "sql problem getEtudiantById", e);
-
- 		}finally {
- 			daoFactory.close(connexion2,statement2,preparedStmt2,resultat2);	
- 		}
 	}
 
 	
