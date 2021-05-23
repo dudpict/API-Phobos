@@ -16,6 +16,7 @@ public class ModeleDaoImpl implements ModeleDao {
 
 	private DaoFactory daoFactory;
 	private static final Logger logger = Logger.getLogger(ModeleDaoImpl.class);
+	private String [] sqlParamModele = {"id","designation"};
 
 	ModeleDaoImpl(DaoFactory daoFactory) {
 		this.daoFactory = daoFactory;
@@ -35,8 +36,8 @@ public class ModeleDaoImpl implements ModeleDao {
 			connexion.close();
 			
 			while (resultat.next()) {
-				int id = resultat.getInt("id");
-				String designation = resultat.getString("designation");
+				int id = resultat.getInt(sqlParamModele[0]);
+				String designation = resultat.getString(sqlParamModele[1]);
 
 				Modele modele = new Modele();
 				modele.setId(id);
@@ -65,8 +66,8 @@ public class ModeleDaoImpl implements ModeleDao {
 			resultat = statement.executeQuery("SELECT * FROM Modele WHERE id=" + modeleID + ";");
 			connexion.close();
 			while (resultat.next()) {
-				int id = resultat.getInt("id");
-				String designation = resultat.getString("designation");
+				int id = resultat.getInt(sqlParamModele[0]);
+				String designation = resultat.getString(sqlParamModele[1]);
 
 				modele.setId(id);
 				modele.setDesignation(designation);
