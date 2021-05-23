@@ -8,10 +8,10 @@ public interface QuestionDao {
 
 	ArrayList<Question> getQuestions();
 	void deleteQuestion(String id);
-	void addQuestion(String Designation,String intitule, int id_section, int id_typeQuestion);
-	void updateQuestion(int id, String Designation,String intitule, String reponse, int id_section, int id_typeQuestion);
+	void addQuestion(String designation,String intitule, int idSection, int idTypeQuestion);
+	void updateQuestion(int id, String designation,String intitule, String reponse, int idSection, int idTypeQuestion);
 	Question getQuestionById(String id);
-	ArrayList<Question> getQuestionsBySectionId(String id_section);
-	ArrayList<Question> getQuestion_By_All_Param(Question questionParam);
+	ArrayList<Question> getQuestionsBySectionId(String idSection);
+	ArrayList<Question> getQuestionByAllParam(Question questionParam);
 	Question getQuestionByNom(String nom);
 }

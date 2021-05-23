@@ -6,11 +6,15 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 import com.beans.Lieu;
 
 public class LieuDaoImpl implements LieuDao {
 
 	private DaoFactory daoFactory;
+	private static final Logger logger = Logger.getLogger(LieuDaoImpl.class);
 
 	public LieuDaoImpl(DaoFactory daoFactory) {
 		this.daoFactory = daoFactory;
@@ -46,20 +50,16 @@ public class LieuDaoImpl implements LieuDao {
 				lieu.setNumSalle(numSalle);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		try {
-			resultat.close();
-			statement.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.log(Level.INFO, "sql problem getJurys", e);
+
+		}finally {
+			daoFactory.close(connexion,statement,null,resultat);			
 		}
 		return lieu;
 	}
 
 	public ArrayList<Lieu> getLieux() {
-		ArrayList<Lieu> lieux = new ArrayList<Lieu>();
+		ArrayList<Lieu> lieux = new ArrayList<>();
 		Connection connexion = null;
 		Statement statement = null;
 		ResultSet resultat = null;
@@ -89,8 +89,10 @@ public class LieuDaoImpl implements LieuDao {
 
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.log(Level.INFO, "sql problem getJurys", e);
+
+		}finally {
+			daoFactory.close(connexion,statement,null,resultat);			
 		}
 		return lieux;
 

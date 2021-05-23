@@ -2,8 +2,9 @@ package com.controller;
 
 import java.util.List;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,23 +16,25 @@ import com.dao.MatiereDao;
 @RestController
 public class PhobosControllerMatiere {
 	
-	@RequestMapping(value = "/matiereIdByResponsableId", method = RequestMethod.GET)
+	private static final Logger logger = Logger.getLogger(PhobosControllerMatiere.class);
+	
+	@GetMapping(value = "/matiereIdByResponsableId")
 	@ResponseBody
-	public int appelGET_audit(@RequestParam(required = true, value = "idProf") int idProf) {
-		System.out.println("Appel GET avec matiereID et publiesBoolean");
-
+	public int appelGETaudit(@RequestParam(required = true, value = "idProf") int idProf) {
+		logger.log(Level.INFO, "Appel GET avec matiereID et publiesBoolean");
+		
+		
 		DaoFactory fact = new DaoFactory();
 		MatiereDao matiereDao = fact.getMatiereDao();
-		int matiereId = matiereDao.getMatiereIdByResponsableID(idProf);
-		return matiereId;
+		return matiereDao.getMatiereIdByResponsableID(idProf);
 
 	}
 	
-	@RequestMapping(value = "/matieres", method = RequestMethod.GET)
+	@GetMapping(value = "/matieres")
 	@ResponseBody
-	public List<Matiere> appelGET_audit() {
-		System.out.println("Appel GET avec matiereID et publiesBoolean");
-
+	public List<Matiere> appelGETaudit() {
+		logger.log(Level.INFO, "Appel GET avec matiereID et publiesBoolean");
+		
 		DaoFactory fact = new DaoFactory();
 		MatiereDao matiereDao = fact.getMatiereDao();
 		return matiereDao.getMatieres();

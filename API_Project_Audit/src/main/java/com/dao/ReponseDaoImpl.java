@@ -10,13 +10,15 @@ import java.util.ArrayList;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
+import com.beans.Question;
 import com.beans.Reponse;
 import com.beans.ReponseMultiple;
 
 public class ReponseDaoImpl implements ReponseDao {
 
 	private DaoFactory daoFactory;
-	private static final Logger logger = Logger.getLogger(ReponseMultipleDaoImpl.class);
+	private static final Logger logger = Logger.getLogger(ReponseDaoImpl.class);
+	private String [] sqlParamReponse = {"id","ReponseLongue","Note","ReponseCourte","ID_question"};
 
 	ReponseDaoImpl(DaoFactory daoFactory) {
 		this.daoFactory = daoFactory;
@@ -24,16 +26,13 @@ public class ReponseDaoImpl implements ReponseDao {
 
 	@Override
 	public ArrayList<Reponse> getReponseById(String id) {
-		ArrayList<Reponse> reponses = new ArrayList<Reponse>();
+		ArrayList<Reponse> reponses = new ArrayList<>();
 		Connection connexion = null;
 		Statement statement = null;
 		ResultSet resultat = null;
 		PreparedStatement preparedStmt = null;
 		
-		Connection connexion2 = null;
-		Statement statement2 = null;
-		ResultSet resultat2 = null;
-		PreparedStatement preparedStmt2 = null;
+		
 
 		try {			
 			connexion = daoFactory.getConnection();
@@ -43,26 +42,19 @@ public class ReponseDaoImpl implements ReponseDao {
 			resultat = preparedStmt.executeQuery();
 			
 			while (resultat.next()) {
-				int idReponse = resultat.getInt("id");
-				int note = resultat.getInt("Note");
-				boolean reponseCourte = resultat.getBoolean("ReponseLongue");
-				String reponseLongue = resultat.getString("ReponseLongue");
+				int idReponse = resultat.getInt(sqlParamReponse[0]);
+				int note = resultat.getInt(sqlParamReponse[2]);
+				boolean reponseCourte = resultat.getBoolean(sqlParamReponse[3]);
+				String reponseLongue = resultat.getString(sqlParamReponse[1]);
 				ArrayList<ReponseMultiple> reponseMultiples = null;
+								
+				String idQuestion = resultat.getString(sqlParamReponse[4]);
 				
-				String idQuestion = resultat.getString("ID_question");
-				connexion2 = daoFactory.getConnection();
-				statement2 = connexion2.createStatement();
-				preparedStmt2 = connexion2.prepareStatement("SELECT * FROM question where id=?;");
-				preparedStmt2.setString(1, idQuestion);
-				resultat2 = preparedStmt2.executeQuery();
-				
-				while (resultat2.next()) {
-					String idTypeQuestion = resultat2.getString("id_typeQuestion");
-					if(idTypeQuestion.equals("4")) {
-						DaoFactory fact = new DaoFactory();
-						ReponseMultipleDao reponseMultipleDao = fact.getReponseMultipleDao();
-						reponseMultiples = reponseMultipleDao.getReponseMultipleByIdReponse(Integer.toString(idReponse));
-					}
+				Question question = daoFactory.getQuestionDao().getQuestionById(idQuestion);
+				String idTypeQuestion = Integer.toString(question.getTypeQuestion().getId());
+				if(idTypeQuestion.equals("4")) {
+					ReponseMultipleDao reponseMultipleDao = daoFactory.getReponseMultipleDao();
+					reponseMultiples = reponseMultipleDao.getReponseMultipleByIdReponse(Integer.toString(idReponse));
 				}
 				
 				Reponse reponse = new Reponse();				
@@ -74,24 +66,9 @@ public class ReponseDaoImpl implements ReponseDao {
 				reponses.add(reponse);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.log(Level.INFO, "sql problem getPersonneByMail", e);
 		}finally {
-			try {
-				if(connexion!= null) {
-					connexion.close();
-					statement.close();
-					resultat.close();
-				}
-				if(connexion2!= null) {
-					
-					connexion2.close();
-					statement2.close();
-					resultat2.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			
+			daoFactory.close(connexion,statement,preparedStmt,resultat);	
 		}
 		
 		return reponses;
@@ -99,7 +76,7 @@ public class ReponseDaoImpl implements ReponseDao {
 	
 	@Override
 	public ArrayList<Reponse> getReponsesByQuestionId(String id) {
-		ArrayList<Reponse> reponses = new ArrayList<Reponse>();
+		ArrayList<Reponse> reponses = new ArrayList<>();
 		Connection connexion = null;
 		Statement statement = null;
 		ResultSet resultat = null;
@@ -119,25 +96,19 @@ public class ReponseDaoImpl implements ReponseDao {
 			resultat = preparedStmt.executeQuery();
 			
 			while (resultat.next()) {
-				int idReponse = resultat.getInt("id");
-				int note = resultat.getInt("Note");
-				boolean reponseCourte = resultat.getBoolean("ReponseLongue");
-				String reponseLongue = resultat.getString("ReponseLongue");
+				int idReponse = resultat.getInt(sqlParamReponse[0]);
+				int note = resultat.getInt(sqlParamReponse[2]);
+				boolean reponseCourte = resultat.getBoolean(sqlParamReponse[3]);
+				String reponseLongue = resultat.getString(sqlParamReponse[1]);
 				ArrayList<ReponseMultiple> reponseMultiples = null;
 								
-				String idQuestion = resultat.getString("ID_question");
-				connexion2 = daoFactory.getConnection();
-				statement2 = connexion2.createStatement();
-				preparedStmt2 = connexion2.prepareStatement("SELECT * FROM question where id=?;");
-				preparedStmt2.setString(1, idQuestion);
-				resultat2 = preparedStmt2.executeQuery();
+				String idQuestion = resultat.getString(sqlParamReponse[4]);
 				
-				while (resultat2.next()) {
-					String idTypeQuestion = resultat2.getString("id_typeQuestion");
-					if(idTypeQuestion.equals("4")) {
-						ReponseMultipleDao reponseMultipleDao = fact.getReponseMultipleDao();
-						reponseMultiples = reponseMultipleDao.getReponseMultipleByIdReponse(Integer.toString(idReponse));
-					}
+				Question question = daoFactory.getQuestionDao().getQuestionById(idQuestion);
+				String idTypeQuestion = Integer.toString(question.getTypeQuestion().getId());
+				if(idTypeQuestion.equals("4")) {
+					ReponseMultipleDao reponseMultipleDao = daoFactory.getReponseMultipleDao();
+					reponseMultiples = reponseMultipleDao.getReponseMultipleByIdReponse(Integer.toString(idReponse));
 				}
 								
 				Reponse reponse = new Reponse();				
@@ -159,7 +130,7 @@ public class ReponseDaoImpl implements ReponseDao {
 	}
 	
 	@Override
-	public void addReponse (String ReponseLongue, int Note, Boolean ReponseCourte, String idQuestion) {
+	public void addReponse (String reponseLongue, int note, Boolean reponseCourte, String idQuestion) {
 		Connection connexion = null;
 		Statement statement = null;
 		PreparedStatement preparedStmt = null;
@@ -169,9 +140,9 @@ public class ReponseDaoImpl implements ReponseDao {
 			connexion = daoFactory.getConnection();
 			statement = connexion.createStatement();
 			preparedStmt = connexion.prepareStatement("INSERT INTO Reponse (ReponseLongue, Note, ReponseCourte, ID_question) VALUES (?,?,?,?);");
-			preparedStmt.setString(1, ReponseLongue);
-			preparedStmt.setInt(2, Note);
-			preparedStmt.setBoolean(3,ReponseCourte);
+			preparedStmt.setString(1, reponseLongue);
+			preparedStmt.setInt(2, note);
+			preparedStmt.setBoolean(3,reponseCourte);
 			preparedStmt.setString(4, idQuestion);
 			preparedStmt.executeQuery();
 			
@@ -183,7 +154,7 @@ public class ReponseDaoImpl implements ReponseDao {
 	}
 	
 	@Override
-	public void updateReponse (int id,String ReponseLongue, int note, Boolean ReponseCourte, String idQuestion) {
+	public void updateReponse (int id,String reponseLongue, int note, Boolean reponseCourte, String idQuestion) {
 		Connection connexion = null;
 		Statement statement = null;
 		PreparedStatement preparedStmt = null;
@@ -194,9 +165,9 @@ public class ReponseDaoImpl implements ReponseDao {
 			connexion = daoFactory.getConnection();
 			statement = connexion.createStatement();
 			preparedStmt = connexion.prepareStatement("UPDATE Reponse SET ReponseLongue=?,Note=?,ReponseCourte=?,ID_question=? WHERE id=?;");
-			preparedStmt.setString(1, ReponseLongue);
+			preparedStmt.setString(1, reponseLongue);
 			preparedStmt.setInt(2, note);
-			preparedStmt.setBoolean(3, ReponseCourte);
+			preparedStmt.setBoolean(3, reponseCourte);
 			preparedStmt.setString(4, idQuestion);
 			preparedStmt.setInt(5,id);
 			preparedStmt.executeQuery();

@@ -54,11 +54,11 @@ public class NotificationDaoImpl implements NotificationDao {
 				notification.setDesignation(designation);
 				notification.setEtat(etat);
 				notification.setDateDeNotification(dateDeNotification);
-				notification.setId_audit(idAuditRs);
+				notification.setIdaudit(idAuditRs);
 			}
 
 		} catch (SQLException e) {
-			logger.log(Level.INFO, "sql problem getNotificationByAudit", e);
+			logger.log(Level.INFO, "sql problem getNotificationById", e);
 		}finally {
 			daoFactory.close(connexion,statement,preparedStatement,resultat);	
 		}
@@ -133,7 +133,7 @@ public class NotificationDaoImpl implements NotificationDao {
 				notification.setDesignation(designation);
 				notification.setEtat(etat);
 				notification.setDateDeNotification(dateDeNotification);
-				notification.setId_audit(idAuditRs);
+				notification.setIdaudit(idAuditRs);
 				notificationsList.add(notification);
 			}
 
@@ -212,7 +212,7 @@ public class NotificationDaoImpl implements NotificationDao {
 		try {
 			connexion = daoFactory.getConnection();
 			statement = connexion.createStatement();
-			preparedStatement = connexion.prepareStatement("SELECT * FROM Audit WHERE 	id_Matiere = ? ;");
+			preparedStatement = connexion.prepareStatement("SELECT * FROM Audit WHERE id_Matiere = ?;");
 			preparedStatement.setString(1, idmatiere);
 			resultat = preparedStatement.executeQuery();
 
@@ -248,8 +248,8 @@ public class NotificationDaoImpl implements NotificationDao {
 			preparedStatement.setString(2,notification.getDateDeNotification());
 			preparedStatement.setString(3, notification.getEtat());
 			preparedStatement.setString(4, dateFormat.format(notification.getDateDeNotification()));
-			preparedStatement.setInt(5, notification.getId_audit());
-			preparedStatement.setInt(6,notification.getId_personne());
+			preparedStatement.setInt(5, notification.getIdaudit());
+			preparedStatement.setInt(6,notification.getIdpersonne());
 			preparedStatement.executeQuery();
 		} catch (SQLException e) {
 			logger.log(Level.INFO, "sql problem getAuditById", e);

@@ -1,5 +1,5 @@
 package com.blo;
 
-public class EtudiantBLO {
+public interface  EtudiantBLO {
 
 }

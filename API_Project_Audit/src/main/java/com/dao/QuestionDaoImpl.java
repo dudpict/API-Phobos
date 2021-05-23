@@ -7,12 +7,17 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 import com.beans.Question;
 import com.beans.Section;
 import com.beans.TypeQuestion;
 
 public class QuestionDaoImpl implements QuestionDao {
-
+	private String [] sqlParamQuestionr = {"id","Designation","intitule","id_section","id_typeQuestion"};
+	private static final Logger logger = Logger.getLogger(QuestionDaoImpl.class);
+	
 	private DaoFactory daoFactory;
 
 	QuestionDaoImpl(DaoFactory daoFactory) {
@@ -21,8 +26,7 @@ public class QuestionDaoImpl implements QuestionDao {
 
 	@Override
 	public ArrayList<Question> getQuestions() {
-		DaoFactory fact = new DaoFactory();
-		ArrayList<Question> questions = new ArrayList<Question>();
+		ArrayList<Question> questions = new ArrayList<>();
 		Connection connexion = null;
 		Statement statement = null;
 		ResultSet resultat = null;
@@ -33,11 +37,11 @@ public class QuestionDaoImpl implements QuestionDao {
 			resultat = statement.executeQuery("SELECT * FROM question;");
 			connexion.close();
 			while (resultat.next()) {
-				int id = resultat.getInt("id");
-				String designation = resultat.getString("designation");
-				String intitule = resultat.getString("intitule");
-				int typeQuestionID = resultat.getInt("id_typeQuestion");
-				int sectionID = resultat.getInt("id_section");
+				int id = resultat.getInt(sqlParamQuestionr[0]);
+				String designation = resultat.getString(sqlParamQuestionr[1]);
+				String intitule = resultat.getString(sqlParamQuestionr[2]);
+				int typeQuestionID = resultat.getInt(sqlParamQuestionr[4]);
+				int sectionID = resultat.getInt(sqlParamQuestionr[3]);
 
 				// Récupére l'instance de TypeQuestion via l'id
 				TypeQuestionDao typeQuestionDao = daoFactory.getTypeQuestionDao();
@@ -58,9 +62,9 @@ public class QuestionDaoImpl implements QuestionDao {
 				questions.add(question);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.log(Level.INFO, "sql problem getQuestions", e);
 		}finally {
-			fact.close(connexion,statement,null,resultat);			
+			daoFactory.close(connexion,statement,null,resultat);			
 		}
 		
 		return questions;
@@ -78,50 +82,40 @@ public class QuestionDaoImpl implements QuestionDao {
 			preparedStmt.execute();
 			connexion.close();
 
-		} catch (SQLException e) {
-			e.printStackTrace();
+		} catch (SQLException e) {			
+			logger.log(Level.INFO, "sql problem getQuestions", e);
+		}finally {
+			daoFactory.close(connexion,null,preparedStmt,null);			
 		}
-			try {
-				preparedStmt.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
 	}
 
 	@Override
-	public void addQuestion(String Designation, String intitule, int id_section, int id_typeQuestion) {
+	public void addQuestion(String designation, String intitule, int idSection, int idTypeQuestion) {
 		Connection connexion = null;
 		PreparedStatement preparedStmt = null;
 
 		try {
 			connexion = daoFactory.getConnection();
-			String requete = 
-					"INSERT INTO `question` (`Designation`, `intitule`, `id_section`, `id_typeQuestion`) VALUES (?,?,?,?);";
+			String requete ="INSERT INTO `question` (`Designation`, `intitule`, `id_section`, `id_typeQuestion`) VALUES (?,?,?,?);";
 			preparedStmt = connexion.prepareStatement(requete);
-			preparedStmt.setString(1, Designation);
+			preparedStmt.setString(1, designation);
 			preparedStmt.setString(2, intitule);
-			preparedStmt.setInt(3, id_section);
-			preparedStmt.setInt(4, id_typeQuestion);
+			preparedStmt.setInt(3, idSection);
+			preparedStmt.setInt(4, idTypeQuestion);
 			preparedStmt.execute();
-			preparedStmt.close();
 
-		} catch (SQLException e) {
-			e.printStackTrace();
+		} catch (SQLException e) {			
+			logger.log(Level.INFO, "sql problem addQuestion", e);
+		}finally {
+			daoFactory.close(connexion,null,preparedStmt,null);			
 		}
-			try {
-				connexion.close();
-				preparedStmt.close();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 
 		
 	}
 
 	@Override
-	public void updateQuestion(int id, String Designation, String intitule, String reponse, int id_section,
-			int id_typeQuestion) {
+	public void updateQuestion(int id, String designation, String intitule, String reponse, int idSection,
+			int idTypeQuestion) {
 		Connection connexion = null;
 		PreparedStatement preparedStmt = null;
 
@@ -129,23 +123,18 @@ public class QuestionDaoImpl implements QuestionDao {
 			connexion = daoFactory.getConnection();
 			String requete = "UPDATE `question` SET `Designation`=?,'intitule'=?,`id_section`=?,`id_typeQuestion`=? WHERE `id`=?";
 			preparedStmt = connexion.prepareStatement(requete);
-			preparedStmt.setString(1, Designation);
+			preparedStmt.setString(1, designation);
 			preparedStmt.setString(2, intitule);
-			preparedStmt.setInt(3, id_section);
-			preparedStmt.setInt(4, id_typeQuestion);
+			preparedStmt.setInt(3, idSection);
+			preparedStmt.setInt(4, idTypeQuestion);
 			preparedStmt.setInt(5, id);
 			preparedStmt.execute();
 
-		} catch (SQLException e) {
-			e.printStackTrace();
+		}  catch (SQLException e) {			
+			logger.log(Level.INFO, "sql problem updateQuestion", e);
+		}finally {
+			daoFactory.close(connexion,null,preparedStmt,null);			
 		}
-			try {
-				connexion.close();
-				preparedStmt.close();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 	}
 
 	@Override
@@ -162,11 +151,11 @@ public class QuestionDaoImpl implements QuestionDao {
 			connexion.close();
 
 			while (resultat.next()) {
-				int id2 = resultat.getInt("id");
-				String designation = resultat.getString("designation");
-				String intitule = resultat.getString("intitule");
-				int typeQuestionID = resultat.getInt("id_typeQuestion");
-				int sectionID = resultat.getInt("id_section");
+				int id2 = resultat.getInt(sqlParamQuestionr[0]);
+				String designation = resultat.getString(sqlParamQuestionr[1]);
+				String intitule = resultat.getString(sqlParamQuestionr[2]);
+				int typeQuestionID = resultat.getInt(sqlParamQuestionr[4]);
+				int sectionID = resultat.getInt(sqlParamQuestionr[3]);
 
 				// Récupére l'instance de TypeQuestion via l'id
 				TypeQuestionDao typeQuestionDao = daoFactory.getTypeQuestionDao();
@@ -184,15 +173,10 @@ public class QuestionDaoImpl implements QuestionDao {
 				question.setSection(section);
 				question.setTypeQuestion(typeQuestion);
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		try {
-			statement.close();
-			resultat.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		}catch (SQLException e) {			
+			logger.log(Level.INFO, "sql problem getQuestionById", e);
+		}finally {
+			daoFactory.close(connexion,statement,null,resultat);			
 		}
 		return question;
 	}
@@ -203,21 +187,21 @@ public class QuestionDaoImpl implements QuestionDao {
 		Statement statement = null;
 		ResultSet resultat = null;
 		Question question = new Question();
-
+		PreparedStatement preparedStmt = null;
 		try {
 			connexion = daoFactory.getConnection();
 			statement = connexion.createStatement();
-			PreparedStatement preparedStmt = connexion.prepareStatement("SELECT * FROM question WHERE Designation=?;");
+			preparedStmt = connexion.prepareStatement("SELECT * FROM question WHERE Designation=?;");
 			preparedStmt.setString(1, nom);
 			resultat = preparedStmt.executeQuery();			
 			connexion.close();
 
 			while (resultat.next()) {
-				int id2 = resultat.getInt("id");
-				String designation = resultat.getString("designation");
-				String intitule = resultat.getString("intitule");
-				int typeQuestionID = resultat.getInt("id_typeQuestion");
-				int sectionID = resultat.getInt("id_section");
+				int id2 = resultat.getInt(sqlParamQuestionr[0]);
+				String designation = resultat.getString(sqlParamQuestionr[1]);
+				String intitule = resultat.getString(sqlParamQuestionr[2]);
+				int typeQuestionID = resultat.getInt(sqlParamQuestionr[4]);
+				int sectionID = resultat.getInt(sqlParamQuestionr[3]);
 
 				// Récupére l'instance de TypeQuestion via l'id
 				TypeQuestionDao typeQuestionDao = daoFactory.getTypeQuestionDao();
@@ -235,22 +219,17 @@ public class QuestionDaoImpl implements QuestionDao {
 				question.setSection(section);
 				question.setTypeQuestion(typeQuestion);
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		try {
-			statement.close();
-			resultat.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (SQLException e) {			
+			logger.log(Level.INFO, "sql problem getQuestionByNom", e);
+		}finally {
+			daoFactory.close(connexion,statement,preparedStmt,resultat);			
 		}
 		return question;
 	}
 
 	@Override
-	public ArrayList<Question> getQuestionsBySectionId(String id_section) {
-		ArrayList<Question> questions = new ArrayList<Question>();
+	public ArrayList<Question> getQuestionsBySectionId(String idSection) {
+		ArrayList<Question> questions = new ArrayList<>();
 		Connection connexion = null;
 		PreparedStatement preparedStmt = null;
 		ResultSet rs = null;
@@ -259,15 +238,15 @@ public class QuestionDaoImpl implements QuestionDao {
 			connexion = daoFactory.getConnection();
 			String requete = "SELECT * FROM question WHERE `id_section`=?";
 			preparedStmt = connexion.prepareStatement(requete);
-			preparedStmt.setString(1, id_section);
+			preparedStmt.setString(1, idSection);
 			rs = preparedStmt.executeQuery();
 
 			while (rs.next()) {
-				int id = rs.getInt("id");
-				String designation = rs.getString("designation");
-				String intitule = rs.getString("intitule");
-				int typeQuestionID = rs.getInt("id_typeQuestion");
-				int sectionID = rs.getInt("id_section");
+				int id = rs.getInt(sqlParamQuestionr[0]);
+				String designation = rs.getString(sqlParamQuestionr[1]);
+				String intitule = rs.getString(sqlParamQuestionr[2]);
+				int typeQuestionID = rs.getInt(sqlParamQuestionr[4]);
+				int sectionID = rs.getInt(sqlParamQuestionr[3]);
 
 				// Récupére l'instance de TypeQuestion via l'id
 				TypeQuestionDao typeQuestionDao = daoFactory.getTypeQuestionDao();
@@ -291,23 +270,18 @@ public class QuestionDaoImpl implements QuestionDao {
 			preparedStmt.close();
 			rs.close();
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		try {
-			preparedStmt.close();
-			rs.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		}catch (SQLException e) {			
+			logger.log(Level.INFO, "sql problem getQuestionsBySectionId", e);
+		}finally {
+			daoFactory.close(connexion,null,preparedStmt,rs);			
 		}
 
 		return questions;
 	}
 	
 	@Override
-	public ArrayList<Question> getQuestion_By_All_Param(Question questionParam) {
-		ArrayList<Question> questions = new ArrayList<Question>();
+	public ArrayList<Question> getQuestionByAllParam(Question questionParam) {
+		ArrayList<Question> questions = new ArrayList<>();
 		Connection connexion = null;
 		PreparedStatement preparedStmt = null;
 		ResultSet rs = null;
@@ -324,11 +298,11 @@ public class QuestionDaoImpl implements QuestionDao {
 			rs = preparedStmt.executeQuery();
 
 			while (rs.next()) {
-				int id = rs.getInt("id");
-				String designation = rs.getString("designation");
-				String intitule = rs.getString("intitule");
-				int typeQuestionID = rs.getInt("id_typeQuestion");
-				int sectionID = rs.getInt("id_section");
+				int id = rs.getInt(sqlParamQuestionr[0]);
+				String designation = rs.getString(sqlParamQuestionr[1]);
+				String intitule = rs.getString(sqlParamQuestionr[2]);
+				int typeQuestionID = rs.getInt(sqlParamQuestionr[4]);
+				int sectionID = rs.getInt(sqlParamQuestionr[3]);
 
 				// Récupére l'instance de TypeQuestion via l'id
 				TypeQuestionDao typeQuestionDao = daoFactory.getTypeQuestionDao();
@@ -352,15 +326,10 @@ public class QuestionDaoImpl implements QuestionDao {
 			preparedStmt.close();
 			rs.close();
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		try {
-			preparedStmt.close();
-			rs.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (SQLException e) {			
+			logger.log(Level.INFO, "sql problem getQuestionByAllParam", e);
+		}finally {
+			daoFactory.close(connexion,null,preparedStmt,rs);			
 		}
 
 		return questions;

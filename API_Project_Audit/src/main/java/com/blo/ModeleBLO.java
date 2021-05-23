@@ -1,5 +1,5 @@
 package com.blo;
 
-public class ModeleBLO {
+public interface ModeleBLO {
 
 }

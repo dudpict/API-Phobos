@@ -2,6 +2,10 @@ package com.dao;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,6 +18,7 @@ import com.beans.Professeur;
 public class MatiereDaoImpl implements MatiereDao {
 
 	private DaoFactory daoFactory;
+	private static final Logger logger = Logger.getLogger(MatiereDaoImpl.class);
 
 	public MatiereDaoImpl(DaoFactory daoFactory) {
 		this.daoFactory = daoFactory;
@@ -48,15 +53,9 @@ public class MatiereDaoImpl implements MatiereDao {
                 matiere.setResponsable(prof);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        try {
-			resultat.close();
-			statement.close();
-			connexion.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.log(Level.INFO, "sql problem getMatiereById", e);
+		}finally {
+			daoFactory.close(connexion,statement,null,resultat);	
 		}
         return matiere;
 	}
@@ -78,17 +77,9 @@ public class MatiereDaoImpl implements MatiereDao {
 				matiere = resultat.getInt("id");
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		try {
-			resultat.close();
-			statement.close();
-			preparedStatement.close();
-			connexion.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.log(Level.INFO, "sql problem getMatiereIdByResponsableID", e);
+		}finally {
+			daoFactory.close(connexion,statement,preparedStatement,resultat);	
 		}
 		
 		return matiere;
@@ -100,7 +91,7 @@ public class MatiereDaoImpl implements MatiereDao {
 		Statement statement = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultat = null;
-		List<Matiere> matieres = new ArrayList<Matiere>();
+		List<Matiere> matieres = new ArrayList<>();
 		try {
 			connexion = daoFactory.getConnection();
 			statement = connexion.createStatement();
@@ -122,17 +113,9 @@ public class MatiereDaoImpl implements MatiereDao {
 				matieres.add(matiere);
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		try {
-			resultat.close();
-			statement.close();
-			preparedStatement.close();
-			connexion.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.log(Level.INFO, "sql problem getMatieres", e);
+		}finally {
+			daoFactory.close(connexion,statement,preparedStatement,resultat);	
 		}
 		
 		return matieres;

@@ -2,9 +2,12 @@ package com.controller;
 
 import java.util.ArrayList;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,94 +18,93 @@ import com.dao.SectionDao;
 
 @RestController
 public class PhobosControllerSection {
+	private static final Logger logger = Logger.getLogger(PhobosControllerSection.class);
+
 
 	// METHODE POST 
 	
 	// INSERT d'une Section 
-	@RequestMapping(value = "/addSection", method = RequestMethod.POST)
+	@PostMapping(value = "/addSection")
 	@ResponseBody
-	public void appelPost_question_addSection(@RequestParam(required = false, value = "Designation") String Designation,
-												@RequestParam(required = false, value = "id_Modele") int id_Modele) {
-		System.out.println("méthode POST, add Section");
+	public void appelPostquestionaddSection(@RequestParam(required = false, value = "Designation") String designation,
+												@RequestParam(required = false, value = "id_Modele") int idModele) {
+		logger.log(Level.INFO, "appelPost_question_addSection");
 		DaoFactory fact = new DaoFactory();
-		SectionDao SectionDao = fact.getSectionDao();
-		SectionDao.addSection(Designation, id_Modele);
+		SectionDao sectionDao = fact.getSectionDao();
+		sectionDao.addSection(designation, idModele);
 	}
 	
 	// UPDATE d'une Section 
-	@RequestMapping(value = "/updateSection", method = RequestMethod.POST)
+	@PostMapping(value = "/updateSection")
 	@ResponseBody
-	public void appelPost_question_updateSection(@RequestParam(required = false, value = "id") int id,
-												@RequestParam(required = false, value = "Designation") String Designation,
-												@RequestParam(required = false, value = "id_Modele") int id_Modele) {
-		System.out.println("méthode POST, update Section");
+	public void appelPostquestionupdateSection(@RequestParam(required = false, value = "id") int id,
+												@RequestParam(required = false, value = "Designation") String designation,
+												@RequestParam(required = false, value = "id_Modele") int idModele) {
+		logger.log(Level.INFO, "appelPost_question_updateSection");
 		DaoFactory fact = new DaoFactory();
-		SectionDao SectionDao = fact.getSectionDao();
-		SectionDao.updateSection(id, Designation, id_Modele);
+		SectionDao sectionDao = fact.getSectionDao();
+		sectionDao.updateSection(id, designation, idModele);
 		}
 	
 	
 	// METHODE GET
 	
-	@RequestMapping(value = "/sectionByModele", method = RequestMethod.GET)
+	@GetMapping(value = "/sectionByModele")
 	@ResponseBody
-	public ArrayList<Section> getSectionByIdModele(@RequestParam(required = false, value = "id") String id_Modele) {
-		System.out.println("méthode GET, getSectionByIdModele");
+	public ArrayList<Section> getSectionByIdModele(@RequestParam(required = false, value = "id") String idModele) {
+		logger.log(Level.INFO, "getSectionByIdModele");
 		DaoFactory fact = new DaoFactory();
-		SectionDao SectionDao = fact.getSectionDao();
-		ArrayList<Section> allSection = SectionDao.getSectionByIdModele(id_Modele);
-		return allSection;
+		SectionDao sectionDao = fact.getSectionDao();
+		return sectionDao.getSectionByIdModele(idModele);
 		}
 	
-	@RequestMapping(value = "/sectionById", method = RequestMethod.GET)
+	@GetMapping(value = "/sectionById")
 	@ResponseBody
 	public Section getSectionById(@RequestParam(required = false, value = "id") int id) {
-		System.out.println("méthode GET, getSectionById");
+		logger.log(Level.INFO, "getSectionById");
 		DaoFactory fact = new DaoFactory();
-		SectionDao SectionDao = fact.getSectionDao();
-		Section section = SectionDao.getSectionById(id);
-		return section;
+		SectionDao sectionDao = fact.getSectionDao();
+		return sectionDao.getSectionById(id);
 		}
 	
-	@RequestMapping(value = "/section", method = RequestMethod.GET)
+	@GetMapping(value = "/section")
 	@ResponseBody
-	public ArrayList<Section> appelGET_section(@RequestParam(required = false, value = "id") String id) {
-		System.out.println("Appel GET");
+	public ArrayList<Section> appelGETsection(@RequestParam(required = false, value = "id") String id) {
+		logger.log(Level.INFO, "appelGET_section");
 
 		DaoFactory fact = new DaoFactory();
 		SectionDao sectionDao = fact.getSectionDao();
-		ArrayList<Section> allSection = sectionDao.getSections();
-		return allSection;
+		return sectionDao.getSections();
 
 	}
 	
-	@RequestMapping(value = "/sectionByNom", method = RequestMethod.GET)
+	@GetMapping(value = "/sectionByNom")
 	@ResponseBody
-	public ArrayList<Section> appelGET_section_By_Nom(@RequestParam(required = false, value = "designation") String designation) {
-		System.out.println("Appel GET section by Nom ");
+	public ArrayList<Section> appelGETsectionByNom(@RequestParam(required = false, value = "designation") String designation) {
+		logger.log(Level.INFO, "appelGET_section_By_Nom");
 
 		DaoFactory fact = new DaoFactory();
 		SectionDao sectionDao = fact.getSectionDao();
-		ArrayList<Section> allSection = sectionDao.getSectionByNom(designation);
-		return allSection;
+		return sectionDao.getSectionByNom(designation);
 
 	}
 	
-	@RequestMapping(value = "/getSection_By_All_Param", method = RequestMethod.GET)
+	@GetMapping(value = "/getSection_By_All_Param")
 	@ResponseBody
-	public ArrayList<Section> getSection_By_All_Param(@RequestBody Section section) {
+	public ArrayList<Section> getSectionByAllParam(@RequestBody Section section) {
+		logger.log(Level.INFO, "getSection_By_All_Param");
+		
 		DaoFactory fact = new DaoFactory();
 		SectionDao sectionDao = fact.getSectionDao();
-		ArrayList<Section> allSection = sectionDao.getSection_By_All_Param(section);
-		return allSection;
+		return sectionDao.getSectionByAllParam(section);
 	}
 	
 	// METHODE DELETE
 
-	@RequestMapping(value = "/section", method = RequestMethod.DELETE)
+	@DeleteMapping(value = "/section")
 	@ResponseBody
-	public void appelDELETE_section(@RequestParam(required = false, value = "id") String id) {
-		System.out.println("Appel Delete");
+	public void appelDELETEsection(@RequestParam(required = false, value = "id") String id) {
+		logger.log(Level.INFO, "appelDELETE_section");
 
 		DaoFactory fact = new DaoFactory();
 		SectionDao sectionDao = fact.getSectionDao();

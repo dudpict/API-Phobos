@@ -13,7 +13,7 @@ import org.apache.log4j.Logger;
 import com.beans.Equipe;
 
 public class EquipeDaoImpl implements EquipeDao {
-	private static final Logger logger = Logger.getLogger(ReponseMultipleDaoImpl.class);
+	private static final Logger logger = Logger.getLogger(EquipeDaoImpl.class);
 	private DaoFactory daoFactory;
 
 	EquipeDaoImpl(DaoFactory daoFactory) {
@@ -22,7 +22,7 @@ public class EquipeDaoImpl implements EquipeDao {
     
     @Override
     public ArrayList<Equipe> getEquipes() {
-    	ArrayList<Equipe> equipes = new ArrayList<Equipe>();
+    	ArrayList<Equipe> equipes = new ArrayList<>();
         Connection connexion = null;
         Statement statement = null;
         ResultSet resultat = null;
@@ -42,15 +42,10 @@ public class EquipeDaoImpl implements EquipeDao {
                 equipes.add(equipe);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        try {
-			resultat.close();
-			statement.close();
-			connexion.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.log(Level.INFO, "sql problem getEquipes", e);
+
+		}finally {
+			daoFactory.close(connexion,statement,null,resultat);			
 		}
         return equipes;
     }
@@ -74,15 +69,42 @@ public class EquipeDaoImpl implements EquipeDao {
             
 
         } catch (SQLException e) {
-            e.printStackTrace();
-        }
+			logger.log(Level.INFO, "sql problem getEquipeById", e);
+
+		}finally {
+			daoFactory.close(connexion,statement,null,resultat);			
+		}
+        return equipe;
+    	
+    }
+    
+    @Override
+    public Equipe getEquipeByString(String designation) {
+    	Connection connexion = null;
+		Statement statement = null;
+		ResultSet resultat = null;
+		PreparedStatement preparedStmt = null;
+        Equipe equipe = new Equipe();
+        equipe=null;
         try {
-			resultat.close();
-			statement.close();
-			connexion.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+        	connexion = daoFactory.getConnection();
+			statement = connexion.createStatement();
+			preparedStmt = connexion.prepareStatement("SELECT * FROM Equipe e WHERE e.designation = ?;");
+			preparedStmt.setString(1, designation);
+			resultat = preparedStmt.executeQuery();        	
+            
+            while (resultat.next()) {
+            	EquipeDao equipeDao = daoFactory.getEquipeDao();
+            	equipe = equipeDao.getEquipeById(resultat.getString("id"));
+            	
+            }
+            
+
+        } catch (SQLException e) {
+			logger.log(Level.INFO, "sql problem", e);
+
+		}finally {
+			daoFactory.close(connexion,statement,preparedStmt,resultat);			
 		}
         return equipe;
     	
@@ -118,6 +140,28 @@ public class EquipeDaoImpl implements EquipeDao {
 			daoFactory.close(connexion,statement,preparedStmt,resultat);			
 		}
         return equipe;
+    	
+    }
+    
+    @Override
+    public void addEquipe(String designation) {
+    	Connection connexion = null;
+		Statement statement = null;		
+		PreparedStatement preparedStmt = null;
+       
+        
+        try {
+        	connexion = daoFactory.getConnection();
+			statement = connexion.createStatement();
+			preparedStmt = connexion.prepareStatement("INSERT INTO Equipe(designation) VALUES (?);");
+			preparedStmt.setString(1, designation);
+			preparedStmt.executeQuery();        	
+        } catch (SQLException e) {
+			logger.log(Level.INFO, "sql problem", e);
+
+		}finally {
+			daoFactory.close(connexion,statement,preparedStmt,null);			
+		}
     	
     }
 

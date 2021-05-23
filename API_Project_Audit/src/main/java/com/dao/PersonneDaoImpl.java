@@ -17,6 +17,7 @@ public class PersonneDaoImpl implements PersonneDao {
 
 	private DaoFactory daoFactory;
 	private static final Logger logger = Logger.getLogger(PersonneDaoImpl.class);
+	private String [] sqlParamPersonne = {"id","nom","prenom","email","tel"};
 	
     PersonneDaoImpl(DaoFactory daoFactory) {
         this.daoFactory = daoFactory;
@@ -35,11 +36,11 @@ public class PersonneDaoImpl implements PersonneDao {
             resultat = statement.executeQuery("SELECT * FROM Personne WHERE role LIKE '"+role+"%';");
 
             while (resultat.next()) {
-            	String id = resultat.getString("id");
-                String nom = resultat.getString("nom");
-                String prenom = resultat.getString("prenom");
-                String email = resultat.getString("email");
-                String tel = resultat.getString("tel");
+            	String id = resultat.getString(sqlParamPersonne[0]);
+                String nom = resultat.getString(sqlParamPersonne[1]);
+                String prenom = resultat.getString(sqlParamPersonne[2]);
+                String email = resultat.getString(sqlParamPersonne[3]);
+                String tel = resultat.getString(sqlParamPersonne[4]);
      
                 Personne personne = new Personne();
                 personne.setId(Integer.valueOf(id));
@@ -74,11 +75,11 @@ public class PersonneDaoImpl implements PersonneDao {
             connexion.close();
 
             while (resultat.next()) {
-            	String id2=resultat.getString("id");
-            	String nom = resultat.getString("nom");
-                String prenom = resultat.getString("prenom");
-                String email = resultat.getString("email");
-                String tel = resultat.getString("tel");
+            	String id2 = resultat.getString(sqlParamPersonne[0]);
+                String nom = resultat.getString(sqlParamPersonne[1]);
+                String prenom = resultat.getString(sqlParamPersonne[2]);
+                String email = resultat.getString(sqlParamPersonne[3]);
+                String tel = resultat.getString(sqlParamPersonne[4]);
      
                 personne.setId(Integer.valueOf(id2));
                 personne.setNom(nom);
@@ -111,11 +112,11 @@ public class PersonneDaoImpl implements PersonneDao {
 			resultat = preparedStatement.executeQuery();
 			while (resultat.next()) {
 				personne= new Personne();
-            	String id = resultat.getString("id");
-                String nom = resultat.getString("nom");
-                String prenom = resultat.getString("prenom");
-                String email = resultat.getString("email");
-                String tel = resultat.getString("tel");	     
+				String id = resultat.getString(sqlParamPersonne[0]);
+                String nom = resultat.getString(sqlParamPersonne[1]);
+                String prenom = resultat.getString(sqlParamPersonne[2]);
+                String email = resultat.getString(sqlParamPersonne[3]);
+                String tel = resultat.getString(sqlParamPersonne[4]);    
             
                 personne.setId(Integer.valueOf(id));
                 personne.setNom(nom);

@@ -8,7 +8,6 @@ import java.util.ArrayList;
  *
  */
 public class Reponse {
-	//private static int idCount = 0;
 	private int id;
 	private String reponseLongue;
 	private int note;
@@ -27,7 +26,6 @@ public class Reponse {
 	 * @param reponse
 	 */
 	public Reponse(String reponse){
-		//super();
 		this.reponseLongue=reponse;
 	}
 	
@@ -76,7 +74,6 @@ public class Reponse {
 	 * @param reponse
 	 */
 	public Reponse(int reponse){
-		//super();
 		this.note=reponse;
 	}
 	
@@ -85,7 +82,6 @@ public class Reponse {
 	 * @param reponse
 	 */
 	public Reponse(boolean reponse){
-		//super();
 		this.reponseCourte=reponse;
 	}
 	
@@ -94,7 +90,6 @@ public class Reponse {
 	 * @param reponse
 	 */
 	public Reponse(ArrayList<ReponseMultiple> reponse){
-		//super();
 		this.reponseMultiple=reponse;
 	}
 	

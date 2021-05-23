@@ -7,10 +7,14 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 import com.beans.Jury;
 
 public class JuryDaoImpl implements JuryDao {
-
+	private static final Logger logger = Logger.getLogger(JuryDaoImpl.class);
+	private String [] sqlParamJury = {"id","designation"};
 	private DaoFactory daoFactory;
 
 	JuryDaoImpl(DaoFactory daoFactory) {
@@ -19,7 +23,7 @@ public class JuryDaoImpl implements JuryDao {
     
     @Override
     public ArrayList<Jury> getJurys() {
-    	ArrayList<Jury> jurys = new ArrayList<Jury>();
+    	ArrayList<Jury> jurys = new ArrayList<>();
         Connection connexion = null;
         Statement statement = null;
         ResultSet resultat = null;
@@ -30,8 +34,8 @@ public class JuryDaoImpl implements JuryDao {
             resultat = statement.executeQuery("SELECT id,designation FROM Jury;");
 
             while (resultat.next()) {
-            	String id = resultat.getString("id");
-                String designation = resultat.getString("designation");
+            	String id = resultat.getString(sqlParamJury[0]);
+                String designation = resultat.getString(sqlParamJury[1]);
                      
                 Jury jury = new Jury();
                 jury.setId(Integer.valueOf(id));
@@ -39,16 +43,11 @@ public class JuryDaoImpl implements JuryDao {
 
                 jurys.add(jury);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        try {
-			resultat.close();
-			statement.close();
-			connexion.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+        }catch (SQLException e) {
+			logger.log(Level.INFO, "sql problem getJurys", e);
+
+		}finally {
+			daoFactory.close(connexion,statement,null,resultat);			
 		}
         return jurys;
     }
@@ -59,7 +58,7 @@ public class JuryDaoImpl implements JuryDao {
         Statement statement = null;
         ResultSet resultat = null;
         Jury jury = new Jury();
-        ArrayList<Jury> jurys = new ArrayList<Jury>();
+        ArrayList<Jury> jurys = new ArrayList<>();
 
         try {
             connexion = daoFactory.getConnection();
@@ -67,24 +66,18 @@ public class JuryDaoImpl implements JuryDao {
             resultat = statement.executeQuery("SELECT id,designation FROM Jury WHERE id="+juryID+";");
 
             while (resultat.next()) {
-            	String id = resultat.getString("id");
-                String designation = resultat.getString("designation");
-                     
+            	String id = resultat.getString(sqlParamJury[0]);
+                String designation = resultat.getString(sqlParamJury[1]);
                
                 jury.setId(Integer.valueOf(id));
                 jury.setDesignation(designation);
                 jurys.add(jury);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        try {
-			resultat.close();
-			statement.close();
-			connexion.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.log(Level.INFO, "sql problem getEtudiantById", e);
+
+		}finally {
+			daoFactory.close(connexion,statement,null,resultat);			
 		}
         return jury;
 	}
@@ -96,10 +89,6 @@ public class JuryDaoImpl implements JuryDao {
         ResultSet resultat = null;
         PreparedStatement preparedStmt = null;
                 
-        Connection connexion2 = null;
-        Statement statement2 = null;
-        ResultSet resultat2 = null;
-        PreparedStatement preparedStmt2 = null;
         
         Jury jury = new Jury();
 
@@ -111,41 +100,70 @@ public class JuryDaoImpl implements JuryDao {
 			resultat = preparedStmt.executeQuery();
 			
             while (resultat.next()) {
-            	String id_Jury = resultat.getString("id_Jury");
-            	connexion2 = daoFactory.getConnection();
-    			statement2 = connexion2.createStatement();
-    			preparedStmt2 = connexion2.prepareStatement("SELECT * FROM Jury where id=?;");
-    			preparedStmt2.setString(1, id_Jury);
-    			resultat2 = preparedStmt2.executeQuery();
-    			
-    			 while (resultat2.next()) {
-    				 int id = resultat2.getInt("id");
-    				 String designation = resultat2.getString("designation");
-    				 jury.setId(id);
-    				 jury.setDesignation(designation);
-    			 }
+            	String idJury = resultat.getString("id_Jury");
+	            jury = daoFactory.getJuryDao().getJuryById(idJury);
             	
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        try {
-        	if (connexion != null) {
-        		resultat.close();
-    			statement.close();
-    			connexion.close();
-        	}
-        	if (connexion2 != null) {
-        		resultat2.close();
-    			statement2.close();
-    			connexion2.close();
-        	}
-			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+        }catch (SQLException e) {
+			logger.log(Level.INFO, "sql problem getJurybyidAudit", e);
+
+		}finally {
+			daoFactory.close(connexion,statement,preparedStmt,resultat);
 		}
         return jury;
+	}
+	
+	@Override
+	public Jury  getJuryByString(String designation ) {
+        Connection connexion = null;
+        Statement statement = null;
+        ResultSet resultat = null;
+        PreparedStatement preparedStmt = null;
+                
+        
+        Jury jury = new Jury();
+        jury=null;
+        try {
+        	connexion = daoFactory.getConnection();
+			statement = connexion.createStatement();
+			preparedStmt = connexion.prepareStatement("SELECT * FROM Jury j WHERE j.designation = ?;");
+			preparedStmt.setString(1, designation);
+			resultat = preparedStmt.executeQuery();
+			
+            while (resultat.next()) {
+            	String idJury = resultat.getString("id");
+	            jury = daoFactory.getJuryDao().getJuryById(idJury);
+            	
+            }
+        }catch (SQLException e) {
+			logger.log(Level.INFO, "sql problem getJuryByString", e);
+
+		}finally {
+			daoFactory.close(connexion,statement,preparedStmt,resultat);
+		}
+        return jury;
+	}
+	
+	@Override
+	public void  addJury(String designation) {
+        Connection connexion = null;
+        Statement statement = null;
+        PreparedStatement preparedStmt = null;
+
+        try {
+        	connexion = daoFactory.getConnection();
+			statement = connexion.createStatement();
+			preparedStmt = connexion.prepareStatement("INSERT INTO Jury(designation) VALUES (?);");
+			preparedStmt.setString(1, designation);
+			preparedStmt.executeQuery();
+			
+        }catch (SQLException e) {
+			logger.log(Level.INFO, "sql problem addJury", e);
+
+		}finally {
+			daoFactory.close(connexion,statement,preparedStmt,null);
+		}
+      
 	}
 
 	

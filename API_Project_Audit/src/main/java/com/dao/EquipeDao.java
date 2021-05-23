@@ -8,5 +8,7 @@ public interface EquipeDao {
 	ArrayList<Equipe> getEquipes();
 	public Equipe getEquipeById(String id);
 	Equipe getEquipeByEtudiantId(String idetudiant);
+	Equipe getEquipeByString(String designation);
+	void addEquipe(String designation);
 
 }
