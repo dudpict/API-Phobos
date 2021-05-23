@@ -12,6 +12,6 @@ public interface ReponseMultipleDao {
 
 	void deleteReponseMultiple(String id);
 
-	void updateReponseMultiple(String ReponseMultiple, int id);
+	void updateReponseMultiple(String reponseMultiple, int id);
 	
 }

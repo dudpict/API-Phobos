@@ -2,9 +2,11 @@ package com.controller;
 
 import java.util.ArrayList;
 
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,11 +18,13 @@ import com.dao.ReponseMultipleDao;
 
 @RestController
 public class PhobosControllerReponseMultiple {
+	private static final Logger logger = Logger.getLogger(PhobosControllerReponseMultiple.class);
+
 	
-	@RequestMapping(value = "/reponseMultipleByIdReponse", method = RequestMethod.GET)
+	@GetMapping(value = "/reponseMultipleByIdReponse")
 	@ResponseBody
-	public ArrayList<ReponseMultiple> appelGET_reponseMultipleByIdReponse(@RequestParam(required = true, value = "id") String id) {
-		System.out.println("Appel reponse multiple GET by ID reponse");
+	public ArrayList<ReponseMultiple> appelGETreponseMultipleByIdReponse(@RequestParam(required = true, value = "id") String id) {
+		logger.log(Level.INFO, "appelGET_reponseMultipleByIdReponse");
 
 		DaoFactory fact = new DaoFactory();
 		ReponseMultipleDao reponseMultipleDao = fact.getReponseMultipleDao();
@@ -28,34 +32,34 @@ public class PhobosControllerReponseMultiple {
 		return reponseMultipleDao.getReponseMultipleByIdReponse(id);
 	}
 	
-	@RequestMapping(value = "/addReponseMultiple", method = RequestMethod.POST)
+	@PostMapping(value = "/addReponseMultiple")
 	@ResponseBody
-	public void appelPOST_addReponseMultiple(@RequestParam(required = true, value = "reponse") String reponse,
+	public void appelPOSTaddReponseMultiple(@RequestParam(required = true, value = "reponse") String reponse,
 												@RequestParam(required = true, value = "idQuestion") String idQuestion,
 												@RequestParam(required = true, value = "cochee") Boolean cochee) {
 
-		System.out.println("Appel addReponseMultiple ");
+		logger.log(Level.INFO, "appelPOST_addReponseMultiple");
 
 		DaoFactory fact = new DaoFactory();
 		ReponseMultipleDao reponseMultipleDao = fact.getReponseMultipleDao();
 		reponseMultipleDao.addReponseMultiple(reponse, idQuestion,cochee);
 	}
 	
-	@RequestMapping(value = "/updateReponseMultiple", method = RequestMethod.POST)
+	@PostMapping(value = "/updateReponseMultiple")
 	@ResponseBody
-	public void appelPOST_updateReponseMultiple(@RequestParam(required = true, value = "ReponseMultiple") String ReponseMultiple,
+	public void appelPOSTupdateReponseMultiple(@RequestParam(required = true, value = "ReponseMultiple") String reponseMultiple,
 												@RequestParam(required = true, value = "id") int id) {
-		System.out.println("Appel updateReponseMultiple ");
+		logger.log(Level.INFO, "appelPOST_updateReponseMultiple");
 
 		DaoFactory fact = new DaoFactory();
 		ReponseMultipleDao reponseMultipleDao = fact.getReponseMultipleDao();
-		reponseMultipleDao.updateReponseMultiple(ReponseMultiple,id);
+		reponseMultipleDao.updateReponseMultiple(reponseMultiple,id);
 	}
 	
-	@RequestMapping(value = "/deleteReponseMultiple", method = RequestMethod.DELETE)
+	@DeleteMapping(value = "/deleteReponseMultiple")
 	@ResponseBody
-	public void appelPOST_deleteReponseMultiple(@RequestParam(required = true, value = "id") String id) {
-		System.out.println("Appel deleteReponseMultiple ");
+	public void appelPOSTdeleteReponseMultiple(@RequestParam(required = true, value = "id") String id) {
+		logger.log(Level.INFO, "appelPOST_deleteReponseMultiple");
 
 		DaoFactory fact = new DaoFactory();
 		ReponseMultipleDao reponseMultipleDao = fact.getReponseMultipleDao();

@@ -25,7 +25,7 @@ public class ReponseMultipleDaoImpl implements ReponseMultipleDao {
 	@Override
 	public ArrayList<ReponseMultiple> getReponseMultipleByIdReponse(String idReponse){
 		DaoFactory fact = new DaoFactory();
-		ArrayList<ReponseMultiple> reponsesMultiples = new ArrayList<ReponseMultiple>();
+		ArrayList<ReponseMultiple> reponsesMultiples = new ArrayList<>();
 		Connection connexion = null;
 		Statement statement = null;
 		ResultSet resultat = null;
@@ -46,7 +46,7 @@ public class ReponseMultipleDaoImpl implements ReponseMultipleDao {
 				reponsesMultiples.add(reponseMultiple);
 			}
 		} catch (SQLException e) {
-			logger.log(Level.INFO, "sql problem", e);
+			logger.log(Level.INFO, "sql problem getReponseMultipleByIdReponse", e);
 
 		}finally {
 			fact.close(connexion,statement,preparedStmt,resultat);			
@@ -67,15 +67,12 @@ public class ReponseMultipleDaoImpl implements ReponseMultipleDao {
 		
 		
 		ArrayList<Reponse> reponses = reponseDao.getReponsesByQuestionId(idQuestion);
-		if (reponses.size() ==0) {
+		if (reponses.isEmpty()) {
 			reponseDao.addReponse(null,-1,false, idQuestion);
 			reponses = reponseDao.getReponsesByQuestionId(idQuestion);
-			System.out.println("reponse null");
 		}
-		System.out.println("reponse pas null");
 		for(Reponse reponseL : reponses) {
 			idReponse = reponseL.getId();
-			System.out.println("idReponse"+idReponse);
 		}
 		
 		try {
@@ -87,14 +84,14 @@ public class ReponseMultipleDaoImpl implements ReponseMultipleDao {
 			preparedStmt.setBoolean(3, cochee);
 			preparedStmt.executeQuery();
 		} catch (SQLException e) {
-			logger.log(Level.INFO, "sql problem", e);
+			logger.log(Level.INFO, "sql problem addReponseMultiple", e);
 		}finally {
 			fact.close(connexion,statement,preparedStmt,null);			
 		}
 	}
 	
 	@Override
-	public void updateReponseMultiple(String ReponseMultiple, int id ) {
+	public void updateReponseMultiple(String reponseMultiple, int id ) {
 		Connection connexion = null;
 		Statement statement = null;
 		PreparedStatement preparedStmt = null;
@@ -105,7 +102,7 @@ public class ReponseMultipleDaoImpl implements ReponseMultipleDao {
 			connexion = daoFactory.getConnection();
 			statement = connexion.createStatement();
 			preparedStmt = connexion.prepareStatement("UPDATE ReponseMultiple SET ReponseMultiple=? WHERE ID=?;");
-			preparedStmt.setString(1, ReponseMultiple);
+			preparedStmt.setString(1, reponseMultiple);
 			preparedStmt.setInt(2, id);
 			preparedStmt.executeQuery();
 		} catch (SQLException e) {
