@@ -471,7 +471,7 @@ public class AuditDaoImpl implements AuditDao {
 		return audit;
 	}
 	
-	public ArrayList<Audit> getFilteredAudits(String matiereId, String lieuId, String titre, String juryId, String etat,String id, String role){
+	public ArrayList<Audit> getFilteredAudits(String matiereId, String lieuId, String titre, String juryId, String etat,String id, String role,String ueId){
 		ArrayList<Audit> audits = new ArrayList<>();
 		Connection connexion = null;
 		PreparedStatement preparedStatement = null;
@@ -483,7 +483,7 @@ public class AuditDaoImpl implements AuditDao {
 			switch(role) {
 			case  "respOption" :
 				preparedStatement = connexion
-				.prepareStatement("SELECT * FROM Audit;");
+				.prepareStatement("SELECT * FROM Audit WHERE `id_Matiere` IN (SELECT id FROM Matiere WHERE id_UE IN (SELECT id FROM UE WHERE id_Professeur = ?) ) AND `id_Jury` LIKE ? AND `id_Lieu` LIKE ? AND etat LIKE ? AND designation LIKE ?;");
 				break;	
 			case "respUe" : 
 				preparedStatement = connexion

@@ -38,9 +38,10 @@ public class PhobosControllerAudit {
 			@RequestParam(required = false, value="juryId") String juryId,
 			@RequestParam(required = false, value="etat") String etat,
 			@RequestParam(required = true, value = "id") String id,
-			@RequestParam(required = true, value = "role") String role) {
+			@RequestParam(required = true, value = "role") String role,
+			@RequestParam(required= false , value ="ueId")String ueId) {
 		logger.log(Level.INFO, "appel get triAudit");
-		return auditBLO.getFilteredAudit(matiereId,lieuId,titre,juryId,etat,id,role);
+		return auditBLO.getFilteredAudit(matiereId,lieuId,titre,juryId,etat,id,role,ueId);
 		
 	}
 	
