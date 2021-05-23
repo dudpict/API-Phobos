@@ -2,9 +2,12 @@ package com.controller;
 
 import java.util.ArrayList;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,102 +18,99 @@ import com.dao.QuestionDao;
 
 @RestController
 public class PhobosControllerQuestion {
+	private static final Logger logger = Logger.getLogger(PhobosControllerQuestion.class);
+	
 	
 	//APPEL GET
 	
 	// SELECT d'une question par son id de section
-	@RequestMapping(value = "/questionBySectionId", method = RequestMethod.GET)
+	@GetMapping(value = "/questionBySectionId")
 	@ResponseBody
 	public ArrayList<Question> getQuestionsBySectionId(@RequestParam(required = false, value = "id") String id) {
-		System.out.println("méthode GET, getQuestionsBySectionId");
+		logger.log(Level.INFO, "getQuestionsBySectionId");
 		DaoFactory fact = new DaoFactory();
 		QuestionDao questionDao = fact.getQuestionDao();
-		ArrayList<Question> questions = questionDao.getQuestionsBySectionId(id);
 
-		return questions;
+		return questionDao.getQuestionsBySectionId(id);
 	}
 
-	@RequestMapping(value = "/question", method = RequestMethod.GET)
+	@GetMapping(value = "/question")
 	@ResponseBody
-	public ArrayList<Question> appelGET_question(@RequestParam(required = false, value = "id") String id) {
-		System.out.println("Appel GET");
+	public ArrayList<Question> appelGETquestion(@RequestParam(required = false, value = "id") String id) {
+		logger.log(Level.INFO, "appelGET_question");
 
 		DaoFactory fact = new DaoFactory();
 		QuestionDao questionDao = fact.getQuestionDao();
-		ArrayList<Question> allQuestion = questionDao.getQuestions();
-		return allQuestion;
+		return questionDao.getQuestions();
 	}
 
-	@RequestMapping(value = "/questionById", method = RequestMethod.GET)
+	@GetMapping(value = "/questionById")
 	@ResponseBody
-	public Question appelGET_questionById(@RequestParam(required = true, value = "id") String id) {
-		System.out.println("Appel GET by ID");
+	public Question appelGETquestionById(@RequestParam(required = true, value = "id") String id) {
+		logger.log(Level.INFO, "appelGET_questionById");
 
 		DaoFactory fact = new DaoFactory();
 		QuestionDao questionDao = fact.getQuestionDao();
-		Question question = questionDao.getQuestionById(id);
-		return question;
+		return questionDao.getQuestionById(id);
 	}
 	
-	@RequestMapping(value = "/questionByNom", method = RequestMethod.GET)
+	@GetMapping(value = "/questionByNom")
 	@ResponseBody
-	public Question appelGET_questionByNom(@RequestParam(required = true, value = "Designation") String Designation) {
-		System.out.println("Appel GET questionByNom");
+	public Question appelGETquestionByNom(@RequestParam(required = true, value = "Designation") String designation) {
+		logger.log(Level.INFO, "appelGET_questionByNom");
 
 		DaoFactory fact = new DaoFactory();
 		QuestionDao questionDao = fact.getQuestionDao();
-		Question question = questionDao.getQuestionByNom(Designation);
-		return question;
+		return questionDao.getQuestionByNom(designation);
 	}
 	
-	@RequestMapping(value = "/ getQuestion_By_All_Param", method = RequestMethod.GET)
+	@GetMapping(value = "/ getQuestion_By_All_Param")
 	@ResponseBody
-	public ArrayList<Question>  getQuestion_By_All_Param(@RequestBody Question question) {
-		System.out.println("Appel GET question by all param");
+	public ArrayList<Question>  getQuestionByAllParam(@RequestBody Question question) {
+		logger.log(Level.INFO, "getQuestion_By_All_Param");
 
 		DaoFactory fact = new DaoFactory();
 		QuestionDao questionDao = fact.getQuestionDao();
-		ArrayList<Question> allQuestion = questionDao.getQuestion_By_All_Param(question);
-		return allQuestion;
+		return questionDao.getQuestionByAllParam(question);
 	}
 	
 	//APPEL POST 
 	
 	// INSERT d'une question
-	@RequestMapping(value = "/addQuestion", method = RequestMethod.POST)
+	@PostMapping(value = "/addQuestion")
 	@ResponseBody
-	public void appelPost_question_addQuestion(
-			@RequestParam(required = false, value = "Designation") String Designation,
-			@RequestParam(required = false, value = "id_section") int id_section,
-			@RequestParam(required = false, value = "id_typeQuestion") int id_typeQuestion,
+	public void appelPostquestionaddQuestion(
+			@RequestParam(required = false, value = "Designation") String designation,
+			@RequestParam(required = false, value = "id_section") int idsection,
+			@RequestParam(required = false, value = "id_typeQuestion") int idtypeQuestion,
 			@RequestParam(required = false, value = "intitule") String intitule) {
-		System.out.println("méthode POST, add question");
+		logger.log(Level.INFO, "appelPost_question_addQuestion");
 		DaoFactory fact = new DaoFactory();
 		QuestionDao questionDao = fact.getQuestionDao();
-		questionDao.addQuestion(Designation, intitule, id_section, id_typeQuestion);
+		questionDao.addQuestion(designation, intitule, idsection, idtypeQuestion);
 	}
 
 	// UPDATE d'une question
-	@RequestMapping(value = "/updateQuestion", method = RequestMethod.POST)
+	@PostMapping(value = "/updateQuestion")
 	@ResponseBody
-	public void appelPost_question_updateQuestion(@RequestParam(required = false, value = "id") int id,
-			@RequestParam(required = false, value = "Designation") String Designation,
+	public void appelPostquestionupdateQuestion(@RequestParam(required = false, value = "id") int id,
+			@RequestParam(required = false, value = "Designation") String designation,
 			@RequestParam(required = false, value = "reponse") String reponse,
-			@RequestParam(required = false, value = "id_section") int id_section,
-			@RequestParam(required = false, value = "id_typeQuestion") int id_typeQuestion,
+			@RequestParam(required = false, value = "id_section") int idsection,
+			@RequestParam(required = false, value = "id_typeQuestion") int idtypeQuestion,
 			@RequestParam(required = false, value = "intitule") String intitule) {
-		System.out.println("méthode POST, update question");
+		logger.log(Level.INFO, "appelPost_question_updateQuestion");
 		DaoFactory fact = new DaoFactory();
 		QuestionDao questionDao = fact.getQuestionDao();
-		questionDao.updateQuestion(id, Designation, intitule, reponse, id_section, id_typeQuestion);
+		questionDao.updateQuestion(id, designation, intitule, reponse, idsection, idtypeQuestion);
 	}
 		
 	//APPEL DELETE
 	
-	@RequestMapping(value = "/question", method = RequestMethod.DELETE)
+	@DeleteMapping(value = "/question")
 	@ResponseBody
-	public void appelDELETE_question(@RequestParam(required = false, value = "id") String id) {
-		System.out.println("Appel Delete");
+	public void appelDELETEQuestion(@RequestParam(required = false, value = "id") String id) {
+		logger.log(Level.INFO, "appelDELETE_question");
 
 		DaoFactory fact = new DaoFactory();
 		QuestionDao questionDao = fact.getQuestionDao();
