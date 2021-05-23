@@ -6,10 +6,10 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -44,143 +44,149 @@ public class PhobosControllerAudit {
 		
 	}
 	
-	@RequestMapping(value = "/getModifiAuditByIdAudit", method = RequestMethod.GET)
+	@GetMapping(value = "/getModifiAuditByIdAudit")
 	@ResponseBody	
 	public ArrayList<AuditModif> getModifiAudit(@RequestParam(required = true, value="id") String id) {
-		System.out.println("Appel GET getModifiAudit");
-		
+		logger.log(Level.INFO, "Appel GET getModifiAudit");
 		
 		DaoFactory fact = new DaoFactory();
-		AuditModifDao AuditModifDao = fact.getAuditModifDao();
-		return AuditModifDao.getModifiAudit(id);		
+		AuditModifDao auditModifDao = fact.getAuditModifDao();
+		return auditModifDao.getModifiAudit(id);		
 	}
 	
 	@GetMapping(value = "/isPersonneIsInAudit")
 	@ResponseBody
-	public ArrayList<Audit> appelGET_isPersonneIsInAudit(@RequestParam(required = true, value = "idPersonne") String idPersonne) {
-		System.out.println("appelGET_isPersonneIsInAudit");
-
+	public ArrayList<Audit> appelGETIsPersonneIsInAudit(@RequestParam(required = true, value = "idPersonne") String idPersonne) {
+		logger.log(Level.INFO, "appelGET_isPersonneIsInAudit");
+		
 		DaoFactory fact = new DaoFactory();
 		AuditDao auditDao = fact.getAuditDao();
 		return auditDao.isPersonneIsInAudit(idPersonne);
 	}
 	
-	@RequestMapping(value = "/auditsAll", method = RequestMethod.GET)
+	@GetMapping(value = "/auditsAll")
 	@ResponseBody	
-	public ArrayList<Audit> auditsAll() {		
+	public ArrayList<Audit> auditsAll() {
+		logger.log(Level.INFO, "Appel GET auditsAll");
+		
 		return auditBLO.getAllAudits();
 		
 	}
 
-	@RequestMapping(value = "/auditById", method = RequestMethod.GET)
+	@GetMapping(value = "/auditById")
 	@ResponseBody
 	@CrossOrigin(origins = "*")
-	public Audit appelGET_auditById(@RequestParam(required = true, value = "id") String id) {
-		System.out.println("Appel GET by ID");
-
-		Audit audit = auditBLO.getAuditById(id);
-		return audit;
+	public Audit appelGETauditById(@RequestParam(required = true, value = "id") String id) {
+		logger.log(Level.INFO, "appelGETauditById");
+		
+		return auditBLO.getAuditById(id);
 	}
 	
-	@RequestMapping(value = "/auditByEtudiantId", method = RequestMethod.GET)
+	@GetMapping(value = "/auditByEtudiantId")
 	@ResponseBody
-	public ArrayList<Audit> appelGET_auditByEtudiantId(@RequestParam(required = true, value = "id_Etudiant") String id_Etudiant) {
-		System.out.println("appelGET_auditByEtudiantId");
-
+	public ArrayList<Audit> appelGETauditByEtudiantId(@RequestParam(required = true, value = "id_Etudiant") String idEtudiant) {
+		logger.log(Level.INFO, "appelGET_auditByEtudiantId");
+		
 		DaoFactory fact = new DaoFactory();
-		AuditDao AuditDao = fact.getAuditDao();
-		return AuditDao.auditByEtudiantId(id_Etudiant);
+		AuditDao auditDao = fact.getAuditDao();
+		return auditDao.auditByEtudiantId(idEtudiant);
 	}
 	
-	@RequestMapping(value = "/auditByProfesseurId", method = RequestMethod.GET)
+	@GetMapping(value = "/auditByProfesseurId")
 	@ResponseBody
-	public ArrayList<Audit> appelGET_auditByProfesseurId(@RequestParam(required = true, value = "id_Professeur") String id_Professeur) {
-		System.out.println("appelGET_auditByProfesseurId");
+	public ArrayList<Audit> appelGETauditByProfesseurId(@RequestParam(required = true, value = "id_Professeur") String idProfesseur) {
 
+		logger.log(Level.INFO, "Appel GET auditByProfesseurId");
+		
 		DaoFactory fact = new DaoFactory();
-		AuditDao AuditDao = fact.getAuditDao();
-		return AuditDao.auditByProfesseurId(id_Professeur);
+		AuditDao auditDao = fact.getAuditDao();
+		return auditDao.auditByProfesseurId(idProfesseur);
 	}
 
-	@RequestMapping(value = "/deleteAudit", method = RequestMethod.DELETE)
+	@DeleteMapping(value = "/deleteAudit")
 	@ResponseBody
-	public void appelDELETE_audit(@RequestParam(required = true, value = "id") String id) {
-		System.out.println("Appel DELETE");
-
+	public void appelDELETEaudit(@RequestParam(required = true, value = "id") String id) {
+		logger.log(Level.INFO, "Appel deleteAudit");
+		
 		auditBLO.deleteAudit(id);
 	}
 
-	@RequestMapping(value = "/dateLimiteAudits", method = RequestMethod.POST)
+	@PostMapping(value = "/dateLimiteAudits")
 	@ResponseBody
-	public Audit appelPost_audit_setDateLimiteAudits(@RequestBody Audit audit) {
-		Audit auditret = auditBLO.setAuditDate(audit);
-		return auditret;
+	public Audit appelPostauditsetDateLimiteAudits(@RequestBody Audit audit) {
+		logger.log(Level.INFO, "Appel GET getModifiAudit");
+		
+		return auditBLO.setAuditDate(audit);
 	}
 
-	@RequestMapping(value = "/semaineAudits", method = RequestMethod.POST)
+	@PostMapping(value = "/semaineAudits")
 	@ResponseBody
-	public Audit appelPost_audit_setSemaineeAudits(@RequestBody Audit audit) {
-		System.out.println("Appel SET dateLimite");
-
+	public Audit appelPostauditsetSemaineeAudits(@RequestBody Audit audit) {
+		logger.log(Level.INFO, "appelPostauditsetSemaineeAudits");
+		
 		auditBLO.setAuditWeek(audit);
 		return audit;
 	}
 
-	@RequestMapping(value = "/addAudit", method = RequestMethod.POST)
+	@PostMapping(value = "/addAudit")
 	@ResponseBody
-	public Audit appelPost_audit(@RequestBody Audit audit) {
+	public Audit appelPostaudit(@RequestBody Audit audit) {
+		logger.log(Level.INFO, "appelPostaudit");
+		
 		auditBLO.addAudit(audit);
 		return audit;
 
 	}
 
-	@RequestMapping(value = "/updateAudit", method = RequestMethod.POST)
+	@PostMapping(value = "/updateAudit")
 	@ResponseBody
-	public Audit appelPost_audit_update(@RequestBody Audit audit) {
+	public Audit appelPostAuditUpdate(@RequestBody Audit audit) {
+		logger.log(Level.INFO, "appelPost_audit_update");
+		
 		auditBLO.updateAudit(audit);
 		return audit;
 	}
 	
-	@RequestMapping(value = "/addEquipeToAudit", method = RequestMethod.POST)
+	@PostMapping(value = "/addEquipeToAudit")
 	@ResponseBody
-	public void  appelPost_addEquipeToAudit(@RequestParam(required = true, value = "id_Equipe") String id_Equipe,
-											@RequestParam(required = true, value = "id_Audit") String id_Audit) {
-		System.out.println("appelPost_addEquipeToAudit");
-
+	public void  appelPostaddEquipeToAudit(@RequestParam(required = true, value = "id_Equipe") String idEquipe,
+											@RequestParam(required = true, value = "id_Audit") String idAudit) {
+		logger.log(Level.INFO, "appelPost_addEquipeToAudit");
+		
 		DaoFactory fact = new DaoFactory();
-		AuditDao AuditDao = fact.getAuditDao();
-		AuditDao.addEquipeToAudit(id_Equipe, id_Audit);
+		AuditDao auditDao = fact.getAuditDao();
+		auditDao.addEquipeToAudit(idEquipe, idAudit);
 	}
 	
-	@RequestMapping(value = "/removeEquipeToAudit", method = RequestMethod.POST)
+	@PostMapping(value = "/removeEquipeToAudit")
 	@ResponseBody
-	public void  appelPost_removeEquipeToAudit(@RequestParam(required = true, value = "id_Audit") String id_Audit) {
-		System.out.println("appelPost_removeEquipeToAudit");
-
+	public void  appelPostremoveEquipeToAudit(@RequestParam(required = true, value = "id_Audit") String idAudit) {
+		logger.log(Level.INFO, "appelPost_removeEquipeToAudit");
+		
 		DaoFactory fact = new DaoFactory();
-		AuditDao AuditDao = fact.getAuditDao();
-		AuditDao.removeEquipeToAudit(id_Audit);
+		AuditDao auditDao = fact.getAuditDao();
+		auditDao.removeEquipeToAudit(idAudit);
 	}
 	
-	@RequestMapping(value = "/addJuryToAudit", method = RequestMethod.POST)
+	@PostMapping(value = "/addJuryToAudit")
 	@ResponseBody
-	public void  appelPost_addJuryToAudit(@RequestParam(required = true, value = "id_Jury") String id_Jury,
-												@RequestParam(required = true, value = "id_Audit") String id_Audit) {
-		System.out.println("appelPost_addJuryToAudit");
-
+	public void  appelPostaddJuryToAudit(@RequestParam(required = true, value = "id_Jury") String idJury,
+												@RequestParam(required = true, value = "id_Audit") String idAudit) {
+		logger.log(Level.INFO, "appelPost_addJuryToAudit");
+		
 		DaoFactory fact = new DaoFactory();
-		AuditDao AuditDao = fact.getAuditDao();
-		AuditDao.addJuryToAudit(id_Jury, id_Audit);
+		AuditDao auditDao = fact.getAuditDao();
+		auditDao.addJuryToAudit(idJury, idAudit);
 	}
 	
-	@RequestMapping(value = "/removeJuryToAudit", method = RequestMethod.POST)
+	@PostMapping(value = "/removeJuryToAudit")
 	@ResponseBody
-	public void  appelPost_removeJuryToAudit(@RequestParam(required = true, value = "id_Audit") String id_Audit) {
-		System.out.println("appelPost_removeJuryToAudit");
-
+	public void  appelPostremoveJuryToAudit(@RequestParam(required = true, value = "id_Audit") String idAudit) {
+		logger.log(Level.INFO, "appelPostremoveJuryToAudit");
+		
 		DaoFactory fact = new DaoFactory();
-		AuditDao AuditDao = fact.getAuditDao();
-		AuditDao.removeJuryToAudit(id_Audit);
+		AuditDao auditDao = fact.getAuditDao();
+		auditDao.removeJuryToAudit(idAudit);
 	}
 	
 }
