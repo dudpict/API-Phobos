@@ -14,11 +14,11 @@ public interface ProfesseurDao {
 	int getMatiereResponsable(int id);
 	Professeur getProfesseurById(String id);
 	ArrayList<Professeur> getprofesseurByStr(String search);
-	void addProfesseurToJuryId(String AppartientId, String id_Professeur);
-	void removeProfesseurToJuryId(String Id_Jury, String id_Professeur);
+	void addProfesseurToJuryId(String appartientId, String idProfesseur);
+	void removeProfesseurToJuryId(String idJury, String idProfesseur);
 	public Professeur getProfesseurByPersonneID(String idPersonne);
 	public String getRoleProf ( String id);
-	ArrayList<Professeur> professeurByAudit(String id_Audit);
+	ArrayList<Professeur> professeurByAudit(String idAudit);
 	void addProfesseur(Professeur professeur);
 
 }
