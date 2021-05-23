@@ -4,6 +4,7 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,12 +29,12 @@ public class PhobosControllerEquipe {
 	
 	@PostMapping(value = "/addEquipe")
 	@ResponseBody
-	public void addEquipe(@RequestParam(required = false, value = "designation") String designation) {
+	public void addEquipe(@RequestBody Equipe equipe) {
 		log.log(Level.INFO, "appel post addEquipe");
 		
 		DaoFactory fact = new DaoFactory();
 		EquipeDao equipeDao = fact.getEquipeDao();
-		equipeDao.addEquipe(designation);
+		equipeDao.addEquipe(equipe.getDesignation());
 	}
 	
 }

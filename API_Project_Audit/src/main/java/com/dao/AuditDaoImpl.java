@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -31,7 +32,7 @@ public class AuditDaoImpl implements AuditDao {
 		this.daoFactory = daoFactory;
 	}
 	
-	public ArrayList<Audit> getAudits(){
+	public List<Audit> getAudits(){
 		ArrayList<Audit> audits = new ArrayList<>();
 		Connection connexion = null;
 		ResultSet resultat = null;
@@ -488,47 +489,27 @@ public class AuditDaoImpl implements AuditDao {
 			case "respUe" : 
 				preparedStatement = connexion
 				.prepareStatement("SELECT * FROM Audit WHERE `id_Matiere` IN (SELECT id FROM Matiere WHERE id_UE IN (SELECT id FROM UE WHERE id_Professeur = ?) ) AND `id_Jury` LIKE ? AND `id_Lieu` LIKE ? AND etat LIKE ? AND designation LIKE ?;");
+				preparedStatement = addParameter(preparedStatement,lieuId, titre, juryId, etat, id);
 				break;
 			case "enseignMatiere" :
 				preparedStatement = connexion
 				.prepareStatement("SELECT * FROM `Audit` WHERE id_Matiere IN ( SELECT id FROM enseigne WHERE id_Professeur = ? ) AND `id_Jury` LIKE ? AND `id_Lieu` LIKE ? AND etat LIKE ?  AND designation LIKE ?;");
+				preparedStatement = addParameter(preparedStatement,lieuId, titre, juryId, etat, id);
 				break;
 			case "eleve" : 
 				preparedStatement = connexion
 				.prepareStatement("SELECT * FROM `Audit` WHERE id_Equipe IN ( SELECT id_Equipe FROM Etudiant WHERE id = ? ) AND `id_Jury` LIKE ? AND `id_Lieu` LIKE ? AND etat LIKE ? AND designation LIKE ? ;");
+				preparedStatement = addParameter(preparedStatement,lieuId, titre, juryId, etat, id);
 				break;
 			default :
 				preparedStatement = connexion
 				.prepareStatement(sqlSelectAll);
-				break;
-			
-			}
-			preparedStatement.setInt(1, Integer.parseInt(id));
-			if (juryId!=null && !juryId.equals("\"\"")) {
-				preparedStatement.setString(2, "%"+juryId+"%");
-
-			}else {
-				preparedStatement.setString(2, "%");
-			}
-			if (lieuId!=null && !lieuId.equals("\"\"")) {
-				preparedStatement.setString(3, "%"+lieuId+"%");
-
-			}else {
-				preparedStatement.setString(3, "%");
-			}
-			if (etat !=null && !etat.equals("\"\"")) {
-				preparedStatement.setString(4, "%"+etat+"%");
-
-			}else {
-				preparedStatement.setString(4, "%");
-			}
-			if (titre !=null && !titre.equals("\"\"")) {
-				preparedStatement.setString(5, "%"+titre+"%");
-
-			}else {
-				preparedStatement.setString(5, "%");
-			}
+				
+				break;			
+			}			
 			logger.log(Level.INFO, preparedStatement);
+			
+			
 			resultat = preparedStatement.executeQuery();
 
 			while (resultat.next()) {
@@ -577,6 +558,39 @@ public class AuditDaoImpl implements AuditDao {
 			daoFactory.close(connexion,null,preparedStatement,resultat);	
 		}
 		return audits;
+	}
+	
+	public PreparedStatement addParameter(PreparedStatement preparedStatement,String lieuId, String titre, String juryId, String etat, String id) {
+		try {
+			preparedStatement.setInt(1, Integer.parseInt(id));
+			if (juryId!=null && !juryId.equals("\"\"")) {
+				preparedStatement.setString(2, "%"+juryId+"%");
+	
+			}else {
+				preparedStatement.setString(2, "%");
+			}
+			if (lieuId!=null && !lieuId.equals("\"\"")) {
+				preparedStatement.setString(3, "%"+lieuId+"%");
+	
+			}else {
+				preparedStatement.setString(3, "%");
+			}
+			if (etat !=null && !etat.equals("\"\"")) {
+				preparedStatement.setString(4, "%"+etat+"%");
+	
+			}else {
+				preparedStatement.setString(4, "%");
+			}
+			if (titre !=null && !titre.equals("\"\"")) {
+				preparedStatement.setString(5, "%"+titre+"%");
+	
+			}else {
+				preparedStatement.setString(5, "%");
+			}
+		}catch (SQLException e) {
+			logger.log(Level.INFO, "sql problem addParameter", e);
+		}
+		return preparedStatement;
 	}
 
 	@Override
