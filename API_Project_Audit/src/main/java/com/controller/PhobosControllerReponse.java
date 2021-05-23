@@ -2,9 +2,11 @@ package com.controller;
 
 import java.util.ArrayList;
 
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,61 +18,61 @@ import com.dao.ReponseDao;
 
 @RestController
 public class PhobosControllerReponse {
+	private static final Logger logger = Logger.getLogger(PhobosControllerReponse.class);
+
 	
-	@RequestMapping(value = "/reponseById", method = RequestMethod.GET)
+	@GetMapping(value = "/reponseById")
 	@ResponseBody
-	public ArrayList<Reponse> appelGET_reponseByIdReponse(@RequestParam(required = true, value = "id") String id) {
-		System.out.println("Appel reponse  GET by ID reponse");
+	public ArrayList<Reponse> appelGETreponseByIdReponse(@RequestParam(required = true, value = "id") String id) {
+		logger.log(Level.INFO, "appelGET_reponseByIdReponse");
 
 		DaoFactory fact = new DaoFactory();
 		ReponseDao reponseDao = fact.getReponseDao();
-		ArrayList<Reponse> reponseMultiples = reponseDao.getReponseById(id);
-		return reponseMultiples;
+		return reponseDao.getReponseById(id);
 	}
 	
-	@RequestMapping(value = "/getReponsesByQuestionId", method = RequestMethod.GET)
+	@GetMapping(value = "/getReponsesByQuestionId")
 	@ResponseBody
-	public ArrayList<Reponse> appelGET_ReponsesByQuestionId(@RequestParam(required = true, value = "id") String id) {
-		System.out.println("Appel reponse  getReponsesByQuestionId");
+	public ArrayList<Reponse> appelGETReponsesByQuestionId(@RequestParam(required = true, value = "id") String id) {
+		logger.log(Level.INFO, "appelGET_ReponsesByQuestionId");
 
 		DaoFactory fact = new DaoFactory();
 		ReponseDao reponseDao = fact.getReponseDao();
-		ArrayList<Reponse> reponseMultiples = reponseDao.getReponsesByQuestionId(id);
-		return reponseMultiples;
+		return reponseDao.getReponsesByQuestionId(id);
 	}
 	
-	@RequestMapping(value = "/addReponse", method = RequestMethod.POST)
+	@PostMapping(value = "/addReponse")
 	@ResponseBody
-	public void appelPOST_ReponsesByQuestionId(@RequestParam(required = true, value = "ReponseLongue") String ReponseLongue,
-												@RequestParam(required = true, value = "Note") int Note,
-												@RequestParam(required = true, value = "ReponseCourte") Boolean ReponseCourte,
+	public void appelPOSTReponsesByQuestionId(@RequestParam(required = true, value = "ReponseLongue") String reponseLongue,
+												@RequestParam(required = true, value = "Note") int note,
+												@RequestParam(required = true, value = "ReponseCourte") Boolean reponseCourte,
 												@RequestParam(required = true, value = "idQuestion") String idQuestion) {
 			
-		System.out.println("Appel POST  addReponse");
+		logger.log(Level.INFO, "appelPOST_ReponsesByQuestionId");
 
 		DaoFactory fact = new DaoFactory();
 		ReponseDao reponseDao = fact.getReponseDao();
-		reponseDao.addReponse(ReponseLongue, Note, ReponseCourte, idQuestion);;
+		reponseDao.addReponse(reponseLongue, note, reponseCourte, idQuestion);
 	}
 	
-	@RequestMapping(value = "/updateReponse", method = RequestMethod.POST)
+	@PostMapping(value = "/updateReponse")
 	@ResponseBody
-	public void appelPOST_updateReponse(@RequestParam(required = true, value = "id") int id, 
-										@RequestParam(required = false, value = "ReponseLongue") String ReponseLongue, 
+	public void appelPOSTupdateReponse(@RequestParam(required = true, value = "id") int id, 
+										@RequestParam(required = false, value = "ReponseLongue") String reponseLongue, 
 										@RequestParam(required = false, value = "note") int note, 
-										@RequestParam(required = false, value = "ReponseCourte") Boolean ReponseCourte, 
+										@RequestParam(required = false, value = "ReponseCourte") Boolean reponseCourte, 
 										@RequestParam(required = false, value = "idQuestion") String idQuestion) {
-		System.out.println("Appel POST  updateReponse");
+		logger.log(Level.INFO, "appelPOST_updateReponse");
 
 		DaoFactory fact = new DaoFactory();
 		ReponseDao reponseDao = fact.getReponseDao();
-		reponseDao.updateReponse(id, ReponseLongue, note, ReponseCourte, idQuestion);;
+		reponseDao.updateReponse(id, reponseLongue, note, reponseCourte, idQuestion);
 	}
 	
-	@RequestMapping(value = "/deleteReponse", method = RequestMethod.DELETE)
+	@DeleteMapping(value = "/deleteReponse")
 	@ResponseBody
-	public void appelPOST_deleteReponse(@RequestParam(required = true, value = "id") String id) {
-		System.out.println("Appel POST  deleteReponse");
+	public void appelPOSTdeleteReponse(@RequestParam(required = true, value = "id") String id) {
+		logger.log(Level.INFO, "appelPOST_deleteReponse");
 
 		DaoFactory fact = new DaoFactory();
 		ReponseDao reponseDao = fact.getReponseDao();

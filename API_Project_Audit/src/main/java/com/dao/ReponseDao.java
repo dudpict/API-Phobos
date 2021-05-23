@@ -10,11 +10,11 @@ public interface ReponseDao {
 
 	ArrayList<Reponse> getReponsesByQuestionId(String id);
 
-	void addReponse(String ReponseLongue, int Note, Boolean ReponseCourte, String idQuestion);
+	void addReponse(String reponseLongue, int note, Boolean reponseCourte, String idQuestion);
 
 	void deleteReponse(String id);
 
-	void updateReponse(int id, String ReponseLongue, int note, Boolean ReponseCourte, String idQuestion);
+	void updateReponse(int id, String reponseLongue, int note, Boolean reponseCourte, String idQuestion);
 
 	
 	
