@@ -1,6 +1,6 @@
 package com.controller;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -32,7 +32,7 @@ public class PhobosControllerAudit {
 	
 	@GetMapping(value = "/audits")
 	@ResponseBody	
-	public ArrayList<Audit> triAudit(@RequestParam(required = false, value="matiereId") String matiereId, 
+	public List<Audit> triAudit(@RequestParam(required = false, value="matiereId") String matiereId, 
 			@RequestParam(required = false, value="lieuId") String lieuId ,
 			@RequestParam(required = false, value="titre") String titre,
 			@RequestParam(required = false, value="juryId") String juryId,
@@ -47,7 +47,7 @@ public class PhobosControllerAudit {
 	
 	@GetMapping(value = "/getModifiAuditByIdAudit")
 	@ResponseBody	
-	public ArrayList<AuditModif> getModifiAudit(@RequestParam(required = true, value="id") String id) {
+	public List<AuditModif> getModifiAudit(@RequestParam(required = true, value="id") String id) {
 		logger.log(Level.INFO, "Appel GET getModifiAudit");
 		
 		DaoFactory fact = new DaoFactory();
@@ -57,7 +57,7 @@ public class PhobosControllerAudit {
 	
 	@GetMapping(value = "/isPersonneIsInAudit")
 	@ResponseBody
-	public ArrayList<Audit> appelGETIsPersonneIsInAudit(@RequestParam(required = true, value = "idPersonne") String idPersonne) {
+	public List<Audit> appelGETIsPersonneIsInAudit(@RequestParam(required = true, value = "idPersonne") String idPersonne) {
 		logger.log(Level.INFO, "appelGET_isPersonneIsInAudit");
 		
 		DaoFactory fact = new DaoFactory();
@@ -67,7 +67,7 @@ public class PhobosControllerAudit {
 	
 	@GetMapping(value = "/auditsAll")
 	@ResponseBody	
-	public ArrayList<Audit> auditsAll() {
+	public List<Audit> auditsAll() {
 		logger.log(Level.INFO, "Appel GET auditsAll");
 		
 		return auditBLO.getAllAudits();
@@ -85,7 +85,7 @@ public class PhobosControllerAudit {
 	
 	@GetMapping(value = "/auditByEtudiantId")
 	@ResponseBody
-	public ArrayList<Audit> appelGETauditByEtudiantId(@RequestParam(required = true, value = "id_Etudiant") String idEtudiant) {
+	public List<Audit> appelGETauditByEtudiantId(@RequestParam(required = true, value = "id_Etudiant") String idEtudiant) {
 		logger.log(Level.INFO, "appelGET_auditByEtudiantId");
 		
 		DaoFactory fact = new DaoFactory();
@@ -95,7 +95,7 @@ public class PhobosControllerAudit {
 	
 	@GetMapping(value = "/auditByProfesseurId")
 	@ResponseBody
-	public ArrayList<Audit> appelGETauditByProfesseurId(@RequestParam(required = true, value = "id_Professeur") String idProfesseur) {
+	public List<Audit> appelGETauditByProfesseurId(@RequestParam(required = true, value = "id_Professeur") String idProfesseur) {
 
 		logger.log(Level.INFO, "Appel GET auditByProfesseurId");
 		

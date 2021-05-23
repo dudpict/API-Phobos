@@ -1,6 +1,6 @@
 package com.controller;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,7 +24,7 @@ public class PhobosControllerEtudiant {
 
 	@GetMapping(value = "/etudiant")
 	@ResponseBody
-	public ArrayList<Etudiant> appelGETetudiant(@RequestParam(required = false, value = "id") String id) {
+	public List<Etudiant> appelGETetudiant(@RequestParam(required = false, value = "id") String id) {
 		log.log(Level.INFO, "appel get triAudit");
 		
 		DaoFactory fact = new DaoFactory();
@@ -47,7 +45,7 @@ public class PhobosControllerEtudiant {
 	
 	@GetMapping(value = "/etudiantByStr")
 	@ResponseBody
-	public ArrayList<Etudiant> appelGETetudiantByStr(@RequestParam(required = true, value = "search") String search) {
+	public List<Etudiant> appelGETetudiantByStr(@RequestParam(required = true, value = "search") String search) {
 		log.log(Level.INFO, "appelGET_etudiantByStr");
 
 		DaoFactory fact = new DaoFactory();
@@ -67,7 +65,7 @@ public class PhobosControllerEtudiant {
 	
 	@GetMapping(value = "/etudiantByAudit")
 	@ResponseBody
-	public ArrayList<Etudiant> appelGETetudiantByAudit(@RequestParam(required = true, value = "id_Audit") String idAudit) {
+	public List<Etudiant> appelGETetudiantByAudit(@RequestParam(required = true, value = "id_Audit") String idAudit) {
 		log.log(Level.INFO, "appelGETetudiantByAudit");
 
 		DaoFactory fact = new DaoFactory();
@@ -126,9 +124,11 @@ public class PhobosControllerEtudiant {
 		etudiantDao.deleteEtudiant(id);
 	}
 	
-	@RequestMapping(value = "/isStudentByPersonneId", method = RequestMethod.GET)
+	@GetMapping(value = "/isStudentByPersonneId")
 	@ResponseBody
 	public boolean isEtudiant(@RequestParam(required= true, value ="id") String id ) {
+		
+		log.log(Level.INFO, "isEtudiant");
 		DaoFactory fact = new DaoFactory();
 		EtudiantDao etudiantDao = fact.getEtudiantDao();
 		return etudiantDao.getRoleEtudiant(id);

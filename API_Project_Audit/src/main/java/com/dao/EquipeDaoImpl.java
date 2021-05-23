@@ -101,7 +101,7 @@ public class EquipeDaoImpl implements EquipeDao {
             
 
         } catch (SQLException e) {
-			logger.log(Level.INFO, "sql problem", e);
+			logger.log(Level.INFO, "sql problem getEquipeByString", e);
 
 		}finally {
 			daoFactory.close(connexion,statement,preparedStmt,resultat);			
@@ -134,7 +134,7 @@ public class EquipeDaoImpl implements EquipeDao {
             
 
         } catch (SQLException e) {
-			logger.log(Level.INFO, "sql problem", e);
+			logger.log(Level.INFO, "sql problem getEquipeByEtudiantId", e);
 
 		}finally {
 			daoFactory.close(connexion,statement,preparedStmt,resultat);			
@@ -157,7 +157,7 @@ public class EquipeDaoImpl implements EquipeDao {
 			preparedStmt.setString(1, designation);
 			preparedStmt.executeQuery();        	
         } catch (SQLException e) {
-			logger.log(Level.INFO, "sql problem", e);
+			logger.log(Level.INFO, "sql problem addEquipe", e);
 
 		}finally {
 			daoFactory.close(connexion,statement,preparedStmt,null);			

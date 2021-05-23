@@ -1,6 +1,6 @@
 package com.controller;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -23,7 +23,7 @@ public class PhobosControllerReponse {
 	
 	@GetMapping(value = "/reponseById")
 	@ResponseBody
-	public ArrayList<Reponse> appelGETreponseByIdReponse(@RequestParam(required = true, value = "id") String id) {
+	public List<Reponse> appelGETreponseByIdReponse(@RequestParam(required = true, value = "id") String id) {
 		logger.log(Level.INFO, "appelGET_reponseByIdReponse");
 
 		DaoFactory fact = new DaoFactory();
@@ -33,7 +33,7 @@ public class PhobosControllerReponse {
 	
 	@GetMapping(value = "/getReponsesByQuestionId")
 	@ResponseBody
-	public ArrayList<Reponse> appelGETReponsesByQuestionId(@RequestParam(required = true, value = "id") String id) {
+	public List<Reponse> appelGETReponsesByQuestionId(@RequestParam(required = true, value = "id") String id) {
 		logger.log(Level.INFO, "appelGET_ReponsesByQuestionId");
 
 		DaoFactory fact = new DaoFactory();

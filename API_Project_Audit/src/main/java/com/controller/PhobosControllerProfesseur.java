@@ -1,6 +1,6 @@
 package com.controller;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,7 +24,7 @@ public class PhobosControllerProfesseur {
 	
 	@GetMapping(value = "/professeur")
 	@ResponseBody
-	public ArrayList<Professeur> appelGETprofesseur() {
+	public List<Professeur> appelGETprofesseur() {
 		logger.log(Level.INFO, "appel get appelGET_professeur");
 
 		DaoFactory fact = new DaoFactory();
@@ -36,7 +34,7 @@ public class PhobosControllerProfesseur {
 	
 	@GetMapping(value = "/professeurByAudit")
 	@ResponseBody
-	public  ArrayList<Professeur> appelGETprofesseurByAudit(@RequestParam(required = true, value = "id_Audit") String idAudit) {
+	public  List<Professeur> appelGETprofesseurByAudit(@RequestParam(required = true, value = "id_Audit") String idAudit) {
 		logger.log(Level.INFO, "appel get appelGET_professeurByAudit");
 
 		DaoFactory fact = new DaoFactory();
@@ -56,7 +54,7 @@ public class PhobosControllerProfesseur {
 	
 	@GetMapping(value = "/professeurByStr")
 	@ResponseBody
-	public  ArrayList<Professeur> appelGETprofesseurByStr(@RequestParam(required = true, value = "search") String search) {
+	public  List<Professeur> appelGETprofesseurByStr(@RequestParam(required = true, value = "search") String search) {
 		logger.log(Level.INFO, "appelGET_professeurByStr");
 
 		DaoFactory fact = new DaoFactory();
@@ -97,27 +95,30 @@ public class PhobosControllerProfesseur {
 	
 	@DeleteMapping(value = "/removeProfesseurToJuryId")
 	@ResponseBody
-	public void appelDELETEremoveProfesseurToJuryId(@RequestParam(required = true, value = "Id_Jury") String Id_Jury,
+	public void appelDELETEremoveProfesseurToJuryId(@RequestParam(required = true, value = "Id_Jury") String idJury,
 													@RequestParam(required = true, value = "id_Professeur") String idProfesseur) {
 		logger.log(Level.INFO, "appelDELETE_removeProfesseurToJuryId");
 
 		DaoFactory fact = new DaoFactory();
 		ProfesseurDao professeurDao = fact.getProfesseurDao();
-		professeurDao.removeProfesseurToJuryId(Id_Jury, idProfesseur);
+		professeurDao.removeProfesseurToJuryId(idJury, idProfesseur);
 	}
 	
 	@GetMapping(value= "/roleProfesseur")
 	@ResponseBody
 	public String roleProf (@RequestParam(required= true, value="id") String id) {
+		logger.log(Level.INFO, "roleProfesseur");
+		
 		DaoFactory fact = new DaoFactory();
 		ProfesseurDao professeurDao = fact.getProfesseurDao();
 		return professeurDao.getRoleProf ( id);
 		
 	}
 	
-	@RequestMapping(value="/isProfesseurByPersonneId" , method = RequestMethod.GET)
+	@GetMapping(value="/isProfesseurByPersonneId")
 	@ResponseBody
 	public boolean isProf(@RequestParam(required= true, value= "id") String id) {
+		logger.log(Level.INFO, "isProfesseurByPersonneId");
 		DaoFactory fact = new DaoFactory();
 		ProfesseurDao professeurDao = fact.getProfesseurDao();
 		return professeurDao.isProf(id);

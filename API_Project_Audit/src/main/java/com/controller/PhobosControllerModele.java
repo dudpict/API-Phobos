@@ -1,6 +1,6 @@
 package com.controller;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -45,7 +45,7 @@ public class PhobosControllerModele {
 	
 	@GetMapping(value = "/modele")
 	@ResponseBody
-	public ArrayList<Modele> appelGETmodele() {
+	public List<Modele> appelGETmodele() {
 		logger.log(Level.INFO, "appelGET_modele");
 
 		DaoFactory fact = new DaoFactory();

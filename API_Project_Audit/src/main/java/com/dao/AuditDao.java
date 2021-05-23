@@ -1,6 +1,7 @@
 package com.dao;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.beans.Audit;
 
@@ -12,6 +13,7 @@ public interface AuditDao {
 	void setHeureAudits(Audit audit);
 	Audit setAuditDate(Audit audit);
 	public Audit setSemaineAudit(Audit audit);
+
 	public  ArrayList<Audit> getFilteredAudits(String matiereId, String lieuId, String titre, String juryId,String etat,String id, String role,String ueId);
 	void addEquipeToAudit(String idEquipe, String idAudit);
 	void removeEquipeToAudit(String idAudit);

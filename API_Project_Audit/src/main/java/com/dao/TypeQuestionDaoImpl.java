@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -23,8 +24,8 @@ public class TypeQuestionDaoImpl implements TypeQuestionDao {
 	}
 
 	@Override
-	public ArrayList<TypeQuestion> getTypeQuestions() {
-		ArrayList<TypeQuestion> typeQuestions = new ArrayList<>();
+	public List<TypeQuestion> getTypeQuestions() {
+		List<TypeQuestion> typeQuestions = new ArrayList<>();
 		Connection connexion = null;
 		Statement statement = null;
 		ResultSet resultat = null;

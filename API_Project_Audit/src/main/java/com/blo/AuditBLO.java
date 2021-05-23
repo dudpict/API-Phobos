@@ -1,6 +1,6 @@
 package com.blo;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,7 @@ public class AuditBLO {
 		return auditDao.getAuditById(id);
 	}
 	
-	public ArrayList<Audit> getAllAudits(){
+	public List<Audit> getAllAudits(){
 		return auditDao.getAudits();
 	}
 	
@@ -43,8 +43,8 @@ public class AuditBLO {
 		
 	}
 	
-	public  ArrayList<Audit> getFilteredAudit(String matiereId, String lieuId, String titre, String juryId,String etat,String id, String role){
-		return auditDao.getFilteredAudits(matiereId,lieuId,titre,juryId,etat, id,role);
+	public  List<Audit> getFilteredAudit(String matiereId, String lieuId, String titre, String juryId,String etat,String id, String role,String ueId){
+		return auditDao.getFilteredAudits(matiereId,lieuId,titre,juryId,etat, id,role,ueId);
 	}
 	
 	
