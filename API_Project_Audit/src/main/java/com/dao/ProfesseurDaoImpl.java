@@ -15,8 +15,9 @@ import com.beans.Personne;
 import com.beans.Professeur;
 
 public class ProfesseurDaoImpl implements ProfesseurDao {
-	private static final Logger logger = Logger.getLogger(ReponseMultipleDaoImpl.class);
+	private static final Logger logger = Logger.getLogger(ProfesseurDaoImpl.class);
 	private DaoFactory daoFactory;
+	private String [] sqlParamProfesseur = {"id","bureau","id_Personne","id_Role"};
 
 	ProfesseurDaoImpl(DaoFactory daoFactory) {
 		this.daoFactory = daoFactory;
@@ -24,7 +25,7 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 
 	@Override
 	public ArrayList<Professeur> getProfesseurs() {
-		ArrayList<Professeur> professeurs = new ArrayList<Professeur>();
+		ArrayList<Professeur> professeurs = new ArrayList<>();
 		Connection connexion = null;
 		Statement statement = null;
 		ResultSet resultat = null;
@@ -36,9 +37,9 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 			connexion.close();
 
 			while (resultat.next()) {
-				String id = resultat.getString("id");
-				String bureau = resultat.getString("bureau");
-				int personneID = resultat.getInt("id_Personne");
+				String id = resultat.getString(sqlParamProfesseur[0]);
+				String bureau = resultat.getString(sqlParamProfesseur[1]);
+				int personneID = resultat.getInt(sqlParamProfesseur[2]);
 
 				// Récupére l'instance de Prsonne via l'id
 				PersonneDao personneDao = daoFactory.getPersonneDao();
@@ -52,14 +53,9 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		try {
-			statement.close();
-			resultat.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.log(Level.INFO, "sql problem getPersonneByMail", e);
+		}finally {
+			daoFactory.close(connexion,statement,null,resultat);	
 		}
 		return professeurs;
 	}
@@ -80,9 +76,9 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 			connexion.close();
 
 			while (resultat.next()) {
-				String id2 = resultat.getString("id");
-				String bureau = resultat.getString("bureau");
-				int personneID = resultat.getInt("id_Personne");
+				String id2 = resultat.getString(sqlParamProfesseur[0]);
+				String bureau = resultat.getString(sqlParamProfesseur[1]);
+				int personneID = resultat.getInt(sqlParamProfesseur[2]);
 
 				// Récupére l'instance de Prsonne via l'id
 				PersonneDao personneDao = daoFactory.getPersonneDao();
@@ -94,14 +90,9 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		try {
-			statement.close();
-			resultat.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.log(Level.INFO, "sql problem getPersonneByMail", e);
+		}finally {
+			daoFactory.close(connexion,statement,null,resultat);	
 		}
 		return professeur;
 	}
@@ -135,7 +126,7 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 	           
 			}
 		} catch (SQLException e) {
-			logger.log(Level.INFO, "sql problem", e);
+			logger.log(Level.INFO, "sql problem getProfesseurByPersonneID", e);
 
 		}finally {
 			daoFactory.close(connexion,statement,preparedStmt,resultat);			
@@ -164,7 +155,6 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 			personne1 = personneDao.getPersonneByMail(professeur.getPersonne().getEmail());
 		}
 		
-		System.out.println("id personne "+personne1.getId());
 		try {
 			connexion = daoFactory.getConnection();
 			statement = connexion.createStatement();
@@ -184,8 +174,8 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 	}
 
 	@Override
-	public ArrayList<Professeur>  professeurByAudit(String id_Audit){
-		ArrayList<Professeur> professeurs = new ArrayList<Professeur>();
+	public ArrayList<Professeur>  professeurByAudit(String idAudit){
+		ArrayList<Professeur> professeurs = new ArrayList<>();
 		Connection connexion = null;
 		Statement statement = null;
 		ResultSet resultat = null;
@@ -195,13 +185,13 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 			connexion = daoFactory.getConnection();
 			statement = connexion.createStatement();
 			preparedStmt = connexion.prepareStatement("SELECT * FROM Professeur WHERE id IN (SELECT id_professeur FROM appartient ap WHERE ap.id = (SELECT id_jury from Audit WHERE id = ?));");
-			preparedStmt.setString(1, id_Audit);
+			preparedStmt.setString(1, idAudit);
 			resultat = preparedStmt.executeQuery();
 			
 			while (resultat.next()) {
-				String id = resultat.getString("id");
-				String bureau = resultat.getString("bureau");
-				int personneID = resultat.getInt("id_Personne");
+				String id = resultat.getString(sqlParamProfesseur[0]);
+				String bureau = resultat.getString(sqlParamProfesseur[1]);
+				int personneID = resultat.getInt(sqlParamProfesseur[2]);
 
 				// Récupére l'instance de Prsonne via l'id
 				PersonneDao personneDao = daoFactory.getPersonneDao();
@@ -214,7 +204,7 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 				professeurs.add(professeur);
 			}
 		} catch (SQLException e) {
-			logger.log(Level.INFO, "sql problem", e);
+			logger.log(Level.INFO, "sql problem professeurByAudit", e);
 
 		}finally {
 			daoFactory.close(connexion,statement,preparedStmt,resultat);			
@@ -237,21 +227,17 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 			preparedStmt.setString(1, id);
 			preparedStmt.execute();
 		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		try {
-			connexion.close();
-			preparedStmt.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.log(Level.INFO, "sql problem deleteProfesseur", e);
+
+		}finally {
+			daoFactory.close(connexion,null,preparedStmt,null);			
 		}
 
 	}
 
 	@Override
 	public ArrayList<Audit> getAudits(int matiere, boolean publies) {
-		ArrayList<Audit> audits = new ArrayList<Audit>();
+		ArrayList<Audit> audits = new ArrayList<>();
 		Connection connexion = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultat = null;
@@ -275,16 +261,10 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 			}
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		try {
-			connexion.close();
-			preparedStatement.close();
-			resultat.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.log(Level.INFO, "sql problem getAudits", e);
+
+		}finally {
+			daoFactory.close(connexion,null,preparedStatement,resultat);			
 		}
 		return audits;
 	}
@@ -294,27 +274,22 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 		Connection connexion = null;
 		Statement statement = null;
 		ResultSet resultat = null;
+		PreparedStatement preparedStatement = null;
 
 		try {
 			connexion = daoFactory.getConnection();
 			statement = connexion.createStatement();
-			PreparedStatement preparedStatement = connexion
+			preparedStatement = connexion
 					.prepareStatement("SET dateDebut = to_date('?', 'YYYY/MM/DD HH24:MI') FROM audit WHERE id = ? ;");
 			preparedStatement.setString(1, heureDebut);
 			preparedStatement.setInt(2, id);
 			resultat = preparedStatement.executeQuery();
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		try {
-			connexion.close();
-			statement.close();
-			resultat.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.log(Level.INFO, "sql problem getAudits", e);
+
+		}finally {
+			daoFactory.close(connexion,statement,preparedStatement,resultat);			
 		}
 	}
 
@@ -323,11 +298,12 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 		Connection connexion = null;
 		Statement statement = null;
 		ResultSet resultat = null;
+		PreparedStatement preparedStatement = null;
 		int matiere = -1;
 		try {
 			connexion = daoFactory.getConnection();
 			statement = connexion.createStatement();
-			PreparedStatement preparedStatement = connexion
+			preparedStatement = connexion
 					.prepareStatement("SELECT id FROM Matiere WHERE responsable = ? ;");
 			preparedStatement.setInt(1, idProf);
 			resultat = preparedStatement.executeQuery();
@@ -335,16 +311,10 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 				matiere = resultat.getInt("id");
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		try {
-			connexion.close();
-			statement.close();
-			resultat.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.log(Level.INFO, "sql problem getMatiereResponsable", e);
+
+		}finally {
+			daoFactory.close(connexion,statement,preparedStatement,resultat);			
 		}
 
 		return matiere;
@@ -354,7 +324,7 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 	public ArrayList<Professeur> getprofesseurByStr(String search) {
 		DaoFactory fact = new DaoFactory();	
 		
-		ArrayList<Professeur> professeurs = new ArrayList<Professeur>();
+		ArrayList<Professeur> professeurs = new ArrayList<>();
 		Connection connexion = null;
 		Statement statement = null;
 		ResultSet resultat = null;
@@ -370,9 +340,9 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 			connexion.close();
 
 			while (resultat.next()) {
-				String id = resultat.getString("id");
-				String bureau = resultat.getString("bureau");
-				int personneID = resultat.getInt("id_Personne");
+				String id = resultat.getString(sqlParamProfesseur[0]);
+				String bureau = resultat.getString(sqlParamProfesseur[1]);
+				int personneID = resultat.getInt(sqlParamProfesseur[2]);
 
 				// Récupére l'instance de Prsonne via l'id
 				PersonneDao personneDao = daoFactory.getPersonneDao();
@@ -395,7 +365,7 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 	}
 	
 	@Override
-	public void addProfesseurToJuryId(String Id_Jury,String id_Professeur) {
+	public void addProfesseurToJuryId(String idJury,String idProfesseur) {
 		
 		Connection connexion = null;
 		Statement statement = null;
@@ -405,8 +375,8 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 			connexion = daoFactory.getConnection();
 			statement = connexion.createStatement();
 			preparedStmt = connexion.prepareStatement("INSERT INTO appartient (id, id_Professeur) VALUES (?,?);");
-			preparedStmt.setString(1, Id_Jury);
-			preparedStmt.setString(2, id_Professeur);
+			preparedStmt.setString(1, idJury);
+			preparedStmt.setString(2, idProfesseur);
 			preparedStmt.executeQuery();
 
 		} catch (SQLException e) {
@@ -417,7 +387,7 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 	}
 	
 	@Override
-	public void removeProfesseurToJuryId(String Id_Jury,String id_Professeur) {
+	public void removeProfesseurToJuryId(String idJury,String idProfesseur) {
 		
 		Connection connexion = null;
 		Statement statement = null;
@@ -427,8 +397,8 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 			connexion = daoFactory.getConnection();
 			statement = connexion.createStatement();
 			preparedStmt = connexion.prepareStatement("DELETE FROM appartient WHERE id_Professeur = ? AND id = ?;");
-			preparedStmt.setString(1, Id_Jury);
-			preparedStmt.setString(2, id_Professeur);
+			preparedStmt.setString(1, idJury);
+			preparedStmt.setString(2, idProfesseur);
 			preparedStmt.executeQuery();
 
 		} catch (SQLException e) {

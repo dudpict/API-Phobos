@@ -2,14 +2,17 @@ package com.controller;
 
 import java.util.ArrayList;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.beans.Personne;
 import com.beans.Professeur;
 import com.dao.DaoFactory;
 import com.dao.ProfesseurDao;
@@ -17,98 +20,91 @@ import com.dao.ProfesseurDao;
 @RestController
 @CrossOrigin(origins = "*")
 public class PhobosControllerProfesseur {
+	private static final Logger logger = Logger.getLogger(PhobosControllerProfesseur.class);
 	
-	@RequestMapping(value = "/professeur", method = RequestMethod.GET)
+	@GetMapping(value = "/professeur")
 	@ResponseBody
-	public ArrayList<Professeur> appelGET_professeur() {
-		System.out.println("Appel GET");
+	public ArrayList<Professeur> appelGETprofesseur() {
+		logger.log(Level.INFO, "appel get appelGET_professeur");
 
 		DaoFactory fact = new DaoFactory();
 		ProfesseurDao professeurDao = fact.getProfesseurDao();
-		ArrayList<Professeur> allProfesseur = professeurDao.getProfesseurs();
-		return allProfesseur;
-	}
-	
-	@RequestMapping(value = "/professeurByAudit", method = RequestMethod.GET)
-	@ResponseBody
-	public  ArrayList<Professeur> appelGET_professeurByAudit(@RequestParam(required = true, value = "id_Audit") String id_Audit) {
-		System.out.println("appelGET_professeurByAudit");
-
-		DaoFactory fact = new DaoFactory();
-		ProfesseurDao professeurDao = fact.getProfesseurDao();
-		ArrayList<Professeur> professeurs = professeurDao.professeurByAudit(id_Audit);
-		return professeurs;
-	}
-
-	@RequestMapping(value = "/professeurById", method = RequestMethod.GET)
-	@ResponseBody
-	public Professeur appelGET_professeurById(@RequestParam(required = true, value = "id") String id) {
-		System.out.println("Appel GET by ID");
-
-		DaoFactory fact = new DaoFactory();
-		ProfesseurDao professeurDao = fact.getProfesseurDao();
-		Professeur professeur = professeurDao.getProfesseurById(id);
-		return professeur;
+		return professeurDao.getProfesseurs();
 	}
 	
-	@RequestMapping(value = "/professeurByStr", method = RequestMethod.GET)
+	@GetMapping(value = "/professeurByAudit")
 	@ResponseBody
-	public  ArrayList<Professeur> appelGET_professeurByStr(@RequestParam(required = true, value = "search") String search) {
-		System.out.println("appelGET_professeurByStr");
+	public  ArrayList<Professeur> appelGETprofesseurByAudit(@RequestParam(required = true, value = "id_Audit") String idAudit) {
+		logger.log(Level.INFO, "appel get appelGET_professeurByAudit");
 
 		DaoFactory fact = new DaoFactory();
 		ProfesseurDao professeurDao = fact.getProfesseurDao();
-		ArrayList<Professeur> professeur = professeurDao.getprofesseurByStr(search);
-		return professeur;
+		return professeurDao.professeurByAudit(idAudit);
 	}
 
-	@RequestMapping(value = "/professeur", method = RequestMethod.POST)
+	@GetMapping(value = "/professeurById")
 	@ResponseBody
-	public void appelPost_professeur(@RequestParam(required = false, value = "nom") String nom,
-			@RequestParam(required = false, value = "prenom") String prenom,
-			@RequestParam(required = false, value = "email") String email,
-			@RequestParam(required = false, value = "tel") String tel) {
+	public Professeur appelGETprofesseurById(@RequestParam(required = true, value = "id") String id) {
+		logger.log(Level.INFO, "appelGET_professeurById");
 
-		Personne personneToAdd = new Personne(nom, prenom, email, tel);
-		Professeur professeurToAdd = new Professeur();
 		DaoFactory fact = new DaoFactory();
 		ProfesseurDao professeurDao = fact.getProfesseurDao();
-		professeurDao.addProfesseur(professeurToAdd);
+		return professeurDao.getProfesseurById(id);
 	}
 	
-	@RequestMapping(value = "/addProfesseurToJuryId", method = RequestMethod.POST)
+	@GetMapping(value = "/professeurByStr")
 	@ResponseBody
-	public void appelPost_addProfesseurToJuryId(@RequestParam(required = true, value = "Id_Jury") String Id_Jury,
-										@RequestParam(required = true, value = "id_Professeur") String id_Professeur) {
+	public  ArrayList<Professeur> appelGETprofesseurByStr(@RequestParam(required = true, value = "search") String search) {
+		logger.log(Level.INFO, "appelGET_professeurByStr");
 
-		System.out.println("addProfesseurToJuryId");
 		DaoFactory fact = new DaoFactory();
 		ProfesseurDao professeurDao = fact.getProfesseurDao();
-		professeurDao.addProfesseurToJuryId(Id_Jury, id_Professeur);
+		return professeurDao.getprofesseurByStr(search);
 	}
 
-	@RequestMapping(value = "/professeur", method = RequestMethod.DELETE)
+	@PostMapping(value = "/professeur")
 	@ResponseBody
-	public void appelDELETE_professeur(@RequestParam(required = false, value = "id") String id) {
-		System.out.println("Appel DELETE");
+	public void appelPostprofesseur(@RequestBody Professeur professeur) {
+		logger.log(Level.INFO, "appelPost_professeur");
+		
+		DaoFactory fact = new DaoFactory();
+		ProfesseurDao professeurDao = fact.getProfesseurDao();
+		professeurDao.addProfesseur(professeur);
+	}
+	
+	@PostMapping(value = "/addProfesseurToJuryId")
+	@ResponseBody
+	public void appelPostaddProfesseurToJuryId(@RequestParam(required = true, value = "Id_Jury") String idJury,
+										@RequestParam(required = true, value = "id_Professeur") String idProfesseur) {
+
+		logger.log(Level.INFO, "appelPost_addProfesseurToJuryId");
+		DaoFactory fact = new DaoFactory();
+		ProfesseurDao professeurDao = fact.getProfesseurDao();
+		professeurDao.addProfesseurToJuryId(idJury, idProfesseur);
+	}
+
+	@DeleteMapping(value = "/professeur")
+	@ResponseBody
+	public void appelDELETEprofesseur(@RequestParam(required = false, value = "id") String id) {
+		logger.log(Level.INFO, "appelDELETE_professeur");
 
 		DaoFactory fact = new DaoFactory();
 		ProfesseurDao professeurDao = fact.getProfesseurDao();
 		professeurDao.deleteProfesseur(id);
 	}
 	
-	@RequestMapping(value = "/removeProfesseurToJuryId", method = RequestMethod.DELETE)
+	@DeleteMapping(value = "/removeProfesseurToJuryId")
 	@ResponseBody
-	public void appelDELETE_removeProfesseurToJuryId(@RequestParam(required = true, value = "Id_Jury") String Id_Jury,
-													@RequestParam(required = true, value = "id_Professeur") String id_Professeur) {
-		System.out.println("Appel DELETE removeProfesseurToJuryId");
+	public void appelDELETEremoveProfesseurToJuryId(@RequestParam(required = true, value = "Id_Jury") String Id_Jury,
+													@RequestParam(required = true, value = "id_Professeur") String idProfesseur) {
+		logger.log(Level.INFO, "appelDELETE_removeProfesseurToJuryId");
 
 		DaoFactory fact = new DaoFactory();
 		ProfesseurDao professeurDao = fact.getProfesseurDao();
-		professeurDao.removeProfesseurToJuryId(Id_Jury, id_Professeur);;
+		professeurDao.removeProfesseurToJuryId(Id_Jury, idProfesseur);
 	}
 	
-	@RequestMapping(value= "/roleProfesseur" , method = RequestMethod.GET)
+	@GetMapping(value= "/roleProfesseur")
 	@ResponseBody
 	public String roleProf (@RequestParam(required= true, value="id") String id) {
 		DaoFactory fact = new DaoFactory();

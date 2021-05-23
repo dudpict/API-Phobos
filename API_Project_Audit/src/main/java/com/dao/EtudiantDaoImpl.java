@@ -18,6 +18,7 @@ public class EtudiantDaoImpl implements EtudiantDao {
 
 	private static final Logger logger = Logger.getLogger(EtudiantDaoImpl.class);
 	private DaoFactory daoFactory;
+	private String [] sqlParamEtudiant = {"id","promo","classe","id_Personne","id_Equipe ","id_roleUtilisateur"};
 
 	EtudiantDaoImpl(DaoFactory daoFactory) {
         this.daoFactory = daoFactory;
@@ -37,10 +38,10 @@ public class EtudiantDaoImpl implements EtudiantDao {
             connexion.close();
 
             while (resultat.next()) {
-            	String id = resultat.getString("id");
-                String classe = resultat.getString("classe");
-                String promo = resultat.getString("promo");
-                int personneID = resultat.getInt("id_Personne");
+            	String id = resultat.getString(sqlParamEtudiant[0]);
+                String classe = resultat.getString(sqlParamEtudiant[2]);
+                String promo = resultat.getString(sqlParamEtudiant[1]);
+                int personneID = resultat.getInt(sqlParamEtudiant[3]);
 
                 
                 //Récupére l'instance de Prsonne via l'id
@@ -79,10 +80,10 @@ public class EtudiantDaoImpl implements EtudiantDao {
             connexion.close();
            
             while (resultat.next()) {
-            	String id2 = resultat.getString("id");
-                String classe = resultat.getString("classe");
-                String promo = resultat.getString("promo");
-                int personneID = resultat.getInt("id_Personne");
+            	String id2 = resultat.getString(sqlParamEtudiant[0]);
+                String classe = resultat.getString(sqlParamEtudiant[2]);
+                String promo = resultat.getString(sqlParamEtudiant[1]);
+                int personneID = resultat.getInt(sqlParamEtudiant[3]);
                 
                 //Récupére l'instance de Prsonne via l'id
         		PersonneDao personneDao = daoFactory.getPersonneDao();
@@ -217,10 +218,10 @@ public class EtudiantDaoImpl implements EtudiantDao {
 			
 			while (resultat.next()) {
 				
-				String id = resultat.getString("id");
-                String classe = resultat.getString("classe");
-                String promo = resultat.getString("promo");
-                int personneID = resultat.getInt("id_Personne");
+				String id = resultat.getString(sqlParamEtudiant[0]);
+                String classe = resultat.getString(sqlParamEtudiant[2]);
+                String promo = resultat.getString(sqlParamEtudiant[1]);
+                int personneID = resultat.getInt(sqlParamEtudiant[3]);
 
         		PersonneDao personneDao = daoFactory.getPersonneDao();
         		Personne personne  = personneDao.getPersonneById(personneID);
@@ -259,10 +260,10 @@ public class EtudiantDaoImpl implements EtudiantDao {
 			
 			while (resultat.next()) {
 				
-				String id = resultat.getString("id");
-                String classe = resultat.getString("classe");
-                String promo = resultat.getString("promo");
-                int personneID = resultat.getInt("id_Personne");
+				String id = resultat.getString(sqlParamEtudiant[0]);
+                String classe = resultat.getString(sqlParamEtudiant[2]);
+                String promo = resultat.getString(sqlParamEtudiant[1]);
+                int personneID = resultat.getInt(sqlParamEtudiant[3]);
 
         		PersonneDao personneDao = daoFactory.getPersonneDao();
         		Personne personne  = personneDao.getPersonneById(personneID);
@@ -300,10 +301,10 @@ public class EtudiantDaoImpl implements EtudiantDao {
 			resultat = preparedStmt.executeQuery();
 			
 			while (resultat.next()) {
-				int id = resultat.getInt("id");
-                String classe = resultat.getString("classe");
-                String promo = resultat.getString("promo");
-                int personneID = resultat.getInt("id_Personne");
+				int id = resultat.getInt(sqlParamEtudiant[0]);
+                String classe = resultat.getString(sqlParamEtudiant[2]);
+                String promo = resultat.getString(sqlParamEtudiant[1]);
+                int personneID = resultat.getInt(sqlParamEtudiant[3]);
 
         		PersonneDao personneDao = daoFactory.getPersonneDao();
         		Personne personne  = personneDao.getPersonneById(personneID);
