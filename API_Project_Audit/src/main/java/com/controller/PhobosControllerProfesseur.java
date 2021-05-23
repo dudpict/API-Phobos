@@ -110,7 +110,7 @@ public class PhobosControllerProfesseur {
 	
 	@RequestMapping(value= "/roleProfesseur" , method = RequestMethod.GET)
 	@ResponseBody
-	public String roleProf (@RequestParam(required= true, value="idProf") String id) {
+	public String roleProf (@RequestParam(required= true, value="id") String id) {
 		DaoFactory fact = new DaoFactory();
 		ProfesseurDao professeurDao = fact.getProfesseurDao();
 		return professeurDao.getRoleProf ( id);

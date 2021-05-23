@@ -495,7 +495,7 @@ public class AuditDaoImpl implements AuditDao {
 				break;
 			case "eleve" : 
 				preparedStatement = connexion
-				.prepareStatement("SELECT * FROM `Audit` WHERE id_Equipe IN ( SELECT id_Equipe FROM Etudiant WHERE id = 5 ) AND `id_Jury` LIKE ? AND `id_Lieu` LIKE ? AND etat LIKE ? AND designation LIKE ? ;");
+				.prepareStatement("SELECT * FROM `Audit` WHERE id_Equipe IN ( SELECT id_Equipe FROM Etudiant WHERE id = ? ) AND `id_Jury` LIKE ? AND `id_Lieu` LIKE ? AND etat LIKE ? AND designation LIKE ? ;");
 				break;
 			default :
 				preparedStatement = connexion

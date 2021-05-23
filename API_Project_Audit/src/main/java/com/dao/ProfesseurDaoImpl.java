@@ -448,7 +448,7 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 		
 		try {
 			connexion = daoFactory.getConnection();
-			preparedStmt=connexion.prepareStatement("SELECT designation FROM RoleUtilisateur ro, Professeur pr  WHERE ro.id = pr.id_Role AND pr.id= ?  ");
+			preparedStmt=connexion.prepareStatement("SELECT designation FROM RoleUtilisateur ro, Professeur pr  WHERE ro.id = pr.id_Role AND pr.id_Personne =? ; ");
 			preparedStmt.setInt(1, Integer.parseInt(id));
 			resultat = preparedStmt.executeQuery();
 			while (resultat.next()) {
