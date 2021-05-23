@@ -1,5 +1,5 @@
 package com.blo;
 
-public class MatiereBLO {
+public interface MatiereBLO {
 
 }
