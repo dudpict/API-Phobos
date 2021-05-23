@@ -112,6 +112,59 @@ public class JuryDaoImpl implements JuryDao {
 		}
         return jury;
 	}
+	
+	@Override
+	public Jury  getJuryByString(String designation ) {
+        Connection connexion = null;
+        Statement statement = null;
+        ResultSet resultat = null;
+        PreparedStatement preparedStmt = null;
+                
+        
+        Jury jury = new Jury();
+        jury=null;
+        try {
+        	connexion = daoFactory.getConnection();
+			statement = connexion.createStatement();
+			preparedStmt = connexion.prepareStatement("SELECT * FROM Jury j WHERE j.designation = ?;");
+			preparedStmt.setString(1, designation);
+			resultat = preparedStmt.executeQuery();
+			
+            while (resultat.next()) {
+            	String idJury = resultat.getString("id");
+	            jury = daoFactory.getJuryDao().getJuryById(idJury);
+            	
+            }
+        }catch (SQLException e) {
+			logger.log(Level.INFO, "sql problem getJuryByString", e);
+
+		}finally {
+			daoFactory.close(connexion,statement,preparedStmt,resultat);
+		}
+        return jury;
+	}
+	
+	@Override
+	public void  addJury(String designation) {
+        Connection connexion = null;
+        Statement statement = null;
+        PreparedStatement preparedStmt = null;
+
+        try {
+        	connexion = daoFactory.getConnection();
+			statement = connexion.createStatement();
+			preparedStmt = connexion.prepareStatement("INSERT INTO Jury(designation) VALUES (?);");
+			preparedStmt.setString(1, designation);
+			preparedStmt.executeQuery();
+			
+        }catch (SQLException e) {
+			logger.log(Level.INFO, "sql problem addJury", e);
+
+		}finally {
+			daoFactory.close(connexion,statement,preparedStmt,null);
+		}
+      
+	}
 
 	
 }

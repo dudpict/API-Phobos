@@ -2,8 +2,8 @@ package com.controller;
 
 import java.util.ArrayList;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,12 +16,12 @@ import com.dao.JuryDao;
 public class PhobosControllerJury {
 	
 	
-	@RequestMapping (value = "/jurys", method = RequestMethod.GET)
+	@GetMapping (value = "/jurys")
 	@ResponseBody
 	public ArrayList<Jury> getJurys(@RequestParam(required = false , value = "juryId ") String juryId){
 		DaoFactory fact = new DaoFactory();
 		JuryDao juryDao = fact.getJuryDao();
-		ArrayList<Jury> jurys = new ArrayList<Jury>();
+		ArrayList<Jury> jurys = new ArrayList<>();
 		if (juryId == null ) {
 			jurys = juryDao.getJurys();
 		}else {
@@ -30,7 +30,25 @@ public class PhobosControllerJury {
 		
 		return jurys;
 		
+	}
+	
+	@GetMapping (value = "/juryByStr")
+	@ResponseBody
+	public Jury getJuryByString(@RequestParam(required = true , value = "designation") String designation){
+		DaoFactory fact = new DaoFactory();
+		JuryDao juryDao = fact.getJuryDao();
 		
+		return juryDao.getJuryByString(designation);
+		
+	}
+	
+	@PostMapping (value = "/addJury")
+	@ResponseBody
+	public void addJury(@RequestParam(required = true , value = "designation") String designation){
+		DaoFactory fact = new DaoFactory();
+		JuryDao juryDao = fact.getJuryDao();
+		juryDao.addJury(designation);
+					
 	}
 
 }
