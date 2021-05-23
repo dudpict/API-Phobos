@@ -1,6 +1,7 @@
 package com.controller;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,10 +18,10 @@ public class PhobosControllerLieu {
 	
 	@GetMapping (value = "/lieux")
 	@ResponseBody
-	public ArrayList<Lieu> getLieux(@RequestParam(required= false, value = "lieuId") String lieuId){
+	public List<Lieu> getLieux(@RequestParam(required= false, value = "lieuId") String lieuId){
 		DaoFactory fact = new DaoFactory();
 		LieuDao lieuDao = fact.getLieuDao();
-		ArrayList<Lieu> lieux = new ArrayList<>(); 
+		List<Lieu> lieux = new ArrayList<>(); 
 		if (lieuId == null ) {
 			 lieux = lieuDao.getLieux();
 		}else {

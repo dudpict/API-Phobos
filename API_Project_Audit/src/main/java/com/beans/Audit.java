@@ -1,6 +1,6 @@
 package com.beans;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class Audit {
 
@@ -16,7 +16,7 @@ public class Audit {
 	Modele modele;
 	Jury jury;
 	Lieu lieu;
-	ArrayList<String> dateModifList;
+	List<String> dateModifList;
 	Boolean publie;
 	String semaineAudit;
 	String modeDate;
@@ -29,8 +29,7 @@ public class Audit {
 		idCount++;
 	}
 
-	public Audit(int id, String designation, String etat, String dateDebut, String dateFin, String dateLimite,
-			String dateModif, ArrayList<String> dateModifList, Matiere matiere, Boolean publie, Modele modele, Jury jury, Lieu lieu) {
+	public Audit(int id, String designation, String etat, String dateDebut, String dateFin, String dateLimite) {
 
 		super();
 		this.id = id;
@@ -39,6 +38,11 @@ public class Audit {
 		this.dateDebut = dateDebut;
 		this.dateFin = dateFin;
 		this.dateLimite = dateLimite;
+		
+	}
+	
+	public Audit(String dateModif, List<String> dateModifList, Matiere matiere, Boolean publie, Modele modele, Jury jury, Lieu lieu) {
+		super();
 		this.dateModif = dateModif;
 		this.dateModifList = dateModifList;
 		this.matiere = matiere;
@@ -49,7 +53,7 @@ public class Audit {
 	}
 
 	public Audit(String designation, String etat, String dateDebut, String dateFin, String dateLimite, String dateModif,
-			ArrayList<String> dateModifList ) {
+			List<String> dateModifList ) {
 		super();
 		this.designation = designation;
 		this.etat = etat;
@@ -124,12 +128,12 @@ public class Audit {
 		this.dateModif = dateModif;
 	}
 
-	public ArrayList<String> getDateModifList() {
+	public List<String> getDateModifList() {
 		return dateModifList;
 	}
 
-	public void setDateModifList(ArrayList<String> dateModifList) {
-		this.dateModifList = dateModifList;
+	public void setDateModifList(List<String> dateModifList) {
+		this.dateModifList =  dateModifList;
 	}
 
 	public Matiere getMatiere() {

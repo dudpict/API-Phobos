@@ -1,6 +1,6 @@
 package com.controller;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -26,7 +26,7 @@ public class PhobosControllerQuestion {
 	// SELECT d'une question par son id de section
 	@GetMapping(value = "/questionBySectionId")
 	@ResponseBody
-	public ArrayList<Question> getQuestionsBySectionId(@RequestParam(required = false, value = "id") String id) {
+	public List<Question> getQuestionsBySectionId(@RequestParam(required = false, value = "id") String id) {
 		logger.log(Level.INFO, "getQuestionsBySectionId");
 		DaoFactory fact = new DaoFactory();
 		QuestionDao questionDao = fact.getQuestionDao();
@@ -36,7 +36,7 @@ public class PhobosControllerQuestion {
 
 	@GetMapping(value = "/question")
 	@ResponseBody
-	public ArrayList<Question> appelGETquestion(@RequestParam(required = false, value = "id") String id) {
+	public List<Question> appelGETquestion(@RequestParam(required = false, value = "id") String id) {
 		logger.log(Level.INFO, "appelGET_question");
 
 		DaoFactory fact = new DaoFactory();
@@ -66,7 +66,7 @@ public class PhobosControllerQuestion {
 	
 	@GetMapping(value = "/ getQuestion_By_All_Param")
 	@ResponseBody
-	public ArrayList<Question>  getQuestionByAllParam(@RequestBody Question question) {
+	public List<Question>  getQuestionByAllParam(@RequestBody Question question) {
 		logger.log(Level.INFO, "getQuestion_By_All_Param");
 
 		DaoFactory fact = new DaoFactory();

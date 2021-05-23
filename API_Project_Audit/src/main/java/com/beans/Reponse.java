@@ -1,6 +1,7 @@
 package com.beans;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Réponse est une classe permettant de matérialiser une réponse à une question suivant le type de cette question.
@@ -61,12 +62,12 @@ public class Reponse {
 		this.reponseCourte = reponseCourte;
 	}
 
-	public ArrayList<ReponseMultiple> getReponseMultiple() {
+	public List<ReponseMultiple> getReponseMultiple() {
 		return reponseMultiple;
 	}
 
-	public void setReponseMultiple(ArrayList<ReponseMultiple> reponseMultiple) {
-		this.reponseMultiple = reponseMultiple;
+	public void setReponseMultiple(List<ReponseMultiple> reponseMultiple) {
+		this.reponseMultiple = (ArrayList<ReponseMultiple>) reponseMultiple;
 	}
 
 	/**
@@ -89,8 +90,8 @@ public class Reponse {
 	 * Constructeur d'une réponse de type reponseMultiple
 	 * @param reponse
 	 */
-	public Reponse(ArrayList<ReponseMultiple> reponse){
-		this.reponseMultiple=reponse;
+	public Reponse(List<ReponseMultiple> reponse){
+		this.reponseMultiple=(ArrayList<ReponseMultiple>) reponse;
 	}
 	
 	/**

@@ -1,6 +1,6 @@
 package com.controller;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -51,7 +51,7 @@ public class PhobosControllerSection {
 	
 	@GetMapping(value = "/sectionByModele")
 	@ResponseBody
-	public ArrayList<Section> getSectionByIdModele(@RequestParam(required = false, value = "id") String idModele) {
+	public List<Section> getSectionByIdModele(@RequestParam(required = false, value = "id") String idModele) {
 		logger.log(Level.INFO, "getSectionByIdModele");
 		DaoFactory fact = new DaoFactory();
 		SectionDao sectionDao = fact.getSectionDao();
@@ -69,7 +69,7 @@ public class PhobosControllerSection {
 	
 	@GetMapping(value = "/section")
 	@ResponseBody
-	public ArrayList<Section> appelGETsection(@RequestParam(required = false, value = "id") String id) {
+	public List<Section> appelGETsection(@RequestParam(required = false, value = "id") String id) {
 		logger.log(Level.INFO, "appelGET_section");
 
 		DaoFactory fact = new DaoFactory();
@@ -80,7 +80,7 @@ public class PhobosControllerSection {
 	
 	@GetMapping(value = "/sectionByNom")
 	@ResponseBody
-	public ArrayList<Section> appelGETsectionByNom(@RequestParam(required = false, value = "designation") String designation) {
+	public List<Section> appelGETsectionByNom(@RequestParam(required = false, value = "designation") String designation) {
 		logger.log(Level.INFO, "appelGET_section_By_Nom");
 
 		DaoFactory fact = new DaoFactory();
@@ -91,7 +91,7 @@ public class PhobosControllerSection {
 	
 	@GetMapping(value = "/getSection_By_All_Param")
 	@ResponseBody
-	public ArrayList<Section> getSectionByAllParam(@RequestBody Section section) {
+	public List<Section> getSectionByAllParam(@RequestBody Section section) {
 		logger.log(Level.INFO, "getSection_By_All_Param");
 		
 		DaoFactory fact = new DaoFactory();

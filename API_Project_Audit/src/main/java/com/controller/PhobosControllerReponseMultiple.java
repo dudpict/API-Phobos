@@ -1,6 +1,6 @@
 package com.controller;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -23,7 +23,7 @@ public class PhobosControllerReponseMultiple {
 	
 	@GetMapping(value = "/reponseMultipleByIdReponse")
 	@ResponseBody
-	public ArrayList<ReponseMultiple> appelGETreponseMultipleByIdReponse(@RequestParam(required = true, value = "id") String id) {
+	public List<ReponseMultiple> appelGETreponseMultipleByIdReponse(@RequestParam(required = true, value = "id") String id) {
 		logger.log(Level.INFO, "appelGET_reponseMultipleByIdReponse");
 
 		DaoFactory fact = new DaoFactory();

@@ -332,7 +332,6 @@ public class EtudiantDaoImpl implements EtudiantDao {
 		
 		EquipeDao equipeDao = daoFactory.getEquipeDao();
 		Equipe equipe = new Equipe();
-		equipe=null;
 		
 		Connection connexion = null;
 		Statement statement = null;
@@ -355,6 +354,9 @@ public class EtudiantDaoImpl implements EtudiantDao {
 
 		}finally {
 			daoFactory.close(connexion,statement,preparedStmt,resultat);			
+		}
+		if(idTeam==null) {
+			equipe=null;
 		}
 				
 		return equipe;
