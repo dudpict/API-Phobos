@@ -2,8 +2,7 @@ package com.controller;
 
 import java.util.ArrayList;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,12 +15,12 @@ import com.dao.LieuDao;
 public class PhobosControllerLieu {
 	
 	
-	@RequestMapping (value = "/lieux",method= RequestMethod.GET)
+	@GetMapping (value = "/lieux")
 	@ResponseBody
 	public ArrayList<Lieu> getLieux(@RequestParam(required= false, value = "lieuId") String lieuId){
 		DaoFactory fact = new DaoFactory();
 		LieuDao lieuDao = fact.getLieuDao();
-		ArrayList<Lieu> lieux = new ArrayList<Lieu>(); 
+		ArrayList<Lieu> lieux = new ArrayList<>(); 
 		if (lieuId == null ) {
 			 lieux = lieuDao.getLieux();
 		}else {
