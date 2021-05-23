@@ -9,23 +9,23 @@ public class Notification {
 	String etat;
 	//NONLU ou LU
 	String dateDeNotification;
-	int id_audit;
-	int id_personne;
+	int idaudit;
+	int idpersonne;
 	
 	public Notification() {			
 		super();
 	}
 
 	public Notification(int id, String designation, String typeNotif, String etat, String dateDeNotification,
-			int id_audit, int id_personne) {
+			int idaudit, int idpersonne) {
 		super();
 		this.id = id;
 		this.designation = designation;
 		this.typeNotif = typeNotif;
 		this.etat = etat;
 		this.dateDeNotification = dateDeNotification;
-		this.id_audit = id_audit;
-		this.id_personne = id_personne;
+		this.idaudit = idaudit;
+		this.idpersonne = idpersonne;
 		
 	}
 	
@@ -78,20 +78,20 @@ public class Notification {
 		this.dateDeNotification = dateDeNotification;
 	}
 
-	public int getId_audit() {
-		return id_audit;
+	public int getIdaudit() {
+		return idaudit;
 	}
 
-	public void setId_audit(int id_audit) {
-		this.id_audit = id_audit;
+	public void setIdaudit(int idaudit) {
+		this.idaudit = idaudit;
 	}
 	
-	public int getId_personne() {
-		return id_personne;
+	public int getIdpersonne() {
+		return idpersonne;
 	}
 
-	public void setId_personne(int id_personne) {
-		this.id_personne = id_personne;
+	public void setIdpersonne(int idpersonne) {
+		this.idpersonne = idpersonne;
 	}
 
 }
