@@ -18,7 +18,7 @@ public class EtudiantDaoImpl implements EtudiantDao {
 
 	private static final Logger logger = Logger.getLogger(EtudiantDaoImpl.class);
 	private DaoFactory daoFactory;
-	private String [] sqlParamEtudiant = {"id","promo","classe","id_Personne ","id_Equipe ","id_roleUtilisateur"};
+	private String [] sqlParamEtudiant = {"id","promo","classe","id_Personne","id_Equipe ","id_roleUtilisateur"};
 
 	EtudiantDaoImpl(DaoFactory daoFactory) {
         this.daoFactory = daoFactory;
