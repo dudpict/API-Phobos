@@ -7,19 +7,24 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 import com.beans.TypeQuestion;
 
 public class TypeQuestionDaoImpl implements TypeQuestionDao {
 
 	private DaoFactory daoFactory;
-
+	private static final Logger logger = Logger.getLogger(TypeQuestionDaoImpl.class);
+	private String [] sqlParamTypeQuestion = {"id","Designation"};
+	
 	TypeQuestionDaoImpl(DaoFactory daoFactory) {
 		this.daoFactory = daoFactory;
 	}
 
 	@Override
 	public ArrayList<TypeQuestion> getTypeQuestions() {
-		ArrayList<TypeQuestion> typeQuestions = new ArrayList<TypeQuestion>();
+		ArrayList<TypeQuestion> typeQuestions = new ArrayList<>();
 		Connection connexion = null;
 		Statement statement = null;
 		ResultSet resultat = null;
@@ -30,10 +35,9 @@ public class TypeQuestionDaoImpl implements TypeQuestionDao {
 			resultat = statement.executeQuery("SELECT * FROM typeQuestion;");
 			connexion.close();
 			while (resultat.next()) {
-				int id = resultat.getInt("id");
-				String designation = resultat.getString("designation");
+				int id = resultat.getInt(sqlParamTypeQuestion[0]);
+				String designation = resultat.getString(sqlParamTypeQuestion[1]);
 
-				// TODO IMPLEMENTER EQUIPE ET ROLE MODELE
 				TypeQuestion typeQuestion = new TypeQuestion();
 				typeQuestion.setId(id);
 				typeQuestion.setDesignation(designation);
@@ -41,14 +45,9 @@ public class TypeQuestionDaoImpl implements TypeQuestionDao {
 
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		try {
-			statement.close();
-			resultat.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.log(Level.INFO, "sql problem getTypeQuestions", e);
+		}finally {
+			daoFactory.close(connexion,statement,null,resultat);	
 		}
 		return typeQuestions;
 	}
@@ -67,22 +66,17 @@ public class TypeQuestionDaoImpl implements TypeQuestionDao {
 			connexion.close();
 
 			while (resultat.next()) {
-				int id = resultat.getInt("id");
-				String designation = resultat.getString("designation");
+				int id = resultat.getInt(sqlParamTypeQuestion[0]);
+				String designation = resultat.getString(sqlParamTypeQuestion[1]);
 
 				typeQuestion.setId(id);
 				typeQuestion.setDesignation(designation);
 
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		try {
-			statement.close();
-			resultat.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.log(Level.INFO, "sql problem getTypeQuestionById", e);
+		}finally {
+			daoFactory.close(connexion,statement,null,resultat);	
 		}
 		return typeQuestion;
 	}
@@ -100,14 +94,10 @@ public class TypeQuestionDaoImpl implements TypeQuestionDao {
 			preparedStmt.execute();
 			connexion.close();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.log(Level.INFO, "sql problem deleteTypeQuestion", e);
+		}finally {
+			daoFactory.close(connexion,null,preparedStmt,null);	
 		}
-			try {
-				preparedStmt.close();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 	}
 
 	@Override
@@ -124,23 +114,17 @@ public class TypeQuestionDaoImpl implements TypeQuestionDao {
 			connexion.close();
 
 			while (resultat.next()) {
-				int id2 = resultat.getInt("id");
-				String designation = resultat.getString("designation");
-
-				// TODO IMPLEMENTER EQUIPE ET ROLE MODELE
+				int id2 = resultat.getInt(sqlParamTypeQuestion[0]);
+				String designation = resultat.getString(sqlParamTypeQuestion[1]);
+				
 				typeQuestion.setId(id2);
 				typeQuestion.setDesignation(designation);
 
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		try {
-			statement.close();
-			resultat.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.log(Level.INFO, "sql problem getTypeQuestionById", e);
+		}finally {
+			daoFactory.close(connexion,statement,null,resultat);	
 		}
 		return typeQuestion;
 	}

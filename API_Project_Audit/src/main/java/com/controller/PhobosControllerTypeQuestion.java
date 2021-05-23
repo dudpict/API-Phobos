@@ -2,8 +2,9 @@ package com.controller;
 
 import java.util.ArrayList;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,27 +15,27 @@ import com.dao.TypeQuestionDao;
 
 @RestController
 public class PhobosControllerTypeQuestion {
+	private static final Logger logger = Logger.getLogger(PhobosControllerTypeQuestion.class);
 
-	@RequestMapping(value = "/typeQuestion", method = RequestMethod.GET)
+
+	@GetMapping(value = "/typeQuestion")
 	@ResponseBody
-	public ArrayList<TypeQuestion> appelGET_typequestion(@RequestParam(required = false, value = "id") String id) {
-		System.out.println("Appel GET");
+	public ArrayList<TypeQuestion> appelGETtypequestion(@RequestParam(required = false, value = "id") String id) {
+		logger.log(Level.INFO, "appelGET_typequestion");
 
 		DaoFactory fact = new DaoFactory();
 		TypeQuestionDao typeQuestionDao = fact.getTypeQuestionDao();
-		ArrayList<TypeQuestion> allTypeQuestion = typeQuestionDao.getTypeQuestions();
-		return allTypeQuestion;
+		return typeQuestionDao.getTypeQuestions();
 	}
 
-	@RequestMapping(value = "/typeQuestionById", method = RequestMethod.GET)
+	@GetMapping(value = "/typeQuestionById")
 	@ResponseBody
-	public TypeQuestion appelGET_typeQuestionById(@RequestParam(required = true, value = "id") String id) {
-		System.out.println("Appel GET by ID");
+	public TypeQuestion appelGETtypeQuestionById(@RequestParam(required = true, value = "id") String id) {
+		logger.log(Level.INFO, "appelGET_typeQuestionById");
 
 		DaoFactory fact = new DaoFactory();
 		TypeQuestionDao typeQuestionDao = fact.getTypeQuestionDao();
-		TypeQuestion typeQuestion = typeQuestionDao.getTypeQuestionById(id);
-		return typeQuestion;
+		return typeQuestionDao.getTypeQuestionById(id);
 	}
 
 }
