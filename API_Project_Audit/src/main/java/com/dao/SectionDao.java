@@ -9,9 +9,9 @@ public interface SectionDao {
 	ArrayList<Section> getSections();
 	void deleteSection(String id);
 	Section getSectionById(int sectionID);
-	void addSection(String Designation, int id_Modele);
-	void updateSection(int id, String Designation, int id_Modele);
-	ArrayList<Section> getSectionByIdModele(String id_Modele);
+	void addSection(String designation, int idModele);
+	void updateSection(int id, String designation, int idModele);
+	ArrayList<Section> getSectionByIdModele(String idModele);
 	ArrayList<Section> getSectionByNom(String designationPara);
-	ArrayList<Section> getSection_By_All_Param(Section sectionParam);
+	ArrayList<Section> getSectionByAllParam(Section sectionParam);
 }
