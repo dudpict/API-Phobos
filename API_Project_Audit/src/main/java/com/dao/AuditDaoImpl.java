@@ -484,22 +484,22 @@ public class AuditDaoImpl implements AuditDao {
 			switch(role) {
 			case  "OPTION_RESP" :
 				preparedStatement = connexion
-				.prepareStatement("SELECT * FROM Audit WHERE id_Matiere IN (SELECT id FROM Matiere WHERE Matiere.id_UE IN (SELECT id FROM UE WHERE UE.id_Option IN (SELECT id FROM options WHERE options.id_Professeur = ? ) AND UE.id LIKE ? )) AND `id_Jury` LIKE ? AND `id_Lieu` LIKE ? AND etat LIKE ? AND designation LIKE ? AND `id_Matiere` LIKE ? ;");
+				.prepareStatement("SELECT * FROM Audit WHERE id_Matiere IN (SELECT id FROM Matiere WHERE Matiere.id_UE IN (SELECT id FROM UE WHERE UE.id_Option IN (SELECT id FROM options WHERE options.id_Professeur = ? ) AND UE.id LIKE ? )) AND `id_Jury` LIKE ? AND `id_Lieu` LIKE ? AND REPLACE(etat,' ','') LIKE ? AND REPLACE(designation,' ','') LIKE ? AND `id_Matiere` LIKE ? ;");
 				preparedStatement = addParameterOptions(preparedStatement,lieuId, titre, juryId, etat, id,ueId,matiereId);
 				break;	
 			case "UE_RESP" : 
 				preparedStatement = connexion
-				.prepareStatement("SELECT * FROM Audit WHERE `id_Matiere` IN (SELECT id FROM Matiere WHERE id_UE IN (SELECT id FROM UE WHERE id_Professeur = ?)  ) AND `id_Jury` LIKE ? AND `id_Lieu` LIKE ? AND etat LIKE ? AND designation LIKE ? AND id_Matiere LIKE ?;");
+				.prepareStatement("SELECT * FROM Audit WHERE `id_Matiere` IN (SELECT id FROM Matiere WHERE id_UE IN (SELECT id FROM UE WHERE id_Professeur = ?)  ) AND `id_Jury` LIKE ? AND `id_Lieu` LIKE ? AND REPLACE(etat,' ','') LIKE ? AND REPLACE(designation,' ','') LIKE ? AND id_Matiere LIKE ?;");
 				preparedStatement = addParameterUE(preparedStatement,lieuId, titre, juryId, etat, id,matiereId);
 				break;
 			case "MATIERE_ENSEIGNANT" :
 				preparedStatement = connexion
-				.prepareStatement("SELECT * FROM `Audit` WHERE id_Matiere IN ( SELECT id FROM enseigne WHERE id_Professeur = ? ) AND `id_Jury` LIKE ? AND `id_Lieu` LIKE ? AND etat LIKE ?  AND designation LIKE ? AND id_Matiere IN (SELECT id FROM Matiere WHERE id_UE LIKE ? )  AND id_Matiere LIKE ?;");
+				.prepareStatement("SELECT * FROM `Audit` WHERE id_Matiere IN ( SELECT id FROM enseigne WHERE id_Professeur = ? ) AND `id_Jury` LIKE ? AND `id_Lieu` LIKE ? AND REPLACE(etat,' ','') LIKE ? AND REPLACE(designation,' ','') LIKE ? AND id_Matiere IN (SELECT id FROM Matiere WHERE id_UE LIKE ? )  AND id_Matiere LIKE ?;");
 				preparedStatement = addParameterEtudiant(preparedStatement,lieuId, titre, juryId, etat, id,ueId,matiereId);
 				break;
 			case "MATIERE_ELEVE" : 
 				preparedStatement = connexion
-				.prepareStatement("SELECT * FROM `Audit` WHERE id_Equipe IN ( SELECT id_Equipe FROM Etudiant WHERE id = ? ) AND `id_Jury` LIKE ? AND `id_Lieu` LIKE ? AND etat LIKE ? AND designation LIKE ? AND id_Matiere IN (SELECT id FROM Matiere WHERE id_UE LIKE ? ) AND id_Matiere LIKE ? ;");
+				.prepareStatement("SELECT * FROM `Audit` WHERE id_Equipe IN ( SELECT id_Equipe FROM Etudiant WHERE id = ? ) AND `id_Jury` LIKE ? AND `id_Lieu` LIKE ? AND REPLACE(etat,' ','') LIKE ? AND REPLACE(designation,' ','') LIKE ? AND id_Matiere IN (SELECT id FROM Matiere WHERE id_UE LIKE ? ) AND id_Matiere LIKE ? ;");
 				preparedStatement = addParameterEtudiant(preparedStatement,lieuId, titre, juryId, etat, id,ueId,matiereId);
 				break;
 			default :
