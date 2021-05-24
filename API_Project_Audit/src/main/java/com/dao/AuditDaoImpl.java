@@ -555,7 +555,7 @@ public class AuditDaoImpl implements AuditDao {
 				
 			default :
 				preparedStatement = connexion
-				.prepareStatement(sqlSelectAll);
+				.prepareStatement("SELECT * FROM Audit");
 				
 				break;			
 			}			

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,6 +20,7 @@ import com.dao.EquipeDao;
 import com.dao.EtudiantDao;
 
 @RestController
+@CrossOrigin(origins= "*")
 public class PhobosControllerEtudiant {
 	private static final Logger log = Logger.getLogger(PhobosControllerEtudiant.class);
 
