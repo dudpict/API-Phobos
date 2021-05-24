@@ -19,12 +19,22 @@ public class PhobosControllerEquipe {
 
 	@GetMapping(value = "/equipeByStr")
 	@ResponseBody
-	public Equipe getEquipeByString(@RequestParam(required = false, value = "designation") String designation) {
+	public Equipe getEquipeByString(@RequestParam(required = true, value = "designation") String designation) {
 		log.log(Level.INFO, "appel getEquipeByString");
 		
 		DaoFactory fact = new DaoFactory();
 		EquipeDao equipeDao = fact.getEquipeDao();
 		return equipeDao.getEquipeByString(designation);
+	}
+	
+	@GetMapping(value = "/equipeByEtudiantId")
+	@ResponseBody
+	public Equipe appelGetgetEquipeByEtudiantId(@RequestParam(required = true, value = "idEtudiant") String idEtudiant) {
+		log.log(Level.INFO, "appelGet_getEquipeByEtudiantId");
+
+		DaoFactory fact = new DaoFactory();
+		EquipeDao equipeDao = fact.getEquipeDao();
+		return equipeDao.getEquipeByEtudiantId(idEtudiant);
 	}
 	
 	@PostMapping(value = "/addEquipe")

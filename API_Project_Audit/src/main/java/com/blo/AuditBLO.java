@@ -43,10 +43,4 @@ public class AuditBLO {
 		
 	}
 	
-	public  List<Audit> getFilteredAudit(String matiereId, String lieuId, String titre, String juryId,String etat,String id, String role,String ueId){
-		return auditDao.getFilteredAudits(matiereId,lieuId,titre,juryId,etat, id,role,ueId);
-	}
-	
-	
-	
 }

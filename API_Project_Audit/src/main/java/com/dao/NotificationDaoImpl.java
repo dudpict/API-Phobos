@@ -5,8 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import org.apache.log4j.Level;
@@ -237,19 +235,25 @@ public class NotificationDaoImpl implements NotificationDao {
 		Connection connexion = null;
 		Statement statement = null;
 		PreparedStatement preparedStatement = null;
-
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");  
 		
-		try {
+		try {		
 			connexion = daoFactory.getConnection();
 			statement = connexion.createStatement();
 			preparedStatement = connexion.prepareStatement("INSERT INTO Notification(type_notif, designation, etat, date_creation, id_Audit,id_Personne) VALUES (?,?,?,?,?,?);");
 			preparedStatement.setString(1, notification.getTypeNotif());
-			preparedStatement.setString(2,notification.getDateDeNotification());
+			preparedStatement.setString(2,notification.getDesignation());
 			preparedStatement.setString(3, notification.getEtat());
-			preparedStatement.setString(4, dateFormat.format(notification.getDateDeNotification()));
-			preparedStatement.setInt(5, notification.getIdaudit());
-			preparedStatement.setInt(6,notification.getIdpersonne());
+			preparedStatement.setString(4, notification.getDateDeNotification());
+			if(notification.getIdaudit()== 0) {
+				preparedStatement.setNull(5, java.sql.Types.INTEGER);
+			}else {
+				preparedStatement.setInt(5, notification.getIdaudit());
+			}
+			if(notification.getIdpersonne()== 0) {
+				preparedStatement.setNull(6, java.sql.Types.INTEGER);
+			}else {
+				preparedStatement.setInt(6, notification.getIdpersonne());
+			}		
 			preparedStatement.executeQuery();
 		} catch (SQLException e) {
 			logger.log(Level.INFO, "sql problem getAuditById", e);

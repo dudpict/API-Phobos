@@ -1,6 +1,6 @@
 package com.controller;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +17,7 @@ public class PhobosControllerUE {
 	
 	@GetMapping(value = "/UES")
 	@ResponseBody
-	public ArrayList<UE> getUES(){
+	public List<UE> getUES(){
 		DaoFactory fact  = new DaoFactory();
 		UEDao ueDao = fact.getUEDao();
 		return  ueDao.getUES();

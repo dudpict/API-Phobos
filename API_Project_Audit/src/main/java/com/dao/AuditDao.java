@@ -1,8 +1,6 @@
 package com.dao;
 
 import java.util.ArrayList;
-import java.util.List;
-
 import com.beans.Audit;
 
 public interface AuditDao {
@@ -13,8 +11,6 @@ public interface AuditDao {
 	void setHeureAudits(Audit audit);
 	Audit setAuditDate(Audit audit);
 	public Audit setSemaineAudit(Audit audit);
-
-	public  ArrayList<Audit> getFilteredAudits(String matiereId, String lieuId, String titre, String juryId,String etat,String id, String role,String ueId);
 	void addEquipeToAudit(String idEquipe, String idAudit);
 	void removeEquipeToAudit(String idAudit);
 	void addJuryToAudit(String idJury, String idAudit);
@@ -22,4 +18,6 @@ public interface AuditDao {
 	ArrayList<Audit> auditByEtudiantId(String idEtudiant);
 	ArrayList<Audit> auditByProfesseurId(String idProfesseur);
 	ArrayList<Audit> isPersonneIsInAudit(String idPersonne);
+	ArrayList<Audit> getFilteredAudits(String titre, String etat, String id, String role, String[] tablParamid);
+	String[] returnParam(String matiereId, String lieuId, String ueId, String juryId);
 }

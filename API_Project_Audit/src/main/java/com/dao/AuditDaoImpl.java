@@ -472,12 +472,29 @@ public class AuditDaoImpl implements AuditDao {
 		return audit;
 	}
 	
-	public ArrayList<Audit> getFilteredAudits(String matiereId, String lieuId, String titre, String juryId, String etat,String id, String role,String ueId){
+	
+	@Override
+	public String[] returnParam(String matiereId,String lieuId,String ueId,String juryId) {
+		String [] tablParamid = {"","","",""};
+		tablParamid[0]=matiereId;
+		tablParamid[1]=lieuId;
+		tablParamid[2]=ueId;
+		tablParamid[3]=juryId;		
+		return tablParamid;
+	}
+	
+	@Override
+	public ArrayList<Audit> getFilteredAudits(String titre,String etat,String id, String role,String [] tablParamid){
 		ArrayList<Audit> audits = new ArrayList<>();
 		Connection connexion = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultat = null;
 
+		String matiereId=tablParamid[0];
+		String lieuId=tablParamid[1];
+		String ueId=tablParamid[2];
+		String juryId=tablParamid[3];
+		
 		try {
 			connexion = daoFactory.getConnection();
 			
@@ -485,7 +502,6 @@ public class AuditDaoImpl implements AuditDao {
 			case  "OPTION_RESP" :
 				preparedStatement = connexion
 				.prepareStatement("SELECT * FROM Audit WHERE id_Matiere IN (SELECT id FROM Matiere WHERE Matiere.id_UE IN (SELECT id FROM UE WHERE UE.id_Option IN (SELECT id FROM options WHERE options.id_Professeur = ? ) AND UE.id LIKE ? )) AND `id_Jury` LIKE ? AND `id_Lieu` LIKE ? AND REPLACE(etat,' ','') LIKE ? AND REPLACE(designation,' ','') LIKE ? AND `id_Matiere` LIKE ? ;");
-				//preparedStatement = addParameterOptions(preparedStatement,lieuId, titre, juryId, etat, id,ueId,matiereId);
 				preparedStatement.setInt(1, Integer.parseInt(id));
 				preparedStatement.setString(2, comparPreparStatemStr(ueId));
 				preparedStatement.setString(3, comparPreparStatemStr(juryId));
@@ -498,7 +514,6 @@ public class AuditDaoImpl implements AuditDao {
 			case "UE_RESP" : 
 				preparedStatement = connexion
 				.prepareStatement("SELECT * FROM Audit WHERE `id_Matiere` IN (SELECT id FROM Matiere WHERE id_UE IN (SELECT id FROM UE WHERE id_Professeur = ?)  ) AND `id_Jury` LIKE ? AND `id_Lieu` LIKE ? AND REPLACE(etat,' ','') LIKE ? AND REPLACE(designation,' ','') LIKE ? AND id_Matiere LIKE ?;");
-				//preparedStatement = addParameterUE(preparedStatement,lieuId, titre, juryId, etat, id,matiereId);
 				
 				preparedStatement.setInt(1, Integer.parseInt(id));
 				preparedStatement.setString(2, comparPreparStatemStr(juryId));
@@ -511,7 +526,6 @@ public class AuditDaoImpl implements AuditDao {
 			case "MATIERE_ENSEIGNANT" :
 				preparedStatement = connexion
 				.prepareStatement("SELECT * FROM `Audit` WHERE id_Matiere IN ( SELECT id FROM enseigne WHERE id_Professeur = ? ) AND `id_Jury` LIKE ? AND `id_Lieu` LIKE ? AND REPLACE(etat,' ','') LIKE ? AND REPLACE(designation,' ','') LIKE ? AND id_Matiere IN (SELECT id FROM Matiere WHERE id_UE LIKE ? )  AND id_Matiere LIKE ?;");
-				//preparedStatement = addParameterEtudiant(preparedStatement,lieuId, titre, juryId, etat, id,ueId,matiereId);
 				
 				preparedStatement.setInt(1, Integer.parseInt(id));
 				preparedStatement.setString(2, comparPreparStatemStr(ueId));
@@ -525,7 +539,6 @@ public class AuditDaoImpl implements AuditDao {
 			case "MATIERE_ELEVE" : 
 				preparedStatement = connexion
 				.prepareStatement("SELECT * FROM `Audit` WHERE id_Equipe IN ( SELECT id_Equipe FROM Etudiant WHERE id = ? ) AND `id_Jury` LIKE ? AND `id_Lieu` LIKE ? AND REPLACE(etat,' ','') LIKE ? AND REPLACE(designation,' ','') LIKE ? AND id_Matiere IN (SELECT id FROM Matiere WHERE id_UE LIKE ? ) AND id_Matiere LIKE ? ;");
-				//preparedStatement = addParameterEtudiant(preparedStatement,lieuId, titre, juryId, etat, id,ueId,matiereId);
 				
 				preparedStatement.setInt(1, Integer.parseInt(id));
 				preparedStatement.setString(2, comparPreparStatemStr(juryId));
@@ -540,7 +553,6 @@ public class AuditDaoImpl implements AuditDao {
 			case "MATIERE_RESP" : 
 				preparedStatement = connexion
 				.prepareStatement("SELECT * FROM `Audit` WHERE id_Matiere IN ( SELECT id FROM enseigne WHERE id_Professeur = ? ) AND `id_Jury` LIKE ? AND `id_Lieu` LIKE ? AND REPLACE(etat,' ','') LIKE ? AND REPLACE(designation,' ','') LIKE ? AND id_Matiere IN (SELECT id FROM Matiere WHERE id_UE LIKE ? )  AND id_Matiere LIKE ? OR id_Matiere IN ( SELECT id From Matiere WHERE id_Professeur = ?);");
-				//preparedStatement = addParameterEtudiant(preparedStatement,lieuId, titre, juryId, etat, id,ueId,matiereId);
 				
 				preparedStatement.setInt(1, Integer.parseInt(id));
 				preparedStatement.setString(2, comparPreparStatemStr(ueId));
@@ -612,132 +624,7 @@ public class AuditDaoImpl implements AuditDao {
 		return audits;
 	}
 	
-	public PreparedStatement addParameterOptions(PreparedStatement preparedStatement,String lieuId, String titre, String juryId, String etat, String id,String ueId,String matiereId) {
-		try {
-			preparedStatement.setInt(1, Integer.parseInt(id));
-			if (juryId!=null && !juryId.equals("\"\"")) {
-				preparedStatement.setString(3, "%"+juryId+"%");
 	
-			}else {
-				preparedStatement.setString(3, "%");
-			}
-			if (lieuId!=null && !lieuId.equals("\"\"")) {
-				preparedStatement.setString(4, "%"+lieuId+"%");
-	
-			}else {
-				preparedStatement.setString(4, "%");
-			}
-			if (etat !=null && !etat.equals("\"\"")) {
-				preparedStatement.setString(5, "%"+etat+"%");
-	
-			}else {
-				preparedStatement.setString(5, "%");
-			}
-			if (titre !=null && !titre.equals("\"\"")) {
-				preparedStatement.setString(6, "%"+titre+"%");
-	
-			}else {
-				preparedStatement.setString(6, "%");
-			}
-			if (matiereId !=null && !matiereId.equals("\"\"")) {
-				preparedStatement.setString(7, "%"+matiereId+"%");
-	
-			}else {
-				preparedStatement.setString(7, "%");
-			}
-			if (ueId !=null && !ueId.equals("\"\"")) {
-				preparedStatement.setString(2, "%"+ueId+"%");
-	
-			}else {
-				preparedStatement.setString(2, "%");
-			}
-		}catch (SQLException e) {
-			logger.log(Level.INFO, "sql problem addParameterOptions", e);
-		}
-		return preparedStatement;
-	}
-	public PreparedStatement addParameterUE(PreparedStatement preparedStatement,String lieuId, String titre, String juryId, String etat, String id,String matiereId) {
-		try {
-			preparedStatement.setInt(1, Integer.parseInt(id));
-			if (juryId!=null && !juryId.equals("\"\"")) {
-				preparedStatement.setString(2, "%"+juryId+"%");
-	
-			}else {
-				preparedStatement.setString(2, "%");
-			}
-			if (lieuId!=null && !lieuId.equals("\"\"")) {
-				preparedStatement.setString(3, "%"+lieuId+"%");
-	
-			}else {
-				preparedStatement.setString(3, "%");
-			}
-			if (etat !=null && !etat.equals("\"\"")) {
-				preparedStatement.setString(4, "%"+etat+"%");
-	
-			}else {
-				preparedStatement.setString(4, "%");
-			}
-			if (titre !=null && !titre.equals("\"\"")) {
-				preparedStatement.setString(5, "%"+titre+"%");
-	
-			}else {
-				preparedStatement.setString(5, "%");
-			}
-			if (matiereId !=null && !matiereId.equals("\"\"")) {
-				preparedStatement.setString(6, "%"+matiereId+"%");
-	
-			}else {
-				preparedStatement.setString(6, "%");
-			}
-		}catch (SQLException e) {
-			logger.log(Level.INFO, "sql problem addParameterUE", e);
-		}
-		return preparedStatement;
-	}
-	public PreparedStatement addParameterEtudiant(PreparedStatement preparedStatement,String lieuId, String titre, String juryId, String etat, String id,String ueId,String matiereId) {
-		try {
-			preparedStatement.setInt(1, Integer.parseInt(id));
-			if (juryId!=null && !juryId.equals("\"\"")) {
-				preparedStatement.setString(2, "%"+juryId+"%");
-	
-			}else {
-				preparedStatement.setString(2, "%");
-			}
-			if (lieuId!=null && !lieuId.equals("\"\"")) {
-				preparedStatement.setString(3, "%"+lieuId+"%");
-	
-			}else {
-				preparedStatement.setString(3, "%");
-			}
-			if (etat !=null && !etat.equals("\"\"")) {
-				preparedStatement.setString(4, "%"+etat+"%");
-	
-			}else {
-				preparedStatement.setString(4, "%");
-			}
-			if (titre !=null && !titre.equals("\"\"")) {
-				preparedStatement.setString(5, "%"+titre+"%");
-	
-			}else {
-				preparedStatement.setString(5, "%");
-			}
-			if (matiereId !=null && !matiereId.equals("\"\"")) {
-				preparedStatement.setString(7, "%"+matiereId+"%");
-	
-			}else {
-				preparedStatement.setString(7, "%");
-			}
-			if (ueId !=null && !ueId.equals("\"\"")) {
-				preparedStatement.setString(6, "%"+ueId+"%");
-	
-			}else {
-				preparedStatement.setString(6, "%");
-			}
-		}catch (SQLException e) {
-			logger.log(Level.INFO, "sql problem addParameter", e);
-		}
-		return preparedStatement;
-	}
 	
 	public String comparPreparStatemStr(String compare) {
 		if (compare!=null && !compare.equals("\"\"")) {

@@ -15,10 +15,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.beans.Audit;
-import com.beans.AuditModif;
 import com.blo.AuditBLO;
 import com.dao.AuditDao;
-import com.dao.AuditModifDao;
 import com.dao.DaoFactory;
 @CrossOrigin(origins = "*")
 @RestController
@@ -41,19 +39,15 @@ public class PhobosControllerAudit {
 			@RequestParam(required = true, value = "role") String role,
 			@RequestParam(required= false , value ="ueId")String ueId) {
 		logger.log(Level.INFO, "appel get triAudit");
-		return auditBLO.getFilteredAudit(matiereId,lieuId,titre,juryId,etat,id,role,ueId);
+		
+		DaoFactory fact = new DaoFactory();
+		AuditDao auditDao = fact.getAuditDao();
+		
+		String [] tablParamid=auditDao.returnParam(matiereId, lieuId, ueId, juryId);
+		return auditDao.getFilteredAudits(titre, etat, id, role, tablParamid);
 		
 	}
 	
-	@GetMapping(value = "/getModifiAuditByIdAudit")
-	@ResponseBody	
-	public List<AuditModif> getModifiAudit(@RequestParam(required = true, value="id") String id) {
-		logger.log(Level.INFO, "Appel GET getModifiAudit");
-		
-		DaoFactory fact = new DaoFactory();
-		AuditModifDao auditModifDao = fact.getAuditModifDao();
-		return auditModifDao.getModifiAudit(id);		
-	}
 	
 	@GetMapping(value = "/isPersonneIsInAudit")
 	@ResponseBody
@@ -115,7 +109,7 @@ public class PhobosControllerAudit {
 	@PostMapping(value = "/dateLimiteAudits")
 	@ResponseBody
 	public Audit appelPostauditsetDateLimiteAudits(@RequestBody Audit audit) {
-		logger.log(Level.INFO, "Appel GET getModifiAudit");
+		logger.log(Level.INFO, "Appel GET appelPostauditsetDateLimiteAudits");
 		
 		return auditBLO.setAuditDate(audit);
 	}

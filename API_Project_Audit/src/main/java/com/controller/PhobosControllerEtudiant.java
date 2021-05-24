@@ -13,10 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.beans.Equipe;
 import com.beans.Etudiant;
 import com.dao.DaoFactory;
-import com.dao.EquipeDao;
 import com.dao.EtudiantDao;
 
 @RestController
@@ -26,7 +24,7 @@ public class PhobosControllerEtudiant {
 
 	@GetMapping(value = "/etudiant")
 	@ResponseBody
-	public List<Etudiant> appelGETetudiant(@RequestParam(required = false, value = "id") String id) {
+	public List<Etudiant> appelGETetudiant() {
 		log.log(Level.INFO, "appel get triAudit");
 		
 		DaoFactory fact = new DaoFactory();
@@ -75,17 +73,7 @@ public class PhobosControllerEtudiant {
 		return etudiantDao.etudiantByAudit(idAudit);
 	}
 	
-	@GetMapping(value = "/equipeByEtudiantId")
-	@ResponseBody
-	public Equipe appelGetgetEquipeByEtudiantId(@RequestParam(required = true, value = "idEtudiant") String idEtudiant) {
-		log.log(Level.INFO, "appelGet_getEquipeByEtudiantId");
-
-		DaoFactory fact = new DaoFactory();
-		EquipeDao equipeDao = fact.getEquipeDao();
-		return equipeDao.getEquipeByEtudiantId(idEtudiant);
-	}
 	
-
 	@PostMapping(value = "/addetudiant")
 	@ResponseBody
 	public void appelPostaddetudiant(@RequestBody Etudiant etudiant) {
@@ -116,9 +104,10 @@ public class PhobosControllerEtudiant {
 		etudiantDao.removeEtudiantToEquipeId(id);
 	}
 
+	
 	@DeleteMapping(value = "/etudiant")
 	@ResponseBody
-	public void appelDELETEetudiant(@RequestParam(required = false, value = "id") String id) {
+	public void appelDELETEetudiant(@RequestParam(required = true, value = "id") String id) {
 		log.log(Level.INFO, "appelDELETE_etudiant");
 
 		DaoFactory fact = new DaoFactory();
