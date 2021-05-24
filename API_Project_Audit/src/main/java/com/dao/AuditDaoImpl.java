@@ -536,6 +536,23 @@ public class AuditDaoImpl implements AuditDao {
 				preparedStatement.setString(7, comparPreparStatemStr(matiereId));
 				
 				break;
+				
+			case "MATIERE_RESP" : 
+				preparedStatement = connexion
+				.prepareStatement("SELECT * FROM `Audit` WHERE id_Matiere IN ( SELECT id FROM enseigne WHERE id_Professeur = ? ) AND `id_Jury` LIKE ? AND `id_Lieu` LIKE ? AND REPLACE(etat,' ','') LIKE ? AND REPLACE(designation,' ','') LIKE ? AND id_Matiere IN (SELECT id FROM Matiere WHERE id_UE LIKE ? )  AND id_Matiere LIKE ? OR id_Matiere IN ( SELECT id From Matiere WHERE id_Professeur = ?);");
+				//preparedStatement = addParameterEtudiant(preparedStatement,lieuId, titre, juryId, etat, id,ueId,matiereId);
+				
+				preparedStatement.setInt(1, Integer.parseInt(id));
+				preparedStatement.setString(2, comparPreparStatemStr(ueId));
+				preparedStatement.setString(3, comparPreparStatemStr(juryId));
+				preparedStatement.setString(4, comparPreparStatemStr(lieuId));
+				preparedStatement.setString(5, comparPreparStatemStr(etat));
+				preparedStatement.setString(6, comparPreparStatemStr(titre));
+				preparedStatement.setString(7, comparPreparStatemStr(matiereId));
+				preparedStatement.setInt(8, Integer.parseInt(id));
+				
+				break;
+				
 			default :
 				preparedStatement = connexion
 				.prepareStatement(sqlSelectAll);
