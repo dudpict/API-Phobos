@@ -485,22 +485,56 @@ public class AuditDaoImpl implements AuditDao {
 			case  "OPTION_RESP" :
 				preparedStatement = connexion
 				.prepareStatement("SELECT * FROM Audit WHERE id_Matiere IN (SELECT id FROM Matiere WHERE Matiere.id_UE IN (SELECT id FROM UE WHERE UE.id_Option IN (SELECT id FROM options WHERE options.id_Professeur = ? ) AND UE.id LIKE ? )) AND `id_Jury` LIKE ? AND `id_Lieu` LIKE ? AND REPLACE(etat,' ','') LIKE ? AND REPLACE(designation,' ','') LIKE ? AND `id_Matiere` LIKE ? ;");
-				preparedStatement = addParameterOptions(preparedStatement,lieuId, titre, juryId, etat, id,ueId,matiereId);
+				//preparedStatement = addParameterOptions(preparedStatement,lieuId, titre, juryId, etat, id,ueId,matiereId);
+				preparedStatement.setInt(1, Integer.parseInt(id));
+				preparedStatement.setString(2, comparPreparStatemStr(ueId));
+				preparedStatement.setString(3, comparPreparStatemStr(juryId));
+				preparedStatement.setString(4, comparPreparStatemStr(lieuId));
+				preparedStatement.setString(5, comparPreparStatemStr(etat));
+				preparedStatement.setString(6, comparPreparStatemStr(titre));
+				preparedStatement.setString(7, comparPreparStatemStr(matiereId));
+				
 				break;	
 			case "UE_RESP" : 
 				preparedStatement = connexion
 				.prepareStatement("SELECT * FROM Audit WHERE `id_Matiere` IN (SELECT id FROM Matiere WHERE id_UE IN (SELECT id FROM UE WHERE id_Professeur = ?)  ) AND `id_Jury` LIKE ? AND `id_Lieu` LIKE ? AND REPLACE(etat,' ','') LIKE ? AND REPLACE(designation,' ','') LIKE ? AND id_Matiere LIKE ?;");
-				preparedStatement = addParameterUE(preparedStatement,lieuId, titre, juryId, etat, id,matiereId);
+				//preparedStatement = addParameterUE(preparedStatement,lieuId, titre, juryId, etat, id,matiereId);
+				
+				preparedStatement.setInt(1, Integer.parseInt(id));
+				preparedStatement.setString(2, comparPreparStatemStr(juryId));
+				preparedStatement.setString(3, comparPreparStatemStr(lieuId));
+				preparedStatement.setString(4, comparPreparStatemStr(etat));
+				preparedStatement.setString(5, comparPreparStatemStr(titre));
+				preparedStatement.setString(6, comparPreparStatemStr(matiereId));
+				
 				break;
 			case "MATIERE_ENSEIGNANT" :
 				preparedStatement = connexion
 				.prepareStatement("SELECT * FROM `Audit` WHERE id_Matiere IN ( SELECT id FROM enseigne WHERE id_Professeur = ? ) AND `id_Jury` LIKE ? AND `id_Lieu` LIKE ? AND REPLACE(etat,' ','') LIKE ? AND REPLACE(designation,' ','') LIKE ? AND id_Matiere IN (SELECT id FROM Matiere WHERE id_UE LIKE ? )  AND id_Matiere LIKE ?;");
-				preparedStatement = addParameterEtudiant(preparedStatement,lieuId, titre, juryId, etat, id,ueId,matiereId);
+				//preparedStatement = addParameterEtudiant(preparedStatement,lieuId, titre, juryId, etat, id,ueId,matiereId);
+				
+				preparedStatement.setInt(1, Integer.parseInt(id));
+				preparedStatement.setString(2, comparPreparStatemStr(ueId));
+				preparedStatement.setString(3, comparPreparStatemStr(juryId));
+				preparedStatement.setString(4, comparPreparStatemStr(lieuId));
+				preparedStatement.setString(5, comparPreparStatemStr(etat));
+				preparedStatement.setString(6, comparPreparStatemStr(titre));
+				preparedStatement.setString(7, comparPreparStatemStr(matiereId));
+				
 				break;
 			case "MATIERE_ELEVE" : 
 				preparedStatement = connexion
 				.prepareStatement("SELECT * FROM `Audit` WHERE id_Equipe IN ( SELECT id_Equipe FROM Etudiant WHERE id = ? ) AND `id_Jury` LIKE ? AND `id_Lieu` LIKE ? AND REPLACE(etat,' ','') LIKE ? AND REPLACE(designation,' ','') LIKE ? AND id_Matiere IN (SELECT id FROM Matiere WHERE id_UE LIKE ? ) AND id_Matiere LIKE ? ;");
-				preparedStatement = addParameterEtudiant(preparedStatement,lieuId, titre, juryId, etat, id,ueId,matiereId);
+				//preparedStatement = addParameterEtudiant(preparedStatement,lieuId, titre, juryId, etat, id,ueId,matiereId);
+				
+				preparedStatement.setInt(1, Integer.parseInt(id));
+				preparedStatement.setString(2, comparPreparStatemStr(juryId));
+				preparedStatement.setString(3, comparPreparStatemStr(lieuId));
+				preparedStatement.setString(4, comparPreparStatemStr(etat));
+				preparedStatement.setString(5, comparPreparStatemStr(titre));
+				preparedStatement.setString(6, comparPreparStatemStr(ueId));
+				preparedStatement.setString(7, comparPreparStatemStr(matiereId));
+				
 				break;
 			default :
 				preparedStatement = connexion
@@ -601,7 +635,7 @@ public class AuditDaoImpl implements AuditDao {
 				preparedStatement.setString(2, "%");
 			}
 		}catch (SQLException e) {
-			logger.log(Level.INFO, "sql problem addParameter", e);
+			logger.log(Level.INFO, "sql problem addParameterOptions", e);
 		}
 		return preparedStatement;
 	}
@@ -639,7 +673,7 @@ public class AuditDaoImpl implements AuditDao {
 				preparedStatement.setString(6, "%");
 			}
 		}catch (SQLException e) {
-			logger.log(Level.INFO, "sql problem addParameter", e);
+			logger.log(Level.INFO, "sql problem addParameterUE", e);
 		}
 		return preparedStatement;
 	}
@@ -686,6 +720,16 @@ public class AuditDaoImpl implements AuditDao {
 			logger.log(Level.INFO, "sql problem addParameter", e);
 		}
 		return preparedStatement;
+	}
+	
+	public String comparPreparStatemStr(String compare) {
+		if (compare!=null && !compare.equals("\"\"")) {
+			compare= "%"+compare+"%";
+
+		}else {
+			compare="%";
+		}
+		return compare;
 	}
 	@Override
 	public void addEquipeToAudit(String idEquipe,String idAudit) {
