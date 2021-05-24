@@ -5,6 +5,7 @@ public class UE {
 	int id;
 	String designation;
 	String departement;
+	Professeur responsable;
 	
 	public UE() {
 		this.id=idCount;
@@ -40,6 +41,14 @@ public class UE {
 
 	public void setDepartement(String departement) {
 		this.departement = departement;
+	}
+	
+	public Professeur getResponsable() {
+		return this.responsable;
+	}
+	
+	public void setResponsable(Professeur prof ) {
+		this.responsable = prof;
 	}
 	
 	
