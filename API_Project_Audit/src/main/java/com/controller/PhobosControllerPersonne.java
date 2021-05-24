@@ -41,7 +41,6 @@ public class PhobosControllerPersonne {
 		return etudiantDao.isPersonneIsInTeam(idPersonne);
 	}
 	
-	
 	@PostMapping(value = "/addPersonne")
 	@ResponseBody
 	public Personne postAddPersonne(@RequestBody Personne personne) {

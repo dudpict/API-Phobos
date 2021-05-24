@@ -39,7 +39,12 @@ public class PhobosControllerAudit {
 			@RequestParam(required = true, value = "role") String role,
 			@RequestParam(required= false , value ="ueId")String ueId) {
 		logger.log(Level.INFO, "appel get triAudit");
-		return auditBLO.getFilteredAudit(matiereId,lieuId,titre,juryId,etat,id,role,ueId);
+		
+		DaoFactory fact = new DaoFactory();
+		AuditDao auditDao = fact.getAuditDao();
+		
+		String [] tablParamid=auditDao.returnParam(matiereId, lieuId, ueId, juryId);
+		return auditDao.getFilteredAudits(titre, etat, id, role, tablParamid);
 		
 	}
 	

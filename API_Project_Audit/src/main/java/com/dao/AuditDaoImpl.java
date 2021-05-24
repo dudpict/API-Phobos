@@ -472,12 +472,29 @@ public class AuditDaoImpl implements AuditDao {
 		return audit;
 	}
 	
-	public ArrayList<Audit> getFilteredAudits(String matiereId, String lieuId, String titre, String juryId, String etat,String id, String role,String ueId){
+	
+	@Override
+	public String[] returnParam(String matiereId,String lieuId,String ueId,String juryId) {
+		String [] tablParamid = {"","","",""};
+		tablParamid[0]=matiereId;
+		tablParamid[1]=lieuId;
+		tablParamid[2]=ueId;
+		tablParamid[3]=juryId;		
+		return tablParamid;
+	}
+	
+	@Override
+	public ArrayList<Audit> getFilteredAudits(String titre,String etat,String id, String role,String [] tablParamid){
 		ArrayList<Audit> audits = new ArrayList<>();
 		Connection connexion = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultat = null;
 
+		String matiereId=tablParamid[0];
+		String lieuId=tablParamid[1];
+		String ueId=tablParamid[2];
+		String juryId=tablParamid[3];
+		
 		try {
 			connexion = daoFactory.getConnection();
 			
