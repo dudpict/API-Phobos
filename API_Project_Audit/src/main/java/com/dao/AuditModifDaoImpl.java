@@ -51,7 +51,7 @@ public class AuditModifDaoImpl implements AuditModifDao {
             	
             	AuditModif auditModif = new AuditModif();
             	
-            	auditModif.setIdAudit(resultat.getInt("id_modif "));
+            	auditModif.setIdAudit(resultat.getInt("id_modif"));
             	auditModif.setId(resultat.getInt("id"));
             	auditModif.setOldDesignation(resultat.getString("oldDesignation"));
             	auditModif.setNewDesignation(resultat.getString("newDesignation"));

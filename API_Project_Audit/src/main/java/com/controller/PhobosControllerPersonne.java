@@ -31,6 +31,17 @@ public class PhobosControllerPersonne {
 		return personneDao.getPersonneByMail(mail);
 	}
 	
+	@GetMapping(value = "/isPersonneIsInTeam")
+	@ResponseBody
+	public Equipe appelgetIsPersonneIsInTeam(@RequestParam(required = true, value = "idPersonne") String idPersonne) {
+		logger.log(Level.INFO, " appelGet_isPersonneIsInTeam");
+
+		DaoFactory fact = new DaoFactory();
+		EtudiantDao etudiantDao = fact.getEtudiantDao();
+		return etudiantDao.isPersonneIsInTeam(idPersonne);
+	}
+	
+	
 	@PostMapping(value = "/addPersonne")
 	@ResponseBody
 	public Personne postAddPersonne(@RequestBody Personne personne) {
@@ -41,14 +52,6 @@ public class PhobosControllerPersonne {
 		return personneDao.addPersonne(personne);
 	}
 	
-	@GetMapping(value = "/isPersonneIsInTeam")
-	@ResponseBody
-	public Equipe appelgetIsPersonneIsInTeam(@RequestParam(required = true, value = "idPersonne") String idPersonne) {
-		logger.log(Level.INFO, " appelGet_isPersonneIsInTeam");
-
-		DaoFactory fact = new DaoFactory();
-		EtudiantDao etudiantDao = fact.getEtudiantDao();
-		return etudiantDao.isPersonneIsInTeam(idPersonne);
-	}
+	
 	
 }

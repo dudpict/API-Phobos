@@ -20,29 +20,6 @@ import com.dao.ModeleDao;
 public class PhobosControllerModele {
 	private static final Logger logger = Logger.getLogger(PhobosControllerModele.class);
 
-	
-	
-	// INSERT d'un Modele 
-	@PostMapping(value = "/addModele")
-	@ResponseBody
-	public void appelPostquestionaddModele(@RequestBody Modele modele) {
-		logger.log(Level.INFO, "appelPostquestionaddModele");
-		DaoFactory fact = new DaoFactory();
-		ModeleDao modeleDao = fact.getModeleDao();
-		modeleDao.addModele(modele);
-	}
-	
-	// UPDATE d'un Modele
-	@PostMapping(value = "/updateModele")
-	@ResponseBody
-	public void appelPostquestionupdateModele(@RequestParam(required = false, value = "id") String id,
-												@RequestParam(required = false, value = "Designation") String designation) {
-		logger.log(Level.INFO, "appelPost_question_updateModele");
-		DaoFactory fact = new DaoFactory();
-		ModeleDao modeleDao = fact.getModeleDao();
-		modeleDao.updateModele(Integer.parseInt(id), designation);
-	}
-	
 	@GetMapping(value = "/modele")
 	@ResponseBody
 	public List<Modele> appelGETmodele() {
@@ -65,7 +42,7 @@ public class PhobosControllerModele {
 	
 	@GetMapping(value = "/modeleByNom")
 	@ResponseBody
-	public Modele appelGETmodeleByNom(@RequestParam(required = true, value = "Designation") String designation) {
+	public Modele appelGETmodeleByNom(@RequestParam(required = true, value = "designation") String designation) {
 		logger.log(Level.INFO, "appelGET_modeleByNom");
 
 		DaoFactory fact = new DaoFactory();
@@ -73,10 +50,33 @@ public class PhobosControllerModele {
 		return  modeleDao.getModeleByNom(designation);
 	}
 
+	
+	// INSERT d'un Modele 
+	@PostMapping(value = "/addModele")
+	@ResponseBody
+	public void appelPostquestionaddModele(@RequestBody Modele modele) {
+		logger.log(Level.INFO, "appelPostquestionaddModele");
+		DaoFactory fact = new DaoFactory();
+		ModeleDao modeleDao = fact.getModeleDao();
+		modeleDao.addModele(modele);
+	}
+	
+	// UPDATE d'un Modele
+	@PostMapping(value = "/updateModele")
+	@ResponseBody
+	public void appelPostquestionupdateModele(@RequestParam(required = true, value = "id") String id,
+												@RequestParam(required = true, value = "Designation") String designation) {
+		logger.log(Level.INFO, "appelPost_question_updateModele");
+		DaoFactory fact = new DaoFactory();
+		ModeleDao modeleDao = fact.getModeleDao();
+		modeleDao.updateModele(Integer.parseInt(id), designation);
+	}
+	
+	
 
 	@DeleteMapping(value = "/modele")
 	@ResponseBody
-	public void appelDELETEmodele(@RequestParam(required = false, value = "id") String id) {
+	public void appelDELETEmodele(@RequestParam(required = true, value = "id") String id) {
 		logger.log(Level.INFO, "appelDELETE_modele");
 
 		DaoFactory fact = new DaoFactory();

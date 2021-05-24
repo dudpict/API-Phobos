@@ -74,7 +74,7 @@ public class PhobosControllerNotification {
 	@PostMapping(value = "/addNotification")
 	@ResponseBody
 	public void addNotification(@RequestBody Notification notification) {
-		logger.log(Level.INFO, "appel get getnotificationByAudit");
+		logger.log(Level.INFO, "appel get addNotification");
 		DaoFactory fact = new DaoFactory();
 		NotificationDao notificationDao = fact.getNotificationDao();
 		

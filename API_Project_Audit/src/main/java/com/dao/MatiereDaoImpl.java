@@ -70,7 +70,7 @@ public class MatiereDaoImpl implements MatiereDao {
 		try {
 			connexion = daoFactory.getConnection();
 			statement = connexion.createStatement();
-			preparedStatement = connexion.prepareStatement("SELECT id FROM matiere WHERE responsable = ? ;");
+			preparedStatement = connexion.prepareStatement("SELECT id FROM Matiere WHERE id_Professeur = ? ;");
 			preparedStatement.setInt(1, idProf);
 			resultat = preparedStatement.executeQuery();
 			while (resultat.next()) {
