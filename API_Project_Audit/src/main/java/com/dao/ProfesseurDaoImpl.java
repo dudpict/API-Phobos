@@ -458,6 +458,27 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 		return res;
 	}
 	
+	public int getIdProf(String idPers) {
+		Connection connexion = null;
+		Statement statement = null;
+		ResultSet resultat = null;
+		int id= 0;
+		try {
+			connexion = daoFactory.getConnection();
+			statement=connexion.createStatement();
+			resultat=statement.executeQuery("SELECT id FROM Professeur WHERE id_Personne ="+idPers);
+			while(resultat.next()) {
+				id = resultat.getInt("id");
+			}
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			daoFactory.close(connexion, statement, null,null );
+		}
+		return id;
+	}
+	
 	
 	
 	

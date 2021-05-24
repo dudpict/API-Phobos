@@ -123,4 +123,12 @@ public class PhobosControllerProfesseur {
 		ProfesseurDao professeurDao = fact.getProfesseurDao();
 		return professeurDao.isProf(id);
 	}
+	
+	@GetMapping(value="/professeurId")
+	@ResponseBody
+	public int profId(@RequestParam(required=true, value="id") String idPers ) {
+		DaoFactory fact = new DaoFactory();
+		ProfesseurDao professeurDao = fact.getProfesseurDao();
+		return professeurDao.getIdProf(idPers);
+	}
 }
