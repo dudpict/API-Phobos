@@ -49,6 +49,16 @@ public class PhobosControllerModele {
 		ModeleDao modeleDao = fact.getModeleDao();
 		return  modeleDao.getModeleByNom(designation);
 	}
+	
+	@PostMapping(value = "/modeleByNomBody")
+	@ResponseBody
+	public Modele appelGETmodeleByNom(@RequestBody Modele modele) {
+		logger.log(Level.INFO, "appelGET_modeleByNom");
+
+		DaoFactory fact = new DaoFactory();
+		ModeleDao modeleDao = fact.getModeleDao();
+		return  modeleDao.getModeleByNom(modele.getDesignation());
+	}
 
 	
 	// INSERT d'un Modele 

@@ -320,16 +320,16 @@ public class AuditDaoImpl implements AuditDao {
 			statement = connexion.createStatement();
 			preparedStatement = connexion.prepareStatement("INSERT INTO Audit (designation, etat,dateDebut,dateFin,dateLimite,dateModif,note,id_Modele,id_Jury,id_Matiere,id_Lieu) VALUES (?,?,?,?,?,?,?,?,?,?,?);");
 			preparedStatement.setString(1, audit.getDesignation());
-			preparedStatement.setString(2, audit.getEtat());
-			preparedStatement.setString(3, audit.getDateDebut());
-			preparedStatement.setString(4, audit.getDateFin());
-			preparedStatement.setString(5, audit.getDateLimite());
-			preparedStatement.setString(6, audit.getDateModif());
-			preparedStatement.setInt(7, audit.getNote());
+			preparedStatement.setString(2, "Publie");
+			preparedStatement.setString(3, null);
+			preparedStatement.setString(4, null);
+			preparedStatement.setString(5, null);
+			preparedStatement.setString(6, null);
+			preparedStatement.setString(7, null);
 			preparedStatement.setInt(8, audit.getModele().getId());
-			preparedStatement.setInt(9, audit.getJury().getId());
-			preparedStatement.setInt(10, audit.getMatiere().getId());
-			preparedStatement.setInt(11, audit.getLieu().getId());
+			preparedStatement.setString(9, null);
+			preparedStatement.setInt(10, 1);
+			preparedStatement.setInt(11, 1);
 						
 			preparedStatement.executeQuery();
 

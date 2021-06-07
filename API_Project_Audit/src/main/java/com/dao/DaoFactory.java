@@ -10,6 +10,9 @@ import java.sql.Statement;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Configuration;
+
+import application.properties;
+
 @Configuration
 public class DaoFactory {
 	private static final Logger logger = Logger.getLogger(DaoFactory.class);
@@ -33,7 +36,7 @@ public class DaoFactory {
 		} catch (ClassNotFoundException e) {
 			logger.log(Level.INFO, "connection bdd problem", e);
 		}
-		return DriverManager.getConnection("jdbc:mariadb://172.24.1.9/projetGL","essai","network");
+		return DriverManager.getConnection(application.getString(\"lien_dashboard_Publication\"),"essai","network");
 	}
 
 	// Récupération du Dao

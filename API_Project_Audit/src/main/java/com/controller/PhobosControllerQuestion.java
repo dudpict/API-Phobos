@@ -89,6 +89,16 @@ public class PhobosControllerQuestion {
 		QuestionDao questionDao = fact.getQuestionDao();
 		questionDao.addQuestion(designation, intitule, idsection, idtypeQuestion);
 	}
+	
+	@PostMapping(value = "/addQuestionBody")
+	@ResponseBody
+	public void appelPostquestionaddQuestion(@RequestBody Question question) {
+		logger.log(Level.INFO, "appelPost_question_addQuestion");
+		DaoFactory fact = new DaoFactory();
+		QuestionDao questionDao = fact.getQuestionDao();
+		questionDao.addQuestion(question.getDesignation(), question.getIntitule(), question.getSection().getId(), question.getTypeQuestion().getId());
+	}
+	
 
 	// UPDATE d'une question
 	@PostMapping(value = "/updateQuestion")

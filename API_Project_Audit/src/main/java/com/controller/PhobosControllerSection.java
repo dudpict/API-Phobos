@@ -34,6 +34,15 @@ public class PhobosControllerSection {
 		sectionDao.addSection(designation, idModele);
 	}
 	
+	@PostMapping(value = "/addSectionBody")
+	@ResponseBody
+	public void appelPostquestionaddSection(@RequestBody Section section) {
+		logger.log(Level.INFO, "appelPost_question_addSection");
+		DaoFactory fact = new DaoFactory();
+		SectionDao sectionDao = fact.getSectionDao();
+		sectionDao.addSection(section.getDesignation(), section.getModele().getId());
+	}
+	
 	// UPDATE d'une Section 
 	@PostMapping(value = "/updateSection")
 	@ResponseBody
