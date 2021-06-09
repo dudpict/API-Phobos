@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.beans.Equipe;
+import com.beans.Jury;
 import com.dao.DaoFactory;
 import com.dao.EquipeDao;
 
@@ -25,7 +26,7 @@ public class PhobosControllerEquipe {
 		DaoFactory fact = new DaoFactory();
 		EquipeDao equipeDao = fact.getEquipeDao();
 		return equipeDao.getEquipeByString(designation);
-	}
+	}	
 	
 	@GetMapping(value = "/equipeByEtudiantId")
 	@ResponseBody
@@ -45,6 +46,16 @@ public class PhobosControllerEquipe {
 		DaoFactory fact = new DaoFactory();
 		EquipeDao equipeDao = fact.getEquipeDao();
 		equipeDao.addEquipe(equipe.getDesignation());
+	}
+	
+	@PostMapping(value = "/equipeByStrBody")
+	@ResponseBody
+	public Equipe getEquipeByStringBody(@RequestBody Equipe equipe) {
+		log.log(Level.INFO, "appel getEquipeByString");
+		
+		DaoFactory fact = new DaoFactory();
+		EquipeDao equipeDao = fact.getEquipeDao();
+		return equipeDao.getEquipeByString(equipe.getDesignation());
 	}
 	
 }
