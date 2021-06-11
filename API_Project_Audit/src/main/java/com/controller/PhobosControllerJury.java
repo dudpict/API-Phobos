@@ -44,6 +44,16 @@ public class PhobosControllerJury {
 		
 	}
 	
+	@PostMapping (value = "/juryByStrBody")
+	@ResponseBody
+	public Jury getJuryByStringBody(@RequestBody Jury jury){
+		DaoFactory fact = new DaoFactory();
+		JuryDao juryDao = fact.getJuryDao();
+		
+		return juryDao.getJuryByString(jury.getDesignation());
+		
+	}
+	
 	@PostMapping (value = "/addJury")
 	@ResponseBody
 	public void addJury(@RequestBody Jury jury){

@@ -40,15 +40,6 @@ public class PhobosControllerModele {
 		return modeleDao.getModeleById(id);
 	}
 	
-	@GetMapping(value = "/modeleByNom")
-	@ResponseBody
-	public Modele appelGETmodeleByNom(@RequestParam(required = true, value = "designation") String designation) {
-		logger.log(Level.INFO, "appelGET_modeleByNom");
-
-		DaoFactory fact = new DaoFactory();
-		ModeleDao modeleDao = fact.getModeleDao();
-		return  modeleDao.getModeleByNom(designation);
-	}
 	
 	@PostMapping(value = "/modeleByNomBody")
 	@ResponseBody
@@ -74,12 +65,22 @@ public class PhobosControllerModele {
 	// UPDATE d'un Modele
 	@PostMapping(value = "/updateModele")
 	@ResponseBody
-	public void appelPostquestionupdateModele(@RequestParam(required = true, value = "id") String id,
+	public void appelPostupdateModele(@RequestParam(required = true, value = "id") String id,
 												@RequestParam(required = true, value = "Designation") String designation) {
 		logger.log(Level.INFO, "appelPost_question_updateModele");
 		DaoFactory fact = new DaoFactory();
 		ModeleDao modeleDao = fact.getModeleDao();
 		modeleDao.updateModele(Integer.parseInt(id), designation);
+	}
+	
+	// UPDATE d'un Modele
+	@PostMapping(value = "/updateModeleBody")
+	@ResponseBody
+	public void appelPostupdateModeleBody(@RequestBody Modele modele) {
+		logger.log(Level.INFO, "appelPost_question_updateModele");
+		DaoFactory fact = new DaoFactory();
+		ModeleDao modeleDao = fact.getModeleDao();
+		modeleDao.updateModele(modele.getId(), modele.getDesignation());
 	}
 	
 	

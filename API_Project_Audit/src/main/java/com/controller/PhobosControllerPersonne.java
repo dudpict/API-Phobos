@@ -33,7 +33,7 @@ public class PhobosControllerPersonne {
 	
 	@GetMapping(value = "/isPersonneIsInTeam")
 	@ResponseBody
-	public Equipe appelgetIsPersonneIsInTeam(@RequestParam(required = true, value = "idPersonne") String idPersonne) {
+	public Equipe getIsPersonneIsInTeam(@RequestParam(required = true, value = "idPersonne") String idPersonne) {
 		logger.log(Level.INFO, " appelGet_isPersonneIsInTeam");
 
 		DaoFactory fact = new DaoFactory();

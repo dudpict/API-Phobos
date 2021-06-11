@@ -20,7 +20,7 @@ public class PhobosControllerMatiere {
 	
 	@GetMapping(value = "/matiereIdByResponsableId")
 	@ResponseBody
-	public int appelGETaudit(@RequestParam(required = true, value = "idProf") int idProf) {
+	public int getMatiereByIdResp(@RequestParam(required = true, value = "idProf") int idProf) {
 		logger.log(Level.INFO, "Appel GET avec matiereID et publiesBoolean");
 		
 		
@@ -32,8 +32,8 @@ public class PhobosControllerMatiere {
 	
 	@GetMapping(value = "/matieres")
 	@ResponseBody
-	public List<Matiere> appelGETaudit() {
-		logger.log(Level.INFO, "Appel GET avec matiereID et publiesBoolean");
+	public List<Matiere> appelGETMatieres() {
+		logger.log(Level.INFO, "Appel GET de toutes les matieres");
 		
 		DaoFactory fact = new DaoFactory();
 		MatiereDao matiereDao = fact.getMatiereDao();

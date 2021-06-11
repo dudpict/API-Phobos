@@ -64,7 +64,6 @@ public class ModeleDaoImpl implements ModeleDao {
 			connexion = daoFactory.getConnection();
 			statement = connexion.createStatement();
 			resultat = statement.executeQuery("SELECT * FROM Modele WHERE id=" + modeleID + ";");
-			connexion.close();
 			while (resultat.next()) {
 				int id = resultat.getInt(sqlParamModele[0]);
 				String designation = resultat.getString(sqlParamModele[1]);
@@ -145,14 +144,17 @@ public class ModeleDaoImpl implements ModeleDao {
 		Connection connexion = null;
 		Statement statement = null;
 		ResultSet resultat = null;
+		PreparedStatement preparedStmt = null;
 		Modele modele = new Modele();
 
 		try {
 			connexion = daoFactory.getConnection();
 			statement = connexion.createStatement();
-			resultat = statement.executeQuery("SELECT * FROM Modele WHERE Designation='" + designation + "';");
-			connexion.close();
-
+			preparedStmt = connexion.prepareStatement("SELECT * FROM Modele WHERE Designation=?");
+			preparedStmt.setString(1, designation);
+			resultat = preparedStmt.executeQuery();
+			
+			
 			while (resultat.next()) {
 				int id = resultat.getInt("id");
 				String design = resultat.getString("designation");
@@ -163,8 +165,9 @@ public class ModeleDaoImpl implements ModeleDao {
 		} catch (SQLException e) {
 			logger.log(Level.INFO, "sql problem updateModele", e);
 		}finally {
-			daoFactory.close(connexion,statement,null,resultat);	
+			daoFactory.close(connexion,statement,preparedStmt,resultat);	
 		}
+		
 		return modele;
 	}
 

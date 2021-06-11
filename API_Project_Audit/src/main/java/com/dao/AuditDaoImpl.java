@@ -328,8 +328,8 @@ public class AuditDaoImpl implements AuditDao {
 			preparedStatement.setString(7, null);
 			preparedStatement.setInt(8, audit.getModele().getId());
 			preparedStatement.setString(9, null);
-			preparedStatement.setInt(10, 1);
-			preparedStatement.setInt(11, 1);
+			preparedStatement.setInt(10, audit.getMatiere().getId());
+			preparedStatement.setInt(11, audit.getLieu().getId());
 						
 			preparedStatement.executeQuery();
 

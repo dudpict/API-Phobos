@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.beans.Equipe;
-import com.beans.Jury;
 import com.dao.DaoFactory;
 import com.dao.EquipeDao;
 
@@ -30,7 +29,7 @@ public class PhobosControllerEquipe {
 	
 	@GetMapping(value = "/equipeByEtudiantId")
 	@ResponseBody
-	public Equipe appelGetgetEquipeByEtudiantId(@RequestParam(required = true, value = "idEtudiant") String idEtudiant) {
+	public Equipe getEquipeByEtudiantId(@RequestParam(required = true, value = "idEtudiant") String idEtudiant) {
 		log.log(Level.INFO, "appelGet_getEquipeByEtudiantId");
 
 		DaoFactory fact = new DaoFactory();
