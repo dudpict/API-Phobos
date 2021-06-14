@@ -124,6 +124,7 @@ public class PhobosControllerEtudiant {
 		EtudiantDao etudiantDao = fact.getEtudiantDao();
 		return etudiantDao.getRoleEtudiant(id);
 	}
+	
 	@GetMapping(value="/etudiantId")
 	@ResponseBody
 	public int etudiantId(@RequestParam(required=true,value="personneId")String idPersonne ) {

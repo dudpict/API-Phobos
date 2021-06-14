@@ -61,20 +61,21 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 	}
 
 	@Override
-	public Professeur getProfesseurById(String id) {
-		
+	public Professeur getProfesseurById(String id) {		
 		
 		Connection connexion = null;
 		Statement statement = null;
 		ResultSet resultat = null;
+		PreparedStatement preparedStmt = null;
 		Professeur professeur = new Professeur();
 
 		try {
 			connexion = daoFactory.getConnection();
 			statement = connexion.createStatement();
-			resultat = statement.executeQuery("SELECT * FROM Professeur WHERE id=" + id + ";");
-			connexion.close();
-
+			preparedStmt = connexion.prepareStatement("SELECT * FROM Professeur WHERE id=?;");
+			preparedStmt.setString(1, id);
+			resultat = preparedStmt.executeQuery();
+			
 			while (resultat.next()) {
 				String id2 = resultat.getString(sqlParamProfesseur[0]);
 				String bureau = resultat.getString(sqlParamProfesseur[1]);
@@ -92,7 +93,10 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 		} catch (SQLException e) {
 			logger.log(Level.INFO, "sql problem getPersonneByMail", e);
 		}finally {
-			daoFactory.close(connexion,statement,null,resultat);	
+			daoFactory.close(connexion,statement,preparedStmt,resultat);	
+		}
+		if (!Integer.toString(professeur.getId()).equals(id)) {
+			professeur=null;
 		}
 		return professeur;
 	}

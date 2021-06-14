@@ -85,7 +85,7 @@ public class PhobosControllerModele {
 	
 	
 
-	@DeleteMapping(value = "/modele")
+	@DeleteMapping(value = "/deleteModele")
 	@ResponseBody
 	public void appelDELETEmodele(@RequestParam(required = true, value = "id") String id) {
 		logger.log(Level.INFO, "appelDELETE_modele");
