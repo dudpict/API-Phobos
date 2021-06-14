@@ -120,4 +120,27 @@ public class MatiereDaoImpl implements MatiereDao {
 		
 		return matieres;
 	}
+
+	@Override
+	public void updateMatiereProfRef(String idMatiere, String idProf) {
+		Connection connexion = null;
+		Statement statement = null;
+		ResultSet resultat = null;
+		PreparedStatement preparedStmt = null;
+
+		try {
+			connexion = daoFactory.getConnection();
+			statement = connexion.createStatement();
+			preparedStmt = connexion.prepareStatement("UPDATE Matiere SET id_Professeur=? WHERE id=?");
+			preparedStmt.setString(1, idProf);
+			preparedStmt.setString(1, idMatiere);
+			preparedStmt.executeQuery();
+	
+		} catch (SQLException e) {
+			logger.log(Level.INFO, "sql problem updateMatiereProfRef", e);
+
+		}finally {
+			daoFactory.close(connexion,statement,preparedStmt,resultat);			
+		}
+	}
 }

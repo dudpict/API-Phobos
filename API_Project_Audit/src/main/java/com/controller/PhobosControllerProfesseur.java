@@ -62,48 +62,6 @@ public class PhobosControllerProfesseur {
 		return professeurDao.getprofesseurByStr(search);
 	}
 
-	@PostMapping(value = "/professeur")
-	@ResponseBody
-	public void appelPostprofesseur(@RequestBody Professeur professeur) {
-		logger.log(Level.INFO, "appelPost_professeur");
-		
-		DaoFactory fact = new DaoFactory();
-		ProfesseurDao professeurDao = fact.getProfesseurDao();
-		professeurDao.addProfesseur(professeur);
-	}
-	
-	@PostMapping(value = "/addProfesseurToJuryId")
-	@ResponseBody
-	public void appelPostaddProfesseurToJuryId(@RequestParam(required = true, value = "Id_Jury") String idJury,
-										@RequestParam(required = true, value = "id_Professeur") String idProfesseur) {
-
-		logger.log(Level.INFO, "appelPost_addProfesseurToJuryId");
-		DaoFactory fact = new DaoFactory();
-		ProfesseurDao professeurDao = fact.getProfesseurDao();
-		professeurDao.addProfesseurToJuryId(idJury, idProfesseur);
-	}
-
-	@DeleteMapping(value = "/professeur")
-	@ResponseBody
-	public void appelDELETEprofesseur(@RequestParam(required = false, value = "id") String id) {
-		logger.log(Level.INFO, "appelDELETE_professeur");
-
-		DaoFactory fact = new DaoFactory();
-		ProfesseurDao professeurDao = fact.getProfesseurDao();
-		professeurDao.deleteProfesseur(id);
-	}
-	
-	@DeleteMapping(value = "/removeProfesseurToJuryId")
-	@ResponseBody
-	public void appelDELETEremoveProfesseurToJuryId(@RequestParam(required = true, value = "Id_Jury") String idJury,
-													@RequestParam(required = true, value = "id_Professeur") String idProfesseur) {
-		logger.log(Level.INFO, "appelDELETE_removeProfesseurToJuryId");
-
-		DaoFactory fact = new DaoFactory();
-		ProfesseurDao professeurDao = fact.getProfesseurDao();
-		professeurDao.removeProfesseurToJuryId(idJury, idProfesseur);
-	}
-	
 	@GetMapping(value= "/roleProfesseur")
 	@ResponseBody
 	public String roleProf (@RequestParam(required= true, value="id") String id) {
@@ -131,4 +89,73 @@ public class PhobosControllerProfesseur {
 		ProfesseurDao professeurDao = fact.getProfesseurDao();
 		return professeurDao.getIdProf(idPers);
 	}
+	
+	@PostMapping(value = "/professeur")
+	@ResponseBody
+	public void appelPostprofesseur(@RequestBody Professeur professeur) {
+		logger.log(Level.INFO, "appelPost_professeur");
+		
+		DaoFactory fact = new DaoFactory();
+		ProfesseurDao professeurDao = fact.getProfesseurDao();
+		professeurDao.addProfesseur(professeur);
+	}
+	
+	@PostMapping(value = "/addProfesseurToJuryId")
+	@ResponseBody
+	public void appelPostaddProfesseurToJuryId(@RequestParam(required = true, value = "idJury") String idJury,
+										@RequestParam(required = true, value = "idProfesseur") String idProfesseur) {
+
+		logger.log(Level.INFO, "appelPost_addProfesseurToJuryId");
+		DaoFactory fact = new DaoFactory();
+		ProfesseurDao professeurDao = fact.getProfesseurDao();
+		professeurDao.addProfesseurToJuryId(idJury, idProfesseur);
+	}
+	
+	@PostMapping(value = "/addRoleProfesseur")
+	@ResponseBody
+	public void appelPostaddRoleProfesseur(@RequestParam(required = true, value = "idProf") String idProf,
+										@RequestParam(required = true, value = "idRole") String idRole,
+										@RequestParam(required = true, value = "idRef") String idRef) {
+
+		logger.log(Level.INFO, "appelPostaddRoleProfesseur");
+		DaoFactory fact = new DaoFactory();
+		ProfesseurDao professeurDao = fact.getProfesseurDao();
+		professeurDao.addRoleProfesseur(idProf, idRole, idRef);;
+	}
+	
+	@PostMapping(value = "/updateRoleProfesseur")
+	@ResponseBody
+	public void appelPostupdateRoleProfesseur(@RequestParam(required = true, value = "idProf") String idProf,
+										@RequestParam(required = true, value = "idRole") String idRole,
+										@RequestParam(required = true, value = "newIdRole") String newIdRole,
+										@RequestParam(required = true, value = "idRef") String idRef) {
+
+		logger.log(Level.INFO, "appelPostupdateRoleProfesseur");
+		DaoFactory fact = new DaoFactory();
+		ProfesseurDao professeurDao = fact.getProfesseurDao();
+		professeurDao.updateRoleProfesseur(idProf, idRole, newIdRole, idRef);
+	}
+
+	@DeleteMapping(value = "/professeur")
+	@ResponseBody
+	public void appelDELETEprofesseur(@RequestParam(required = false, value = "id") String id) {
+		logger.log(Level.INFO, "appelDELETE_professeur");
+
+		DaoFactory fact = new DaoFactory();
+		ProfesseurDao professeurDao = fact.getProfesseurDao();
+		professeurDao.deleteProfesseur(id);
+	}
+	
+	@DeleteMapping(value = "/removeProfesseurToJuryId")
+	@ResponseBody
+	public void appelDELETEremoveProfesseurToJuryId(@RequestParam(required = true, value = "Id_Jury") String idJury,
+													@RequestParam(required = true, value = "id_Professeur") String idProfesseur) {
+		logger.log(Level.INFO, "appelDELETE_removeProfesseurToJuryId");
+
+		DaoFactory fact = new DaoFactory();
+		ProfesseurDao professeurDao = fact.getProfesseurDao();
+		professeurDao.removeProfesseurToJuryId(idJury, idProfesseur);
+	}
+	
+	
 }

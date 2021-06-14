@@ -12,4 +12,6 @@ public interface MatiereDao {
 	
 	public List<Matiere> getMatieres();
 
+	void updateMatiereProfRef(String idMatiere, String idProf);
+
 }

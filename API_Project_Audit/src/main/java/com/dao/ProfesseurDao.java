@@ -22,5 +22,9 @@ public interface ProfesseurDao {
 	void addProfesseur(Professeur professeur);
 	public boolean isProf(String id);
 	public int getIdProf(String idPers);
+	void addRoleProfesseur(String idProf, String idRole, String idRef);
+	void deleteRoleProfesseur(String idProf, String idRole);
+	void updateRoleProfesseur(String idProf, String idRole, String newIdRole, String idRef);
+	void verifyRole(String idProf, String idRole, String idRef);
 
 }
