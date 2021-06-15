@@ -1,9 +1,11 @@
 package com.dao;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.beans.Audit;
 import com.beans.Professeur;
+import com.beans.RoleUtilisateur;
 
 public interface ProfesseurDao {
 	
@@ -17,7 +19,7 @@ public interface ProfesseurDao {
 	void addProfesseurToJuryId(String appartientId, String idProfesseur);
 	void removeProfesseurToJuryId(String idJury, String idProfesseur);
 	public Professeur getProfesseurByPersonneID(String idPersonne);
-	public String getRoleProf ( String id);
+	public List<RoleUtilisateur> getRoleProf ( String id);
 	ArrayList<Professeur> professeurByAudit(String idAudit);
 	void addProfesseur(Professeur professeur);
 	public boolean isProf(String id);

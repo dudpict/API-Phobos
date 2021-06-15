@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -13,6 +14,7 @@ import org.apache.log4j.Logger;
 import com.beans.Audit;
 import com.beans.Personne;
 import com.beans.Professeur;
+import com.beans.RoleUtilisateur;
 
 public class ProfesseurDaoImpl implements ProfesseurDao {
 	private static final Logger logger = Logger.getLogger(ProfesseurDaoImpl.class);
@@ -409,28 +411,31 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 
 	}
 	
-	public String getRoleProf ( String id) {
-		String res= null;
+	public List<RoleUtilisateur> getRoleProf (String id) {
 		Connection connexion = null;
-		Statement statement = null;
 		PreparedStatement preparedStmt = null;
 		ResultSet resultat = null;
+		RoleUtilisateur resRole= new RoleUtilisateur();
+		ArrayList<RoleUtilisateur> listRole = new ArrayList<RoleUtilisateur>();
 		
 		try {
-			connexion = daoFactory.getConnection();
-			preparedStmt=connexion.prepareStatement("SELECT designation FROM RoleUtilisateur ro, Professeur pr  WHERE ro.id = pr.id_Role AND pr.id_Personne =? ; ");
-			preparedStmt.setInt(1, Integer.parseInt(id));
-			resultat = preparedStmt.executeQuery();
+			connexion=daoFactory.getConnection();
+			preparedStmt=connexion.prepareStatement("SELECT * FROM RoleUtilisateur ro LEFT JOIN a_pour ap ON ro.id = ap.id WHERE ap.id IN (SELECT id FROM a_pour ap WHERE ap.id_Professeur =11) GROUP BY ro.id;") ;
+			preparedStmt.setString(1, id);
+			resultat=preparedStmt.executeQuery();
+			
 			while (resultat.next()) {
-				res = resultat.getString("designation");
+				resRole.setId(resultat.getInt("id"));
+				resRole.setDesignation(resultat.getString("designation"));
+				listRole.add(resRole);
 			}
 			
 		}catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
-			daoFactory.close(connexion, statement, preparedStmt,null );
+			daoFactory.close(connexion, null, preparedStmt, resultat );
 		}
-		return res;
+		return listRole;
 	}
 	
 	public boolean isProf(String id) {

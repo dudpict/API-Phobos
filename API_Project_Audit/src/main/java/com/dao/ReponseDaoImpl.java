@@ -25,8 +25,8 @@ public class ReponseDaoImpl implements ReponseDao {
 	}
 
 	@Override
-	public ArrayList<Reponse> getReponseById(String id) {
-		ArrayList<Reponse> reponses = new ArrayList<>();
+	public Reponse getReponseById(String id) {
+		Reponse reponses = new Reponse();
 		Connection connexion = null;
 		Statement statement = null;
 		ResultSet resultat = null;
@@ -63,7 +63,7 @@ public class ReponseDaoImpl implements ReponseDao {
 				reponse.setReponseCourte(reponseCourte);				
 				reponse.setReponseLongue(reponseLongue);				
 				reponse.setReponseMultiple(reponseMultiples);
-				reponses.add(reponse);
+				//reponses.add(reponse);
 			}
 		} catch (SQLException e) {
 			logger.log(Level.INFO, "sql problem getPersonneByMail", e);

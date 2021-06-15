@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.beans.Professeur;
+import com.beans.RoleUtilisateur;
 import com.dao.DaoFactory;
 import com.dao.ProfesseurDao;
 
@@ -106,12 +107,12 @@ public class PhobosControllerProfesseur {
 	
 	@GetMapping(value= "/roleProfesseur")
 	@ResponseBody
-	public String roleProf (@RequestParam(required= true, value="id") String id) {
+	public List<RoleUtilisateur> roleProf (@RequestParam(required= true, value="id") String id) {
 		logger.log(Level.INFO, "roleProfesseur");
 		
 		DaoFactory fact = new DaoFactory();
 		ProfesseurDao professeurDao = fact.getProfesseurDao();
-		return professeurDao.getRoleProf ( id);
+		return professeurDao.getRoleProf(id);
 		
 	}
 	
