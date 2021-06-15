@@ -65,15 +65,22 @@ public class ReponseMultipleDaoImpl implements ReponseMultipleDao {
 		DaoFactory fact = new DaoFactory();
 		ReponseDao reponseDao = fact.getReponseDao();
 		
+		Reponse reponses = reponseDao.getReponsesByQuestionId(idQuestion);
+		if(reponses==null){
+			reponses = new Reponse();
+			reponseDao.addReponse(null, -1, false, idQuestion);
+			reponses = reponseDao.getReponsesByQuestionId(idQuestion);
+		}
+		idReponse = reponses.getId();
 		
-		ArrayList<Reponse> reponses = reponseDao.getReponsesByQuestionId(idQuestion);
+		/*ArrayList<Reponse> reponses = reponseDao.getReponsesByQuestionId(idQuestion);
 		if (reponses.isEmpty()) {
 			reponseDao.addReponse(null,-1,false, idQuestion);
 			reponses = reponseDao.getReponsesByQuestionId(idQuestion);
 		}
 		for(Reponse reponseL : reponses) {
 			idReponse = reponseL.getId();
-		}
+		}*/
 		
 		try {
 			connexion = daoFactory.getConnection();
