@@ -104,6 +104,10 @@ public class DaoFactory {
 		return new UEDaoImpl(this);
 	}
 	
+	public OptionDao getOptionDao() {
+		return new OptionDaoImpl(this);
+	}
+	
 	public void close (Connection connexion, Statement statement, PreparedStatement preparedStmt,ResultSet resultat) {
 		try {
 			if(connexion!=null) {			
