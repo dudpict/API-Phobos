@@ -8,7 +8,7 @@ public interface ReponseDao {
 
 	Reponse getReponseById(String id);
 
-	ArrayList<Reponse> getReponsesByQuestionId(String id);
+	Reponse getReponsesByQuestionId(String id);
 
 	void addReponse(String reponseLongue, int note, Boolean reponseCourte, String idQuestion);
 

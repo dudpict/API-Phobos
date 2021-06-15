@@ -33,7 +33,7 @@ public class PhobosControllerReponse {
 	
 	@GetMapping(value = "/getReponsesByQuestionId")
 	@ResponseBody
-	public List<Reponse> appelGETReponsesByQuestionId(@RequestParam(required = true, value = "id") String id) {
+	public Reponse appelGETReponsesByQuestionId(@RequestParam(required = true, value = "id") String id) {
 		logger.log(Level.INFO, "appelGET_ReponsesByQuestionId");
 
 		DaoFactory fact = new DaoFactory();
