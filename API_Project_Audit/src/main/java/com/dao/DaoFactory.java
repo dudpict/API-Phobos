@@ -33,7 +33,7 @@ public class DaoFactory {
 		} catch (ClassNotFoundException e) {
 			logger.log(Level.INFO, "connection bdd problem", e);
 		}
-		return DriverManager.getConnection("jdbc:mariadb://localhost/projetGL","essai","network");
+		return DriverManager.getConnection("jdbc:mariadb://172.24.1.9/projetGL","essai","network");
 	}
 
 	// Récupération du Dao
@@ -106,6 +106,10 @@ public class DaoFactory {
 	
 	public OptionDao getOptionDao() {
 		return new OptionDaoImpl(this);
+	}
+	
+	public RoleDao getRoleDao() {
+		return new RoleDaoImpl(this);
 	}
 	
 	public void close (Connection connexion, Statement statement, PreparedStatement preparedStmt,ResultSet resultat) {

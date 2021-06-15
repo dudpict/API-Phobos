@@ -63,16 +63,6 @@ public class PhobosControllerProfesseur {
 		return professeurDao.getprofesseurByStr(search);
 	}
 
-	@GetMapping(value= "/roleProfesseur")
-	@ResponseBody
-	public List<RoleUtilisateur> roleProf (@RequestParam(required= true, value="id") String id) {
-		logger.log(Level.INFO, "roleProfesseur");
-		
-		DaoFactory fact = new DaoFactory();
-		ProfesseurDao professeurDao = fact.getProfesseurDao();
-		return professeurDao.getRoleProf(id);
-		
-	}
 	
 	@GetMapping(value="/isProfesseurByPersonneId")
 	@ResponseBody
@@ -110,31 +100,6 @@ public class PhobosControllerProfesseur {
 		DaoFactory fact = new DaoFactory();
 		ProfesseurDao professeurDao = fact.getProfesseurDao();
 		professeurDao.addProfesseurToJuryId(idJury, idProfesseur);
-	}
-	
-	@PostMapping(value = "/addRoleProfesseur")
-	@ResponseBody
-	public void appelPostaddRoleProfesseur(@RequestParam(required = true, value = "idProf") String idProf,
-										@RequestParam(required = true, value = "idRole") String idRole,
-										@RequestParam(required = true, value = "idRef") String idRef) {
-
-		logger.log(Level.INFO, "appelPostaddRoleProfesseur");
-		DaoFactory fact = new DaoFactory();
-		ProfesseurDao professeurDao = fact.getProfesseurDao();
-		professeurDao.addRoleProfesseur(idProf, idRole, idRef);;
-	}
-	
-	@PostMapping(value = "/updateRoleProfesseur")
-	@ResponseBody
-	public void appelPostupdateRoleProfesseur(@RequestParam(required = true, value = "idProf") String idProf,
-										@RequestParam(required = true, value = "idRole") String idRole,
-										@RequestParam(required = true, value = "newIdRole") String newIdRole,
-										@RequestParam(required = true, value = "idRef") String idRef) {
-
-		logger.log(Level.INFO, "appelPostupdateRoleProfesseur");
-		DaoFactory fact = new DaoFactory();
-		ProfesseurDao professeurDao = fact.getProfesseurDao();
-		professeurDao.updateRoleProfesseur(idProf, idRole, newIdRole, idRef);
 	}
 
 	@DeleteMapping(value = "/professeur")

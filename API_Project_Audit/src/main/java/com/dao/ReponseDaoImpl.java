@@ -32,8 +32,6 @@ public class ReponseDaoImpl implements ReponseDao {
 		ResultSet resultat = null;
 		PreparedStatement preparedStmt = null;
 		
-		
-
 		try {			
 			connexion = daoFactory.getConnection();
 			statement = connexion.createStatement();
