@@ -262,6 +262,26 @@ public class NotificationDaoImpl implements NotificationDao {
 		}
 	}
 	
+	@Override
+	public void deleteNotificationById(String id) {
+		Connection connexion = null;
+		ResultSet resultat = null;
+		Statement statement = null;
+		PreparedStatement preparedStatement = null;
+
+		try {
+			connexion = daoFactory.getConnection();
+			statement = connexion.createStatement();
+			preparedStatement = connexion.prepareStatement("DELETE FROM Notification WHERE id =?;");
+			preparedStatement.setString(1, id);
+			preparedStatement.executeQuery();
+		} catch (SQLException e) {
+			logger.log(Level.INFO, "sql problem getNotificationByEquipe", e);
+		}finally {
+			daoFactory.close(connexion,statement,preparedStatement,resultat);	
+		}
+	}
+	
 	
 }
 	

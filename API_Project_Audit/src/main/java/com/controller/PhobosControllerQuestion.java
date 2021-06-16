@@ -64,6 +64,7 @@ public class PhobosControllerQuestion {
 		return questionDao.getQuestionByNom(designation);
 	}
 	
+	
 	@GetMapping(value = "/ getQuestion_By_All_Param")
 	@ResponseBody
 	public List<Question>  getQuestionByAllParam(@RequestBody Question question) {
@@ -77,23 +78,11 @@ public class PhobosControllerQuestion {
 	//APPEL POST 
 	
 	// INSERT d'une question
-	@PostMapping(value = "/addQuestion")
-	@ResponseBody
-	public void appelPostquestionaddQuestion(
-			@RequestParam(required = false, value = "Designation") String designation,
-			@RequestParam(required = false, value = "id_section") int idsection,
-			@RequestParam(required = false, value = "id_typeQuestion") int idtypeQuestion,
-			@RequestParam(required = false, value = "intitule") String intitule) {
-		logger.log(Level.INFO, "appelPost_question_addQuestion");
-		DaoFactory fact = new DaoFactory();
-		QuestionDao questionDao = fact.getQuestionDao();
-		questionDao.addQuestion(designation, intitule, idsection, idtypeQuestion);
-	}
-	
+
 	@PostMapping(value = "/addQuestionBody")
 	@ResponseBody
-	public void appelPostquestionaddQuestion(@RequestBody Question question) {
-		logger.log(Level.INFO, "appelPost_question_addQuestion");
+	public void appelPostquestionaddQuestionBody(@RequestBody Question question) {
+		logger.log(Level.INFO, "appelPost_question_addQuestion Body");
 		DaoFactory fact = new DaoFactory();
 		QuestionDao questionDao = fact.getQuestionDao();
 		questionDao.addQuestion(question.getDesignation(), question.getIntitule(), question.getSection().getId(), question.getTypeQuestion().getId());
@@ -114,6 +103,17 @@ public class PhobosControllerQuestion {
 		QuestionDao questionDao = fact.getQuestionDao();
 		questionDao.updateQuestion(id, designation, intitule, reponse, idsection, idtypeQuestion);
 	}
+	
+	@GetMapping(value = "/questionByNomBody")
+	@ResponseBody
+	public Question appelGETquestionByNomBody(@RequestBody Question question) {
+		logger.log(Level.INFO, "appelGET_questionByNomBody");
+
+		DaoFactory fact = new DaoFactory();
+		QuestionDao questionDao = fact.getQuestionDao();
+		return questionDao.getQuestionByNom(question.getDesignation());
+	}
+	
 		
 	//APPEL DELETE
 	
@@ -128,3 +128,6 @@ public class PhobosControllerQuestion {
 	}
 	
 }
+
+
+

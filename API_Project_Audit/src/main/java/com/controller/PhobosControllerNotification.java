@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -79,6 +80,16 @@ public class PhobosControllerNotification {
 		NotificationDao notificationDao = fact.getNotificationDao();
 		
 		notificationDao.addNotification(notification);
+	}
+	
+	@DeleteMapping(value = "/deleteNotificationById")
+	@ResponseBody
+	public void deleteNotificationById(@RequestParam(required = true, value = "id") String id) {
+		logger.log(Level.INFO, "appel get deleteNotificationById");
+		DaoFactory fact = new DaoFactory();
+		NotificationDao notificationDao = fact.getNotificationDao();
+		
+		notificationDao.deleteNotificationById(id);
 	}
 	
 }

@@ -29,33 +29,30 @@ public class MatiereDaoImpl implements MatiereDao {
 		Connection connexion = null;
         Statement statement = null;
         ResultSet resultat = null;
+        PreparedStatement preparedStmt = null;
         Matiere matiere = new Matiere();
 
         try {
             connexion = daoFactory.getConnection();
-            statement = connexion.createStatement();
-            resultat = statement.executeQuery("SELECT * FROM Matiere WHERE id="+matiereID+";");
-
+			statement = connexion.createStatement();
+			preparedStmt = connexion.prepareStatement("SELECT * FROM Matiere WHERE id=?");
+			preparedStmt.setString(1, matiereID);
+			resultat = preparedStmt.executeQuery();
+            
+            
             while (resultat.next()) {
-            	String id = resultat.getString("id");
-                String designation = resultat.getString("designation");
-                int effectif = resultat.getInt("effectif");
-                String departement = resultat.getString("departement");
-                String professeurID = resultat.getString("id_Professeur");
-                
-                ProfesseurDao profDaoImpl = daoFactory.getProfesseurDao();
-                Professeur prof = profDaoImpl.getProfesseurById(professeurID);
-               
-                matiere.setId(Integer.valueOf(id));
-                matiere.setDesignation(designation);
-                matiere.setDepartement(departement);
-                matiere.setEffectif(effectif);
-                matiere.setResponsable(prof);
+            	int id = resultat.getInt("id");
+				String designation = resultat.getString("designation");
+				String departement = resultat.getString("departement");
+				int effectif = resultat.getInt("effectif");
+				Professeur responsable = daoFactory.getProfesseurDao().getProfesseurById(resultat.getString("id_Professeur"));
+				
+				matiere = new Matiere(id, designation, departement, effectif, responsable);
             }
         } catch (SQLException e) {
 			logger.log(Level.INFO, "sql problem getMatiereById", e);
 		}finally {
-			daoFactory.close(connexion,statement,null,resultat);	
+			daoFactory.close(connexion,statement,preparedStmt,resultat);	
 		}
         return matiere;
 	}
@@ -133,11 +130,99 @@ public class MatiereDaoImpl implements MatiereDao {
 			statement = connexion.createStatement();
 			preparedStmt = connexion.prepareStatement("UPDATE Matiere SET id_Professeur=? WHERE id=?");
 			preparedStmt.setString(1, idProf);
-			preparedStmt.setString(1, idMatiere);
+			preparedStmt.setString(2, idMatiere);
 			preparedStmt.executeQuery();
 	
 		} catch (SQLException e) {
 			logger.log(Level.INFO, "sql problem updateMatiereProfRef", e);
+
+		}finally {
+			daoFactory.close(connexion,statement,preparedStmt,resultat);			
+		}
+	}
+	
+	@Override
+	public List<Matiere> getMatiereByProfRefId(int idProf) {
+		Connection connexion = null;
+		Statement statement = null;
+		ResultSet resultat = null;
+		PreparedStatement preparedStmt = null;
+
+		Matiere matiere = null;
+		List<Matiere> matiereList = new ArrayList<>(); 
+		
+		try {
+			connexion = daoFactory.getConnection();
+			statement = connexion.createStatement();
+			preparedStmt = connexion.prepareStatement("SELECT * FROM Matiere WHERE id_Professeur=?");
+			preparedStmt.setInt(1, idProf);
+			resultat = preparedStmt.executeQuery();
+			
+			while(resultat.next()) {
+				int id = resultat.getInt("id");
+				String designation = resultat.getString("designation");
+				String departement = resultat.getString("departement");
+				int effectif = resultat.getInt("effectif");
+				Professeur responsable = daoFactory.getProfesseurDao().getProfesseurById(resultat.getString("id_Professeur"));
+				
+				matiere = new Matiere(id, designation, departement, effectif, responsable);
+				matiereList.add(matiere);
+			}
+	
+		} catch (SQLException e) {
+			logger.log(Level.INFO, "sql problem updateMatiereProfRef", e);
+
+		}finally {
+			daoFactory.close(connexion,statement,preparedStmt,resultat);			
+		}
+		
+		return matiereList;
+	}
+	
+	
+	@Override
+	public void addMatiere(Matiere matiere) {
+		Connection connexion = null;
+		Statement statement = null;
+		ResultSet resultat = null;
+		PreparedStatement preparedStmt = null;
+		
+		try {
+			connexion = daoFactory.getConnection();
+			statement = connexion.createStatement();
+			preparedStmt = connexion.prepareStatement("INSERT INTO Matiere(id, designation, effectif, departement, id_Professeur, id_UE) VALUES (?,?,?,?,?,?)");
+			preparedStmt.setInt(1, matiere.getId());
+			preparedStmt.setString(2, matiere.getDesignation());
+			preparedStmt.setInt(3, matiere.getEffectif());
+			preparedStmt.setString(4, matiere.getDepartement());
+			preparedStmt.setInt(5, matiere.getResponsable().getId());
+			preparedStmt.setInt(6, matiere.getUe().getId());
+			preparedStmt.executeQuery();
+	
+		} catch (SQLException e) {
+			logger.log(Level.INFO, "sql problem addMatiere", e);
+
+		}finally {
+			daoFactory.close(connexion,statement,preparedStmt,resultat);			
+		}
+	}
+	
+	@Override
+	public void deleteMatiere(String idMatiere) {
+		Connection connexion = null;
+		Statement statement = null;
+		ResultSet resultat = null;
+		PreparedStatement preparedStmt = null;
+		
+		try {
+			connexion = daoFactory.getConnection();
+			statement = connexion.createStatement();
+			preparedStmt = connexion.prepareStatement("DELETE FROM Matiere WHERE id=?");
+			preparedStmt.setString(1, idMatiere);
+			preparedStmt.executeQuery();
+	
+		} catch (SQLException e) {
+			logger.log(Level.INFO, "sql problem addMatiere", e);
 
 		}finally {
 			daoFactory.close(connexion,statement,preparedStmt,resultat);			

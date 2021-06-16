@@ -1,7 +1,5 @@
 package com.dao;
 
-import java.util.ArrayList;
-
 import com.beans.Reponse;
 
 public interface ReponseDao {

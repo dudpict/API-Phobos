@@ -1,7 +1,6 @@
 package com.beans;
 
 public class Question {
-	private static int idCount = 0;
 	private String intitule;
 	String designation;
 	String reponse;
@@ -34,8 +33,6 @@ public class Question {
 	}
 
 	public Question() {
-		this.id=idCount;
-		idCount++;
 		}
 
 	public String getDesignation() {

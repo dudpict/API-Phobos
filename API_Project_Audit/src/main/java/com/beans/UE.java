@@ -1,15 +1,14 @@
 package com.beans;
 
 public class UE {
-	private static int idCount = 0;
 	int id;
 	String designation;
 	String departement;
 	Professeur responsable;
-	
+	Option option;	
+
 	public UE() {
-		this.id=idCount;
-		idCount++;
+		super();
 		}
 
 	public UE(int id, String designation, String departement) {
@@ -51,6 +50,12 @@ public class UE {
 		this.responsable = prof;
 	}
 	
-	
+	public Option getOption() {
+		return option;
+	}
+
+	public void setOption(Option option) {
+		this.option = option;
+	}
 
 }

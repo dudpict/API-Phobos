@@ -6,10 +6,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
+import com.beans.Option;
 import com.beans.Professeur;
 import com.beans.UE;
 
@@ -68,14 +70,142 @@ public class UEDaoImpl implements UEDao{
 			statement = connexion.createStatement();
 			preparedStmt = connexion.prepareStatement("UPDATE UE SET id_Professeur=? WHERE id=?");
 			preparedStmt.setString(1, idProf);
-			preparedStmt.setString(1, idUe);
+			preparedStmt.setString(2, idUe);
 			preparedStmt.executeQuery();
 	
 		} catch (SQLException e) {
-			logger.log(Level.INFO, "sql problem updateUeProfRef", e);
+			logger.log(Level.INFO, "sql problem getUES", e);
 
 		}finally {
 			daoFactory.close(connexion,statement,preparedStmt,resultat);			
 		}
+	}
+	
+	@Override
+	public void addUe(UE ue) {
+		Connection connexion = null;
+		Statement statement = null;
+		ResultSet resultat = null;
+		PreparedStatement preparedStmt = null;
+
+		try {
+			connexion = daoFactory.getConnection();
+			statement = connexion.createStatement();
+			preparedStmt = connexion.prepareStatement("INSERT INTO UE(id, Designation, Departement, id_Professeur, id_Option) VALUES (?,?,?,?,?)");
+			preparedStmt.setInt(1, ue.getId());
+			preparedStmt.setString(2, ue.getDesignation());
+			preparedStmt.setString(3, ue.getDepartement());
+			preparedStmt.setInt(4, ue.getResponsable().getId());
+			preparedStmt.setInt(5, ue.getOption().getId());
+			preparedStmt.executeQuery();
+	
+		} catch (SQLException e) {
+			logger.log(Level.INFO, "sql problem addUe", e);
+
+		}finally {
+			daoFactory.close(connexion,statement,preparedStmt,resultat);			
+		}
+	}
+	
+	@Override
+	public void deleteUe(String idUe) {
+		Connection connexion = null;
+		Statement statement = null;
+		ResultSet resultat = null;
+		PreparedStatement preparedStmt = null;
+
+		try {
+			connexion = daoFactory.getConnection();
+			statement = connexion.createStatement();
+			preparedStmt = connexion.prepareStatement("DELETE FROM UE WHERE id=?");
+			preparedStmt.setString(1, idUe);
+			preparedStmt.executeQuery();
+	
+		} catch (SQLException e) {
+			logger.log(Level.INFO, "sql problem addUe", e);
+
+		}finally {
+			daoFactory.close(connexion,statement,preparedStmt,resultat);			
+		}
+	}
+	
+	@Override
+	public UE getUeById(String idUe) {
+		Connection connexion = null;
+		Statement statement = null;
+		ResultSet resultat = null;
+		PreparedStatement preparedStmt = null;
+		
+		UE ue = null;
+		
+		try {
+			connexion = daoFactory.getConnection();
+			statement = connexion.createStatement();
+			preparedStmt = connexion.prepareStatement("SELECT * FROM UE WHERE id=?");
+			preparedStmt.setString(1, idUe);
+			resultat = preparedStmt.executeQuery();
+			
+			while (resultat.next()) {
+				int id = resultat.getInt("id");
+				String designation = resultat.getString("Designation");
+				String departement = resultat.getString("Departement");
+				Professeur responsable = daoFactory.getProfesseurDao().getProfesseurById(resultat.getString("id_Professeur")) ;
+				Option option = daoFactory.getOptionDao().getOptionById(resultat.getString("id_Option"));
+				
+				ue = new UE(id,designation,departement);
+				ue.setOption(option);
+				ue.setResponsable(responsable);
+			}
+	
+		} catch (SQLException e) {
+			logger.log(Level.INFO, "sql problem getUeById", e);
+
+		}finally {
+			daoFactory.close(connexion,statement,preparedStmt,resultat);			
+		}
+		
+		return ue;
+	}
+	
+	
+	@Override
+	public List<UE> getUeByIdProfRef(int idProfRef) {
+		Connection connexion = null;
+		Statement statement = null;
+		ResultSet resultat = null;
+		PreparedStatement preparedStmt = null;
+		
+		List<UE> ueList = new ArrayList<>();
+		UE ue = null;
+		
+		try {
+			connexion = daoFactory.getConnection();
+			statement = connexion.createStatement();
+			preparedStmt = connexion.prepareStatement("SELECT * FROM UE WHERE id_Professeur=?");
+			preparedStmt.setInt(1, idProfRef);
+			resultat = preparedStmt.executeQuery();
+			
+			while (resultat.next()) {
+				int id = resultat.getInt("id");
+				String designation = resultat.getString("Designation");
+				String departement = resultat.getString("Departement");
+				Professeur responsable = daoFactory.getProfesseurDao().getProfesseurById(resultat.getString("id_Professeur")) ;
+				Option option = daoFactory.getOptionDao().getOptionById(resultat.getString("id_Option"));
+				
+				ue = new UE(id,designation,departement);
+				ue.setOption(option);
+				ue.setResponsable(responsable);
+				
+				ueList.add(ue);
+			}
+	
+		} catch (SQLException e) {
+			logger.log(Level.INFO, "sql problem getUeByIdProfRef", e);
+
+		}finally {
+			daoFactory.close(connexion,statement,preparedStmt,resultat);			
+		}
+		
+		return ueList;
 	}
 }

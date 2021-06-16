@@ -228,7 +228,7 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 		PreparedStatement preparedStmt = null;
 		try {
 			connexion = daoFactory.getConnection();
-			String requete = "DELETE * FROM Professeur WHERE id=?";
+			String requete = "DELETE FROM Professeur WHERE id=?";
 			preparedStmt = connexion.prepareStatement(requete);
 			preparedStmt.setString(1, id);
 			preparedStmt.execute();
@@ -403,8 +403,8 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 			connexion = daoFactory.getConnection();
 			statement = connexion.createStatement();
 			preparedStmt = connexion.prepareStatement("DELETE FROM appartient WHERE id_Professeur = ? AND id = ?;");
-			preparedStmt.setString(1, idJury);
-			preparedStmt.setString(2, idProfesseur);
+			preparedStmt.setString(1, idProfesseur);
+			preparedStmt.setString(2, idJury);
 			preparedStmt.executeQuery();
 
 		} catch (SQLException e) {
@@ -419,8 +419,9 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 		Connection connexion = null;
 		PreparedStatement preparedStmt = null;
 		ResultSet resultat = null;
-		RoleUtilisateur resRole= new RoleUtilisateur();
-		ArrayList<RoleUtilisateur> listRole = new ArrayList<RoleUtilisateur>();
+		
+		RoleUtilisateur resRole= null;
+		List<RoleUtilisateur> listRole = new ArrayList<>();
 		
 		try {
 			connexion=daoFactory.getConnection();
@@ -429,8 +430,8 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 			resultat=preparedStmt.executeQuery();
 			
 			while (resultat.next()) {
-				resRole.setId(resultat.getInt("id"));
-				resRole.setDesignation(resultat.getString("designation"));
+				resRole = new RoleUtilisateur(resultat.getInt("id"),resultat.getString("designation"));
+				
 				listRole.add(resRole);
 			}
 			
@@ -439,6 +440,7 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 		}finally {
 			daoFactory.close(connexion, null, preparedStmt, resultat );
 		}
+		
 		return listRole;
 	}
 	

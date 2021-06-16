@@ -1,16 +1,17 @@
 package com.beans;
 
 public class Matiere {
-	private static int idCount = 0;
 	int id;
 	String designation;
 	String departement;
 	int effectif;
 	Professeur responsable;
+	UE ue;
 	
+	
+
 	public Matiere() {
-		this.id=idCount;
-		idCount++;
+		super();
 		}
 
 	public Matiere(int id, String designation, String departement, int effectif, Professeur responsable) {
@@ -20,6 +21,14 @@ public class Matiere {
 		this.departement = departement;
 		this.effectif = effectif;
 		this.responsable = responsable;
+	}
+	
+	public UE getUe() {
+		return ue;
+	}
+
+	public void setUe(UE ue) {
+		this.ue = ue;
 	}
 
 	public int getId() {

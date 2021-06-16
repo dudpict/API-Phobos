@@ -9,8 +9,10 @@ import java.sql.Statement;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
+import com.beans.Matiere;
 import com.beans.Option;
 import com.beans.RoleUtilisateur;
+import com.beans.UE;
 
 public class RoleDaoImpl implements RoleDao{
 	private DaoFactory daoFactory;
@@ -35,7 +37,7 @@ public class RoleDaoImpl implements RoleDao{
 			preparedStmt = connexion.prepareStatement("INSERT INTO  a_pour ( id , id_Professeur) VALUES (?,?);");
 			preparedStmt.setString(1, idRole);
 			preparedStmt.setString(2, idProf);
-			if(getRoleProfesseur(idProf,idRole)!=null) {
+			if(getRoleByIdAndIdProf(idProf,idRole)==null) {
 				preparedStmt.executeQuery();
 			}
 			
@@ -99,7 +101,7 @@ public class RoleDaoImpl implements RoleDao{
 	}	
 	
 	@Override
-	public RoleUtilisateur  getRoleProfesseur(String idProf, String idRole){
+	public RoleUtilisateur  getRoleByIdAndIdProf(String idProf, String idRole){
 		Connection connexion = null;
 		Statement statement = null;
 		ResultSet resultat = null;
@@ -142,16 +144,29 @@ public class RoleDaoImpl implements RoleDao{
 			optDao.updateOptionProfRef(idRef, idProf);		
 			
 		}else if (idRole.equals(Integer.toString(3))) {
+			UEDao ueDao= daoFactory.getUEDao();
 			
-			UEDao ue= daoFactory.getUEDao();
-			ue.updateUeProfRef(idRef, idProf);
-			deleteRoleProfesseur(idProf, idRole);
+			UE ue = ueDao.getUeById(idRef);
+			int idProfRef = ue.getResponsable().getId();
+			
+			if(ueDao.getUeByIdProfRef(idProfRef).size()<2) {
+				deleteRoleProfesseur(Integer.toString(idProfRef), idRole);
+			}			
+			
+			ueDao.updateUeProfRef(idRef, idProf);
 			
 		}else if (idRole.equals(Integer.toString(4))) {
-			
 			MatiereDao matDao = daoFactory.getMatiereDao();
+			
+			Matiere matiere = matDao.getMatiereById(idRef);
+			int idProfRef = matiere.getResponsable().getId();
+			
+			if(matDao.getMatiereByProfRefId(idProfRef).size()<2) {
+				deleteRoleProfesseur(Integer.toString(idProfRef), idRole);
+			}
+			
 			matDao.updateMatiereProfRef(idRef, idProf);
-			deleteRoleProfesseur(idProf, idRole);
+			
 		}
 	}
 	

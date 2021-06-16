@@ -19,5 +19,7 @@ public interface NotificationDao {
 	Notification getNotificationById(String idNotif);
 
 	ArrayList<Notification> getNotificationByPersonneId(String idPersonne);
+
+	void deleteNotificationById(String id);
 	
 }

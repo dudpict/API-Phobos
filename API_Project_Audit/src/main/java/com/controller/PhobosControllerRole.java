@@ -3,31 +3,18 @@ package com.controller;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dao.DaoFactory;
-import com.dao.ProfesseurDao;
 import com.dao.RoleDao;
 
 @RestController
 public class PhobosControllerRole {
 
 	private static final Logger logger = Logger.getLogger(PhobosControllerRole.class);
-	
-	@GetMapping(value= "/roleProfesseur")
-	@ResponseBody
-	public String roleProf (@RequestParam(required= true, value="id") String id) {
-		logger.log(Level.INFO, "roleProfesseur");
-		
-		DaoFactory fact = new DaoFactory();
-		ProfesseurDao professeurDao = fact.getProfesseurDao();
-		return professeurDao.getRoleProf(id);
-		
-	}
 	
 	@PostMapping(value = "/addRoleProfesseur")
 	@ResponseBody

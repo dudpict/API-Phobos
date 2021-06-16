@@ -47,7 +47,6 @@ public class ReponseDaoImpl implements ReponseDao {
 				ArrayList<ReponseMultiple> reponseMultiples = null;
 								
 				String idQuestion = resultat.getString(sqlParamReponse[4]);
-				
 				Question question = daoFactory.getQuestionDao().getQuestionById(idQuestion);
 				String idTypeQuestion = Integer.toString(question.getTypeQuestion().getId());
 				if(idTypeQuestion.equals("4")) {
@@ -61,6 +60,7 @@ public class ReponseDaoImpl implements ReponseDao {
 				reponse.setReponseCourte(reponseCourte);				
 				reponse.setReponseLongue(reponseLongue);				
 				reponse.setReponseMultiple(reponseMultiples);
+				reponse.setIdQuestion(Integer.parseInt(idQuestion));
 				//reponses.add(reponse);
 			}
 		} catch (SQLException e) {
@@ -74,18 +74,13 @@ public class ReponseDaoImpl implements ReponseDao {
 	
 	@Override
 	public Reponse getReponsesByQuestionId(String id) {
-		Reponse reponses = new Reponse();
 		Connection connexion = null;
 		Statement statement = null;
 		ResultSet resultat = null;
 		PreparedStatement preparedStmt = null;
-		
-		Connection connexion2 = null;
-		Statement statement2 = null;
-		ResultSet resultat2 = null;
-		PreparedStatement preparedStmt2 = null;
+		Reponse reponse = new Reponse();
 		DaoFactory fact = new DaoFactory();
-
+		
 		try {			
 			connexion = daoFactory.getConnection();
 			statement = connexion.createStatement();
@@ -95,6 +90,7 @@ public class ReponseDaoImpl implements ReponseDao {
 			
 			while (resultat.next()) {
 				int idReponse = resultat.getInt(sqlParamReponse[0]);
+				
 				int note = resultat.getInt(sqlParamReponse[2]);
 				boolean reponseCourte = resultat.getBoolean(sqlParamReponse[3]);
 				String reponseLongue = resultat.getString(sqlParamReponse[1]);
@@ -109,22 +105,23 @@ public class ReponseDaoImpl implements ReponseDao {
 					reponseMultiples = reponseMultipleDao.getReponseMultipleByIdReponse(Integer.toString(idReponse));
 				}
 								
-				Reponse reponse = new Reponse();				
+								
 				reponse.setId(idReponse);				
 				reponse.setNote(note);				
 				reponse.setReponseCourte(reponseCourte);				
 				reponse.setReponseLongue(reponseLongue);				
 				reponse.setReponseMultiple(reponseMultiples);
+				reponse.setIdQuestion(Integer.parseInt(idQuestion));
 				//reponses.add(reponse);
 			}
 		} catch (SQLException e) {
 			logger.log(Level.INFO, "sql probleme add rep", e);
 		}finally {
 			fact.close(connexion,statement,preparedStmt,resultat);
-			fact.close(connexion2,statement2,preparedStmt2,resultat2);
+			
 		}
 		
-		return reponses;
+		return reponse;
 	}
 	
 	@Override

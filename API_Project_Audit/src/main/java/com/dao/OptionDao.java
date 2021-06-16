@@ -12,4 +12,6 @@ public interface OptionDao {
 
 	List<Option> getOptionByIdProfRef(int idProfRef);
 
+	List<Option> getAllOption();
+
 }

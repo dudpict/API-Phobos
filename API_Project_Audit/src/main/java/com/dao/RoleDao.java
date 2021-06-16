@@ -12,7 +12,7 @@ public interface RoleDao {
 
 	void verifyRole(String idProf, String idRole, String idRef);
 
-	RoleUtilisateur getRoleProfesseur(String idProf, String idRole);
+	RoleUtilisateur getRoleByIdAndIdProf(String idProf, String idRole);
 	
 
 	

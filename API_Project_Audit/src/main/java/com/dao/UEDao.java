@@ -7,5 +7,13 @@ public interface UEDao {
 
 	void updateUeProfRef(String idUe, String idProf);
 
+	UE getUeById(String idUe);
+
+	 List<UE> getUeByIdProfRef(int idProfRef);
+
+	void deleteUe(String idUe);
+
+	void addUe(UE ue);
+
 	
 }

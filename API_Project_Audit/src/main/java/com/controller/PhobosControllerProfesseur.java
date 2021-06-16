@@ -81,6 +81,17 @@ public class PhobosControllerProfesseur {
 		return professeurDao.getIdProf(idPers);
 	}
 	
+	@GetMapping(value= "/roleProfesseur")
+	@ResponseBody
+	public List<RoleUtilisateur> roleProf (@RequestParam(required= true, value="id") String id) {
+		logger.log(Level.INFO, "roleProfesseur");
+		
+		DaoFactory fact = new DaoFactory();
+		ProfesseurDao professeurDao = fact.getProfesseurDao();
+		return professeurDao.getRoleProf(id);
+		
+	}
+	
 	@PostMapping(value = "/professeur")
 	@ResponseBody
 	public void appelPostprofesseur(@RequestBody Professeur professeur) {
@@ -104,7 +115,7 @@ public class PhobosControllerProfesseur {
 
 	@DeleteMapping(value = "/professeur")
 	@ResponseBody
-	public void appelDELETEprofesseur(@RequestParam(required = false, value = "id") String id) {
+	public void appelDELETEprofesseur(@RequestParam(required = true, value = "id") String id) {
 		logger.log(Level.INFO, "appelDELETE_professeur");
 
 		DaoFactory fact = new DaoFactory();

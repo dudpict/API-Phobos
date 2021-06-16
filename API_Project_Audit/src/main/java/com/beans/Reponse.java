@@ -13,6 +13,7 @@ public class Reponse {
 	private String reponseLongue;
 	private int note;
 	private boolean reponseCourte;
+	private int idQuestion;
 	private ArrayList<ReponseMultiple> reponseMultiple;
 
 	/**
@@ -26,6 +27,15 @@ public class Reponse {
 	 * Constructeur d'une réponse de type reponseLongue
 	 * @param reponse
 	 */
+	
+	
+	public int getIdQuestion() {
+		return idQuestion;
+	}
+
+	public void setIdQuestion(int idQuestion) {
+		this.idQuestion = idQuestion;
+	}
 	public Reponse(String reponse){
 		this.reponseLongue=reponse;
 	}
