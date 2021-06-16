@@ -90,7 +90,7 @@ public class QuestionDaoImpl implements QuestionDao {
 	}
 
 	@Override
-	public void addQuestion(String designation, String intitule, int idSection, int idTypeQuestion) {
+	public void addQuestion(String designation, String intitule, int idSection, int idTypeQuestion/*, boolean eleves, boolean professeur*/) {
 		Connection connexion = null;
 		PreparedStatement preparedStmt = null;
 

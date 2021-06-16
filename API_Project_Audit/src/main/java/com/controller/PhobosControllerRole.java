@@ -25,7 +25,7 @@ public class PhobosControllerRole {
 		
 		DaoFactory fact = new DaoFactory();
 		ProfesseurDao professeurDao = fact.getProfesseurDao();
-		return professeurDao.getRoleProf ( id);
+		return professeurDao.getRoleProf(id);
 		
 	}
 	

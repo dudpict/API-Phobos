@@ -56,7 +56,7 @@ public class PhobosControllerQuestion {
 	
 	@GetMapping(value = "/questionByNom")
 	@ResponseBody
-	public Question appelGETquestionByNom(@RequestParam(required = true, value = "Designation") String designation) {
+	public Question appelGETquestionByNom(@RequestParam(required = true, value = "designation") String designation) {
 		logger.log(Level.INFO, "appelGET_questionByNom");
 
 		DaoFactory fact = new DaoFactory();

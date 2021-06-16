@@ -424,7 +424,7 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 		
 		try {
 			connexion=daoFactory.getConnection();
-			preparedStmt=connexion.prepareStatement("SELECT * FROM RoleUtilisateur ro LEFT JOIN a_pour ap ON ro.id = ap.id WHERE ap.id IN (SELECT id FROM a_pour ap WHERE ap.id_Professeur =11) GROUP BY ro.id;") ;
+			preparedStmt=connexion.prepareStatement("SELECT * FROM RoleUtilisateur ro LEFT JOIN a_pour ap ON ro.id = ap.id WHERE ap.id IN (SELECT id FROM a_pour ap WHERE ap.id_Professeur =?) GROUP BY ro.id;") ;
 			preparedStmt.setString(1, id);
 			resultat=preparedStmt.executeQuery();
 			
