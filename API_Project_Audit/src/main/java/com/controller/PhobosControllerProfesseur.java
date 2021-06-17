@@ -101,7 +101,7 @@ public class PhobosControllerProfesseur {
 		
 	}
 	
-	@GetMapping(value= "/ProfesseurSansRole")
+	@GetMapping(value= "/professeurSansRole")
 	@ResponseBody
 	public List<Professeur> sansRoleProf () {
 		logger.log(Level.INFO, "roleProfesseur");
