@@ -61,10 +61,9 @@ public class ReponseDaoImpl implements ReponseDao {
 				reponse.setReponseLongue(reponseLongue);				
 				reponse.setReponseMultiple(reponseMultiples);
 				reponse.setIdQuestion(Integer.parseInt(idQuestion));
-				//reponses.add(reponse);
 			}
 		} catch (SQLException e) {
-			logger.log(Level.INFO, "sql problem getPersonneByMail", e);
+			logger.log(Level.INFO, "sql problem getReponseById", e);
 		}finally {
 			daoFactory.close(connexion,statement,preparedStmt,resultat);	
 		}
@@ -112,10 +111,9 @@ public class ReponseDaoImpl implements ReponseDao {
 				reponse.setReponseLongue(reponseLongue);				
 				reponse.setReponseMultiple(reponseMultiples);
 				reponse.setIdQuestion(Integer.parseInt(idQuestion));
-				//reponses.add(reponse);
 			}
 		} catch (SQLException e) {
-			logger.log(Level.INFO, "sql probleme add rep", e);
+			logger.log(Level.INFO, "sql probleme getReponsesByQuestionId", e);
 		}finally {
 			fact.close(connexion,statement,preparedStmt,resultat);
 			
@@ -168,7 +166,7 @@ public class ReponseDaoImpl implements ReponseDao {
 			preparedStmt.executeQuery();
 			
 		} catch (SQLException e) {
-			logger.log(Level.INFO, "sql problem", e);
+			logger.log(Level.INFO, "sql problem updateReponse", e);
 		}finally {
 			fact.close(connexion,statement,preparedStmt,null);			
 		}
@@ -190,7 +188,7 @@ public class ReponseDaoImpl implements ReponseDao {
 			preparedStmt.executeQuery();
 			
 		} catch (SQLException e) {
-			logger.log(Level.INFO, "sql problem", e);
+			logger.log(Level.INFO, "sql problem deleteReponse", e);
 		}finally {
 			fact.close(connexion,statement,preparedStmt,null);			
 		}

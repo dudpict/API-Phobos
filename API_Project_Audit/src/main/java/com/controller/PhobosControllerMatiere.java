@@ -62,7 +62,7 @@ public class PhobosControllerMatiere {
 		
 		DaoFactory fact = new DaoFactory();
 		MatiereDao matiereDao = fact.getMatiereDao();
-		matiereDao.addMatiere(matiere);;
+		matiereDao.addMatiere(matiere);
 
 	}
 	@DeleteMapping(value = "/deleteMatiere")
@@ -72,7 +72,7 @@ public class PhobosControllerMatiere {
 		
 		DaoFactory fact = new DaoFactory();
 		MatiereDao matiereDao = fact.getMatiereDao();
-		matiereDao.deleteMatiere(idUe);;
+		matiereDao.deleteMatiere(idUe);
 
 	}
 	

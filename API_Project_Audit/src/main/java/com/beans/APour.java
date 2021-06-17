@@ -1,14 +1,20 @@
 package com.beans;
 
-public class aPour {
+public class APour {
 
 	int idRole;
 	int idProf;
 	
-	public aPour() {
+	public APour() {
 		super();
 	}
 	
+	public APour(int idRole, int idProf) {
+		super();
+		this.idRole = idRole;
+		this.idProf = idProf;
+	}
+
 	public int getIdRole() {
 		return idRole;
 	}
