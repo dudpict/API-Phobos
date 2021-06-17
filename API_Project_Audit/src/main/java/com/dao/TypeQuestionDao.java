@@ -8,6 +8,5 @@ public interface TypeQuestionDao {
 
 	List<TypeQuestion> getTypeQuestions();
 	void deleteTypeQuestion(String id);
-	TypeQuestion getTypeQuestionById(int typeQuestionID);
 	TypeQuestion getTypeQuestionById(String id);
 }

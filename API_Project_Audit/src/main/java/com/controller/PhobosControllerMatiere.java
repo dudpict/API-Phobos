@@ -44,6 +44,17 @@ public class PhobosControllerMatiere {
 
 	}
 	
+	@GetMapping(value = "/matieresById")
+	@ResponseBody
+	public Matiere appelGETMatieres(@RequestParam(required = true, value = "id") String id) {
+		logger.log(Level.INFO, "Appel GET de matieresById");
+		
+		DaoFactory fact = new DaoFactory();
+		MatiereDao matiereDao = fact.getMatiereDao();
+		return matiereDao.getMatiereById(id);
+
+	}
+	
 	@PostMapping(value = "/addMatiere")
 	@ResponseBody
 	public void appelPostaddMatiere(@RequestBody Matiere matiere) {

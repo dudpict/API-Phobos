@@ -45,7 +45,7 @@ public class QuestionDaoImpl implements QuestionDao {
 
 				// Récupére l'instance de TypeQuestion via l'id
 				TypeQuestionDao typeQuestionDao = daoFactory.getTypeQuestionDao();
-				TypeQuestion typeQuestion = typeQuestionDao.getTypeQuestionById(typeQuestionID);
+				TypeQuestion typeQuestion = typeQuestionDao.getTypeQuestionById(Integer.toString(typeQuestionID));
 
 				// Récupére l'instance de Section via l'id
 				SectionDao sectionDao = daoFactory.getSectionDao();
@@ -159,7 +159,7 @@ public class QuestionDaoImpl implements QuestionDao {
 
 				// Récupére l'instance de TypeQuestion via l'id
 				TypeQuestionDao typeQuestionDao = daoFactory.getTypeQuestionDao();
-				TypeQuestion typeQuestion = typeQuestionDao.getTypeQuestionById(typeQuestionID);
+				TypeQuestion typeQuestion = typeQuestionDao.getTypeQuestionById(Integer.toString(typeQuestionID));
 
 				// Récupére l'instance de Section via l'id
 				SectionDao sectionDao = daoFactory.getSectionDao();
@@ -205,7 +205,7 @@ public class QuestionDaoImpl implements QuestionDao {
 
 				// Récupére l'instance de TypeQuestion via l'id
 				TypeQuestionDao typeQuestionDao = daoFactory.getTypeQuestionDao();
-				TypeQuestion typeQuestion = typeQuestionDao.getTypeQuestionById(typeQuestionID);
+				TypeQuestion typeQuestion = typeQuestionDao.getTypeQuestionById(Integer.toString(typeQuestionID));
 
 				// Récupére l'instance de Section via l'id
 				SectionDao sectionDao = daoFactory.getSectionDao();
@@ -250,7 +250,7 @@ public class QuestionDaoImpl implements QuestionDao {
 
 				// Récupére l'instance de TypeQuestion via l'id
 				TypeQuestionDao typeQuestionDao = daoFactory.getTypeQuestionDao();
-				TypeQuestion typeQuestion = typeQuestionDao.getTypeQuestionById(typeQuestionID);
+				TypeQuestion typeQuestion = typeQuestionDao.getTypeQuestionById(Integer.toString(typeQuestionID));
 
 				// Récupére l'instance de Section via l'id
 				SectionDao sectionDao = daoFactory.getSectionDao();
@@ -306,7 +306,7 @@ public class QuestionDaoImpl implements QuestionDao {
 
 				// Récupére l'instance de TypeQuestion via l'id
 				TypeQuestionDao typeQuestionDao = daoFactory.getTypeQuestionDao();
-				TypeQuestion typeQuestion = typeQuestionDao.getTypeQuestionById(typeQuestionID);
+				TypeQuestion typeQuestion = typeQuestionDao.getTypeQuestionById(Integer.toString(typeQuestionID));
 
 				// Récupére l'instance de Section via l'id
 				SectionDao sectionDao = daoFactory.getSectionDao();

@@ -20,7 +20,7 @@ public class PhobosControllerTypeQuestion {
 
 	@GetMapping(value = "/typeQuestion")
 	@ResponseBody
-	public List<TypeQuestion> appelGETtypequestion(@RequestParam(required = false, value = "id") String id) {
+	public List<TypeQuestion> appelGETtypequestion() {
 		logger.log(Level.INFO, "appelGET_typequestion");
 
 		DaoFactory fact = new DaoFactory();

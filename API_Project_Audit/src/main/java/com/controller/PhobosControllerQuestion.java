@@ -64,17 +64,6 @@ public class PhobosControllerQuestion {
 		return questionDao.getQuestionByNom(designation);
 	}
 	
-	
-	@GetMapping(value = "/ getQuestion_By_All_Param")
-	@ResponseBody
-	public List<Question>  getQuestionByAllParam(@RequestBody Question question) {
-		logger.log(Level.INFO, "getQuestion_By_All_Param");
-
-		DaoFactory fact = new DaoFactory();
-		QuestionDao questionDao = fact.getQuestionDao();
-		return questionDao.getQuestionByAllParam(question);
-	}
-	
 	//APPEL POST 
 	
 	// INSERT d'une question

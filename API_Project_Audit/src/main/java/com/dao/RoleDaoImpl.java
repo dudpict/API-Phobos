@@ -51,7 +51,7 @@ public class RoleDaoImpl implements RoleDao{
 	}	
 	
 	@Override
-	public void  deleteRoleProfesseur(String idProf, String idRole){
+	public void  deleteRoleProfesseur(String idProf, String idRole, String idRef){
 		Connection connexion = null;
 		Statement statement = null;
 		ResultSet resultat = null;
@@ -64,7 +64,14 @@ public class RoleDaoImpl implements RoleDao{
 			preparedStmt = connexion.prepareStatement("DELETE FROM a_pour WHERE id= ? AND id_Professeur=? ;");
 			preparedStmt.setString(1, idRole);
 			preparedStmt.setString(2, idProf);
-			preparedStmt.executeQuery();			
+			if(idRole.equals("5")) {
+				daoFactory.getEnsseigneDao().deleteEnsseigne(Integer.parseInt(idRef), Integer.parseInt(idProf));
+				if(daoFactory.getEnsseigneDao().getEnsseigneByIdProf(Integer.parseInt(idProf)).isEmpty()) {
+					preparedStmt.executeQuery();
+				}
+			}else {
+				preparedStmt.executeQuery();
+			}		
 			
 		} catch (SQLException e) {
 			logger.log(Level.INFO, "sql problem deleteRoleProfesseur", e);
@@ -138,7 +145,7 @@ public class RoleDaoImpl implements RoleDao{
 			int idProfRef = option.getIdProfesseur();
 			
 			if(optDao.getOptionByIdProfRef(idProfRef).size()<2) {
-				deleteRoleProfesseur(Integer.toString(idProfRef), idRole);
+				deleteRoleProfesseur(Integer.toString(idProfRef), idRole,null);
 			}
 			
 			optDao.updateOptionProfRef(idRef, idProf);		
@@ -150,7 +157,7 @@ public class RoleDaoImpl implements RoleDao{
 			int idProfRef = ue.getResponsable().getId();
 			
 			if(ueDao.getUeByIdProfRef(idProfRef).size()<2) {
-				deleteRoleProfesseur(Integer.toString(idProfRef), idRole);
+				deleteRoleProfesseur(Integer.toString(idProfRef), idRole,null);
 			}			
 			
 			ueDao.updateUeProfRef(idRef, idProf);
@@ -162,11 +169,17 @@ public class RoleDaoImpl implements RoleDao{
 			int idProfRef = matiere.getResponsable().getId();
 			
 			if(matDao.getMatiereByProfRefId(idProfRef).size()<2) {
-				deleteRoleProfesseur(Integer.toString(idProfRef), idRole);
+				deleteRoleProfesseur(Integer.toString(idProfRef), idRole,null);
 			}
 			
 			matDao.updateMatiereProfRef(idRef, idProf);
 			
+		}else if (idRole.equals(Integer.toString(5))) {
+			EnsseigneDao ensDao = daoFactory.getEnsseigneDao();
+			
+			if (ensDao.getEnsseigneByIdAndIdProf(Integer.parseInt(idRef),Integer.parseInt(idProf))==null) {
+				ensDao.addEnsseigne(Integer.parseInt(idRef),Integer.parseInt(idProf));
+			}
 		}
 	}
 	

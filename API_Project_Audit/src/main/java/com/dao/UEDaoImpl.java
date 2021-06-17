@@ -91,12 +91,15 @@ public class UEDaoImpl implements UEDao{
 		try {
 			connexion = daoFactory.getConnection();
 			statement = connexion.createStatement();
-			preparedStmt = connexion.prepareStatement("INSERT INTO UE(id, Designation, Departement, id_Professeur, id_Option) VALUES (?,?,?,?,?)");
-			preparedStmt.setInt(1, ue.getId());
-			preparedStmt.setString(2, ue.getDesignation());
-			preparedStmt.setString(3, ue.getDepartement());
-			preparedStmt.setInt(4, ue.getResponsable().getId());
-			preparedStmt.setInt(5, ue.getOption().getId());
+			preparedStmt = connexion.prepareStatement("INSERT INTO UE(Designation, Departement, id_Professeur, id_Option) VALUES (?,?,?,?)");
+			preparedStmt.setString(1, ue.getDesignation());
+			preparedStmt.setString(2, ue.getDepartement());
+			preparedStmt.setInt(3, ue.getResponsable().getId());
+			if(ue.getOption()!=null) {
+				preparedStmt.setInt(4, ue.getOption().getId());
+			}else {
+				preparedStmt.setString(4, null);
+			}
 			preparedStmt.executeQuery();
 	
 		} catch (SQLException e) {

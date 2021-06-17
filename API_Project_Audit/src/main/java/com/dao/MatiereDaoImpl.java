@@ -188,15 +188,21 @@ public class MatiereDaoImpl implements MatiereDao {
 		PreparedStatement preparedStmt = null;
 		
 		try {
+			
+			
 			connexion = daoFactory.getConnection();
 			statement = connexion.createStatement();
-			preparedStmt = connexion.prepareStatement("INSERT INTO Matiere(id, designation, effectif, departement, id_Professeur, id_UE) VALUES (?,?,?,?,?,?)");
-			preparedStmt.setInt(1, matiere.getId());
-			preparedStmt.setString(2, matiere.getDesignation());
-			preparedStmt.setInt(3, matiere.getEffectif());
-			preparedStmt.setString(4, matiere.getDepartement());
-			preparedStmt.setInt(5, matiere.getResponsable().getId());
-			preparedStmt.setInt(6, matiere.getUe().getId());
+			preparedStmt = connexion.prepareStatement("INSERT INTO Matiere(designation, effectif, departement, id_Professeur, id_UE) VALUES (?,?,?,?,?)");
+			preparedStmt.setString(1, matiere.getDesignation());
+			preparedStmt.setInt(2, matiere.getEffectif());
+			preparedStmt.setString(3, matiere.getDepartement());
+			preparedStmt.setInt(4, matiere.getResponsable().getId());
+			if(matiere.getUe()!=null) {
+				preparedStmt.setInt(5, matiere.getUe().getId());
+			}else {
+				preparedStmt.setString(5, null);
+			}
+			
 			preparedStmt.executeQuery();
 	
 		} catch (SQLException e) {

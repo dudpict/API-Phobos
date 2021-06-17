@@ -456,11 +456,8 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 			preparedStmt.setString(1, id);
 			resultat=preparedStmt.executeQuery();
 			while(resultat.next()) {
-				res=true;
-				
-			}
-			
-			
+				res=true;				
+			}			
 		}catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
@@ -469,6 +466,31 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 		return res;
 	}
 	
+	@Override
+	public Professeur getProfByPersonneId(String id) {
+		Professeur prof = null;
+		Connection connexion = null;
+		PreparedStatement preparedStmt = null;
+		ResultSet resultat = null;
+		
+		try {
+			connexion=daoFactory.getConnection();
+			preparedStmt=connexion.prepareStatement("SELECT * FROM Professeur WHERE id_Personne = ? ") ;
+			preparedStmt.setString(1, id);
+			resultat=preparedStmt.executeQuery();
+			while(resultat.next()) {
+				String idProf = resultat.getString("id");
+				prof = getProfesseurById(idProf);
+			}			
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			daoFactory.close(connexion, null, preparedStmt,null );
+		}
+		return prof;
+	}
+	
+	@Override
 	public int getIdProf(String idPers) {
 		Connection connexion = null;
 		Statement statement = null;

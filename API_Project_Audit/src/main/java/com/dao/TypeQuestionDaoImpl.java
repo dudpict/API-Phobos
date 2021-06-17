@@ -54,35 +54,6 @@ public class TypeQuestionDaoImpl implements TypeQuestionDao {
 	}
 
 	@Override
-	public TypeQuestion getTypeQuestionById(int typeQuestionID) {
-		Connection connexion = null;
-		Statement statement = null;
-		ResultSet resultat = null;
-		TypeQuestion typeQuestion = new TypeQuestion();
-
-		try {
-			connexion = daoFactory.getConnection();
-			statement = connexion.createStatement();
-			resultat = statement.executeQuery("SELECT * FROM typeQuestion WHERE id=" + typeQuestionID + ";");
-			connexion.close();
-
-			while (resultat.next()) {
-				int id = resultat.getInt(sqlParamTypeQuestion[0]);
-				String designation = resultat.getString(sqlParamTypeQuestion[1]);
-
-				typeQuestion.setId(id);
-				typeQuestion.setDesignation(designation);
-
-			}
-		} catch (SQLException e) {
-			logger.log(Level.INFO, "sql problem getTypeQuestionById", e);
-		}finally {
-			daoFactory.close(connexion,statement,null,resultat);	
-		}
-		return typeQuestion;
-	}
-
-	@Override
 	public void deleteTypeQuestion(String id) {
 		Connection connexion = null;
 		PreparedStatement preparedStmt = null;
@@ -93,7 +64,6 @@ public class TypeQuestionDaoImpl implements TypeQuestionDao {
 			preparedStmt = connexion.prepareStatement(requete);
 			preparedStmt.setString(1, id);
 			preparedStmt.execute();
-			connexion.close();
 		} catch (SQLException e) {
 			logger.log(Level.INFO, "sql problem deleteTypeQuestion", e);
 		}finally {
@@ -106,26 +76,26 @@ public class TypeQuestionDaoImpl implements TypeQuestionDao {
 		Connection connexion = null;
 		Statement statement = null;
 		ResultSet resultat = null;
-		TypeQuestion typeQuestion = new TypeQuestion();
+		PreparedStatement preparedStatement = null;
+		TypeQuestion typeQuestion = null;
 
 		try {
 			connexion = daoFactory.getConnection();
 			statement = connexion.createStatement();
-			resultat = statement.executeQuery("SELECT * FROM typeQuestion WHERE id=" + id + ";");
-			connexion.close();
-
+			preparedStatement = connexion.prepareStatement("SELECT * FROM typeQuestion WHERE id=? ;");
+			preparedStatement.setString(1, id);
+			resultat = preparedStatement.executeQuery();
 			while (resultat.next()) {
 				int id2 = resultat.getInt(sqlParamTypeQuestion[0]);
 				String designation = resultat.getString(sqlParamTypeQuestion[1]);
 				
-				typeQuestion.setId(id2);
-				typeQuestion.setDesignation(designation);
+				typeQuestion = new TypeQuestion (id2,designation);
 
 			}
 		} catch (SQLException e) {
 			logger.log(Level.INFO, "sql problem getTypeQuestionById", e);
 		}finally {
-			daoFactory.close(connexion,statement,null,resultat);	
+			daoFactory.close(connexion,statement,preparedStatement,resultat);	
 		}
 		return typeQuestion;
 	}

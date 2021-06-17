@@ -28,30 +28,19 @@ public class PhobosControllerRole {
 		roledao.addRoleProfesseur(idProf, idRole, idRef);
 	}
 	
-	@PostMapping(value = "/updateRoleProfesseur")
-	@ResponseBody
-	public void appelPostupdateRoleProfesseur(@RequestParam(required = true, value = "idProf") String idProf,
-										@RequestParam(required = true, value = "idRole") String idRole,
-										@RequestParam(required = true, value = "newIdRole") String newIdRole,
-										@RequestParam(required = false, value = "idRef") String idRef) {
-
-		logger.log(Level.INFO, "appelPostupdateRoleProfesseur");
-		DaoFactory fact = new DaoFactory();
-		RoleDao roledao = fact.getRoleDao();
-		roledao.updateRoleProfesseur(idProf, idRole, newIdRole, idRef);
-	}
-	
 	@DeleteMapping(value = "/deleteRoleProfesseur")
 	@ResponseBody
 	public void appelDELETEdeleteRoleProfesseur(@RequestParam(required = true, value = "idProf") String idProf,
-										@RequestParam(required = true, value = "idRole") String idRole) {
+										@RequestParam(required = true, value = "idRole") String idRole,
+										@RequestParam(required = false, value = "idRef") String idRef) {
 
 		logger.log(Level.INFO, "deleteRoleProfesseur");
 		DaoFactory fact = new DaoFactory();
 		RoleDao roledao = fact.getRoleDao();
 		
 		if(!idRole.equals(Integer.toString(3)) && !idRole.equals(Integer.toString(2)) && !idRole.equals(Integer.toString(4))){
-			roledao.deleteRoleProfesseur(idProf, idRole);
+			roledao.deleteRoleProfesseur(idProf, idRole,idRef);
+			
 		}
 	}
 

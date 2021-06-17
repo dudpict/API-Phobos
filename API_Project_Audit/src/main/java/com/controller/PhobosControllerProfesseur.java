@@ -73,6 +73,15 @@ public class PhobosControllerProfesseur {
 		return professeurDao.isProf(id);
 	}
 	
+	@GetMapping(value="/professeurByPersonneId")
+	@ResponseBody
+	public Professeur appelGetProfesseurByPersonneId(@RequestParam(required= true, value= "idPersonne") String idPersonne) {
+		logger.log(Level.INFO, "isProfesseurByPersonneId");
+		DaoFactory fact = new DaoFactory();
+		ProfesseurDao professeurDao = fact.getProfesseurDao();
+		return professeurDao.getProfByPersonneId(idPersonne);
+	}
+	
 	@GetMapping(value="/professeurId")
 	@ResponseBody
 	public int profId(@RequestParam(required=true, value="id") String idPers ) {
