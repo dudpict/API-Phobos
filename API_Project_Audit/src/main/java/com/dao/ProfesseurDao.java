@@ -20,6 +20,7 @@ public interface ProfesseurDao {
 	void removeProfesseurToJuryId(String idJury, String idProfesseur);
 	public Professeur getProfesseurByPersonneID(String idPersonne);
 	public List<RoleUtilisateur> getRoleProf ( String id);
+	public ArrayList<Professeur> getProfSansRole();
 	ArrayList<Professeur> professeurByAudit(String idAudit);
 	void addProfesseur(Professeur professeur);
 	public boolean isProf(String id);

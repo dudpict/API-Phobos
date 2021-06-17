@@ -61,6 +61,43 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 		}
 		return professeurs;
 	}
+	
+	@Override
+	public ArrayList<Professeur> getProfSansRole() {
+		ArrayList<Professeur> professeurs = new ArrayList<>();
+		Connection connexion = null;
+		Statement statement = null;
+		ResultSet resultat = null;
+
+		try {
+			connexion = daoFactory.getConnection();
+			statement = connexion.createStatement();
+			resultat = statement.executeQuery("SELECT * FROM Professeur p WHERE p.id NOT IN (SELECT id_Professeur FROM a_pour);");
+			connexion.close();
+
+			while (resultat.next()) {
+				String id = resultat.getString(sqlParamProfesseur[0]);
+				String bureau = resultat.getString(sqlParamProfesseur[1]);
+				int personneID = resultat.getInt(sqlParamProfesseur[2]);
+
+				// Récupére l'instance de Prsonne via l'id
+				PersonneDao personneDao = daoFactory.getPersonneDao();
+				Personne personne = personneDao.getPersonneById(personneID);
+
+				Professeur professeur = new Professeur();
+				professeur.setId(Integer.valueOf(id));
+				professeur.setBureau(bureau);
+				professeur.setPersonne(personne);
+				professeurs.add(professeur);
+
+			}
+		} catch (SQLException e) {
+			logger.log(Level.INFO, "sql problem getPersonneByMail", e);
+		}finally {
+			daoFactory.close(connexion,statement,null,resultat);	
+		}
+		return professeurs;
+	}
 
 	@Override
 	public Professeur getProfesseurById(String id) {		

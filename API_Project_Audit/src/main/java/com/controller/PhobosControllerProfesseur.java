@@ -101,6 +101,16 @@ public class PhobosControllerProfesseur {
 		
 	}
 	
+	@GetMapping(value= "/ProfesseurSansRole")
+	@ResponseBody
+	public List<Professeur> sansRoleProf () {
+		logger.log(Level.INFO, "roleProfesseur");
+		
+		DaoFactory fact = new DaoFactory();
+		ProfesseurDao professeurDao = fact.getProfesseurDao();
+		return professeurDao.getProfSansRole();
+	}
+	
 	@PostMapping(value = "/professeur")
 	@ResponseBody
 	public void appelPostprofesseur(@RequestBody Professeur professeur) {
