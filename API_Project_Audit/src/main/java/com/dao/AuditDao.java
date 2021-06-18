@@ -1,6 +1,7 @@
 package com.dao;
 
-import java.util.ArrayList;
+import java.util.List;
+
 import com.beans.Audit;
 
 public interface AuditDao {
@@ -15,9 +16,9 @@ public interface AuditDao {
 	void removeEquipeToAudit(String idAudit);
 	void addJuryToAudit(String idJury, String idAudit);
 	void removeJuryToAudit(String idAudit);
-	ArrayList<Audit> auditByEtudiantId(String idEtudiant);
-	ArrayList<Audit> auditByProfesseurId(String idProfesseur);
-	ArrayList<Audit> isPersonneIsInAudit(String idPersonne);
-	ArrayList<Audit> getFilteredAudits(String titre, String etat, String id, String role, String[] tablParamid);
+	List<Audit> auditByEtudiantId(String idEtudiant);
+	List<Audit> auditByProfesseurId(String idProfesseur);
+	List<Audit> isPersonneIsInAudit(String idPersonne);
+	List<Audit> getFilteredAudits(String titre, String etat, String id, String role, String[] tablParamid);
 	String[] returnParam(String matiereId, String lieuId, String ueId, String juryId);
 }

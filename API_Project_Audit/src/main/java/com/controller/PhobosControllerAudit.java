@@ -98,13 +98,7 @@ public class PhobosControllerAudit {
 		return auditDao.auditByProfesseurId(idProfesseur);
 	}
 
-	@DeleteMapping(value = "/deleteAudit")
-	@ResponseBody
-	public void appelDELETEaudit(@RequestParam(required = true, value = "id") String id) {
-		logger.log(Level.INFO, "Appel deleteAudit");
-		
-		auditBLO.deleteAudit(id);
-	}
+	
 
 	@PostMapping(value = "/dateLimiteAudits")
 	@ResponseBody
@@ -184,4 +178,12 @@ public class PhobosControllerAudit {
 		auditDao.removeJuryToAudit(idAudit);
 	}
 	
+	
+	@DeleteMapping(value = "/deleteAudit")
+	@ResponseBody
+	public void appelDELETEaudit(@RequestParam(required = true, value = "id") String id) {
+		logger.log(Level.INFO, "Appel deleteAudit");
+		
+		auditBLO.deleteAudit(id);
+	}
 }

@@ -33,7 +33,7 @@ public class AuditDaoImpl implements AuditDao {
 	}
 	
 	public List<Audit> getAudits(){
-		ArrayList<Audit> audits = new ArrayList<>();
+		List<Audit> audits = new ArrayList<>();
 		Connection connexion = null;
 		ResultSet resultat = null;
 		Statement statement = null;
@@ -92,10 +92,10 @@ public class AuditDaoImpl implements AuditDao {
 	}
 	
 	@Override
-	public ArrayList<Audit> isPersonneIsInAudit(String idPersonne){
+	public List<Audit> isPersonneIsInAudit(String idPersonne){
 		String idAudit ="-1";
 		
-		ArrayList<Audit> audits = new ArrayList<>();
+		List<Audit> audits = new ArrayList<>();
 		AuditDao auditDao =daoFactory.getAuditDao(); 
 		
 		Connection connexion = null;
@@ -129,8 +129,8 @@ public class AuditDaoImpl implements AuditDao {
 	}
 	
 	@Override
-	public ArrayList<Audit> auditByEtudiantId(String idEtudiant){
-		ArrayList<Audit> audits = new ArrayList<>();
+	public List<Audit> auditByEtudiantId(String idEtudiant){
+		List<Audit> audits = new ArrayList<>();
 		Connection connexion = null;
 		Statement statement = null;
 		PreparedStatement preparedStmt = null;
@@ -191,8 +191,8 @@ public class AuditDaoImpl implements AuditDao {
 	}
 
 	@Override
-	public ArrayList<Audit> auditByProfesseurId(String idProfesseur){
-		ArrayList<Audit> audits = new ArrayList<>();
+	public List<Audit> auditByProfesseurId(String idProfesseur){
+		List<Audit> audits = new ArrayList<>();
 		Connection connexion = null;
 		Statement statement = null;
 		PreparedStatement preparedStmt = null;
@@ -259,7 +259,7 @@ public class AuditDaoImpl implements AuditDao {
 		ResultSet resultat = null;
 		Statement statement = null;
 		PreparedStatement preparedStatement = null;
-		Audit audit = new Audit();
+		Audit audit = null;
 
 		try {
 			connexion = daoFactory.getConnection();
@@ -274,6 +274,7 @@ public class AuditDaoImpl implements AuditDao {
 				String matiereID = resultat.getString(sqlParamTable[4]);
 				String lieuID = resultat.getString(sqlParamTable[2]);
 				
+				audit = new Audit();
 				audit.setId(resultat.getInt(sqlParamAudit[0]));
 				audit.setDesignation(resultat.getString(sqlParamAudit[1]));
 				audit.setEtat(resultat.getString(sqlParamAudit[2]));
