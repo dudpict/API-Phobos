@@ -8,11 +8,11 @@ public interface ReponseDao {
 
 	Reponse getReponsesByQuestionId(String id);
 
-	void addReponse(String reponseLongue, int note, Boolean reponseCourte, String idQuestion);
+	void addReponse(String reponseLongue, int note, boolean reponseCourte, String idQuestion);
 
 	void deleteReponse(String id);
 
-	void updateReponse(int id, String reponseLongue, int note, Boolean reponseCourte, String idQuestion);
+	void updateReponse(int id, String reponseLongue, int note, boolean reponseCourte, String idQuestion);
 
 	
 	

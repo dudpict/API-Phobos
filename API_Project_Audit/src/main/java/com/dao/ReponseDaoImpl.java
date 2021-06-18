@@ -123,7 +123,7 @@ public class ReponseDaoImpl implements ReponseDao {
 	}
 	
 	@Override
-	public void addReponse (String reponseLongue, int note, Boolean reponseCourte, String idQuestion) {
+	public void addReponse (String reponseLongue, int note, boolean reponseCourte, String idQuestion) {
 		Connection connexion = null;
 		Statement statement = null;
 		PreparedStatement preparedStmt = null;
@@ -147,7 +147,7 @@ public class ReponseDaoImpl implements ReponseDao {
 	}
 	
 	@Override
-	public void updateReponse (int id, String reponseLongue, int note, Boolean reponseCourte, String idQuestion) {
+	public void updateReponse (int id, String reponseLongue, int note, boolean reponseCourte, String idQuestion) {
 		Connection connexion = null;
 		Statement statement = null;
 		PreparedStatement preparedStmt = null;

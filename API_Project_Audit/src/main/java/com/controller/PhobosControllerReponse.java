@@ -67,9 +67,9 @@ public class PhobosControllerReponse {
 	
 	@PostMapping(value = "/addReponse")
 	@ResponseBody
-	public void appelPOSTReponsesByQuestionIdBody(@RequestBody Reponse reponse) {
+	public void appelPOSTaddReponse(@RequestBody Reponse reponse) {
 			
-		logger.log(Level.INFO, "appelPOST_ReponsesByQuestionIdBody");
+		logger.log(Level.INFO, "appelPOST_addReponse");
 
 		DaoFactory fact = new DaoFactory();
 		ReponseDao reponseDao = fact.getReponseDao();

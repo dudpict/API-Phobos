@@ -2,7 +2,9 @@ package com.beans;
 
 public class ReponseMultiple {
 	private int id;
-	private String reponse;	
+	private String designation;	
+	private boolean cochee;
+	private Reponse reponse;
 	
 	/**
 	 * Constructeur d'une réponse de type reponseMultiple
@@ -13,7 +15,7 @@ public class ReponseMultiple {
 	}
 	
 	public ReponseMultiple(String reponse){
-		this.reponse=reponse;
+		this.designation=reponse;
 	}
 	
 	public int getId() {
@@ -24,11 +26,27 @@ public class ReponseMultiple {
 		this.id = id;
 	}
 
-	public String getReponse() {
+	public String getDesignation() {
+		return designation;
+	}
+
+	public void setDesignation(String designation) {
+		this.designation = designation;
+	}
+	
+	public boolean getCochee() {
+		return cochee;
+	}
+
+	public void setCochee(boolean cochee) {
+		this.cochee = cochee;
+	}
+	
+	public Reponse getReponse() {
 		return reponse;
 	}
 
-	public void setReponse(String reponse) {
+	public void setReponse(Reponse reponse) {
 		this.reponse = reponse;
 	}
 
