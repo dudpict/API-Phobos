@@ -64,6 +64,17 @@ public class PhobosControllerQuestion {
 		return questionDao.getQuestionByNom(designation);
 	}
 	
+	@PostMapping(value = "/questionByNomBody")
+	@ResponseBody
+	public Question appelGETquestionByNomBody(@RequestBody Question question) {
+		logger.log(Level.INFO, "appelGET_questionByNomBody");
+
+		DaoFactory fact = new DaoFactory();
+		QuestionDao questionDao = fact.getQuestionDao();
+		return questionDao.getQuestionByNom(question.getDesignation());
+	}
+	
+	
 	//APPEL POST 
 	
 	// INSERT d'une question
@@ -91,16 +102,6 @@ public class PhobosControllerQuestion {
 		DaoFactory fact = new DaoFactory();
 		QuestionDao questionDao = fact.getQuestionDao();
 		questionDao.updateQuestion(id, designation, intitule, reponse, idsection, idtypeQuestion);
-	}
-	
-	@GetMapping(value = "/questionByNomBody")
-	@ResponseBody
-	public Question appelGETquestionByNomBody(@RequestBody Question question) {
-		logger.log(Level.INFO, "appelGET_questionByNomBody");
-
-		DaoFactory fact = new DaoFactory();
-		QuestionDao questionDao = fact.getQuestionDao();
-		return questionDao.getQuestionByNom(question.getDesignation());
 	}
 	
 		
