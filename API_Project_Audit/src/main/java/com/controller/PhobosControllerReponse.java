@@ -65,6 +65,17 @@ public class PhobosControllerReponse {
 		reponseDao.addReponse(reponse.getReponseLongue(), reponse.getNote(), reponse.getReponseCourte(),reponse.getIdQuestion());
 	}
 	
+	@PostMapping(value = "/addReponseBody")
+	@ResponseBody
+	public void appelPOSTReponsesByQuestionIdBody(@RequestBody Reponse reponse) {
+			
+		logger.log(Level.INFO, "appelPOST_ReponsesByQuestionIdBody");
+
+		DaoFactory fact = new DaoFactory();
+		ReponseDao reponseDao = fact.getReponseDao();
+		reponseDao.addReponse(reponse.getReponseLongue(), reponse.getNote(), reponse.getReponseCourte(), Integer.toString(reponse.getIdQuestion()));
+	}
+	
 	@PostMapping(value = "/updateReponse")
 	@ResponseBody
 	public void appelPOSTupdateReponse(@RequestParam(required = true, value = "id") int id, 

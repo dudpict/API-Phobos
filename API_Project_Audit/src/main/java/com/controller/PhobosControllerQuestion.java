@@ -104,6 +104,16 @@ public class PhobosControllerQuestion {
 		questionDao.updateQuestion(id, designation, intitule, reponse, idsection, idtypeQuestion);
 	}
 	
+	@PostMapping(value = "/questionByNomBody")
+	@ResponseBody
+	public Question appelGETquestionByNomBody(@RequestBody Question question) {
+		logger.log(Level.INFO, "appelGET_questionByNomBody");
+
+		DaoFactory fact = new DaoFactory();
+		QuestionDao questionDao = fact.getQuestionDao();
+		return questionDao.getQuestionByNom(question.getDesignation());
+	}
+	
 		
 	//APPEL DELETE
 	

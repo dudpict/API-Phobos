@@ -186,7 +186,7 @@ public class QuestionDaoImpl implements QuestionDao {
 		Connection connexion = null;
 		Statement statement = null;
 		ResultSet resultat = null;
-		Question question = new Question();
+		Question question = null;
 		PreparedStatement preparedStmt = null;
 		try {
 			connexion = daoFactory.getConnection();
@@ -212,7 +212,7 @@ public class QuestionDaoImpl implements QuestionDao {
 				Section section = sectionDao.getSectionById(sectionID);
 
 				// Remplir les attributs
-
+				question = new Question();
 				question.setId(id2);
 				question.setDesignation(designation);
 				question.setIntitule(intitule);
