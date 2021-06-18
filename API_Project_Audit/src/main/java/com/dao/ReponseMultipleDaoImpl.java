@@ -42,7 +42,7 @@ public class ReponseMultipleDaoImpl implements ReponseMultipleDao {
 				int id = resultat.getInt("ID");				
 				ReponseMultiple reponseMultiple = new ReponseMultiple();
 				reponseMultiple.setId(id);
-				reponseMultiple.setReponse(resultat.getString("ReponseMultiple"));
+				reponseMultiple.setDesignation(resultat.getString("ReponseMultiple"));
 				reponsesMultiples.add(reponseMultiple);
 			}
 		} catch (SQLException e) {
@@ -56,7 +56,7 @@ public class ReponseMultipleDaoImpl implements ReponseMultipleDao {
 	}	
 	
 	@Override
-	public void addReponseMultiple(String reponse, String idQuestion, Boolean cochee ) {
+	public void addReponseMultiple(String reponse, String idQuestion, boolean cochee ) {
 		Connection connexion = null;
 		Statement statement = null;
 		PreparedStatement preparedStmt = null;
@@ -91,7 +91,7 @@ public class ReponseMultipleDaoImpl implements ReponseMultipleDao {
 	}
 	
 	@Override
-	public void updateReponseMultiple(String reponseMultiple, int id ) {
+	public void updateReponseMultiple(String reponseMultiple, String id, boolean cochee) {
 		Connection connexion = null;
 		Statement statement = null;
 		PreparedStatement preparedStmt = null;
@@ -103,7 +103,7 @@ public class ReponseMultipleDaoImpl implements ReponseMultipleDao {
 			statement = connexion.createStatement();
 			preparedStmt = connexion.prepareStatement("UPDATE ReponseMultiple SET ReponseMultiple=? WHERE ID=?;");
 			preparedStmt.setString(1, reponseMultiple);
-			preparedStmt.setInt(2, id);
+			preparedStmt.setString(2, id);
 			preparedStmt.executeQuery();
 		} catch (SQLException e) {
 			logger.log(Level.INFO, "sql problem", e);
