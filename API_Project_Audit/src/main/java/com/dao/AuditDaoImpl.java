@@ -351,10 +351,14 @@ public class AuditDaoImpl implements AuditDao {
 		Connection connexion = null;
 		PreparedStatement preparedStmt = null;
 		Statement statement = null;
+		
+		NotificationDao notifDao = daoFactory.getNotificationDao();
+		notifDao.deleteNotificationByIdAudit(id);
+		
 		try {
 			connexion = daoFactory.getConnection();
 			statement = connexion.createStatement();
-			String requete = "DELETE * FROM audit WHERE id=?";
+			String requete = "DELETE FROM Audit WHERE id=?";
 			preparedStmt = connexion.prepareStatement(requete);
 			preparedStmt.setString(1, id);
 			preparedStmt.execute();
@@ -366,7 +370,6 @@ public class AuditDaoImpl implements AuditDao {
 
 	}
 
-//
 	@Override
 	public void setHeureAudits(Audit audit) {
 		Connection connexion = null;
@@ -388,7 +391,6 @@ public class AuditDaoImpl implements AuditDao {
 			daoFactory.close(connexion,statement,preparedStatement,resultat);	
 		}
 	}
-	
 
 	@Override
 	public Audit updateAudit(Audit audit) {
@@ -427,8 +429,8 @@ public class AuditDaoImpl implements AuditDao {
 		return audit;
 		
 	}
-	@Override
 	
+	@Override	
 	public Audit setAuditDate(Audit audit) {
 		Connection connexion = null;
 		Statement statement = null;
@@ -450,9 +452,9 @@ public class AuditDaoImpl implements AuditDao {
 			daoFactory.close(connexion,statement,preparedStatement,resultat);	
 		}
 		
-		return audit;
-		
+		return audit;		
 	}
+	
 	@Override
 	public Audit setSemaineAudit(Audit audit) {
 		Connection connexion = null;
@@ -475,7 +477,6 @@ public class AuditDaoImpl implements AuditDao {
 		}
 		return audit;
 	}
-	
 	
 	@Override
 	public String[] returnParam(String matiereId,String lieuId,String ueId,String juryId) {
@@ -627,9 +628,7 @@ public class AuditDaoImpl implements AuditDao {
 		}
 		return audits;
 	}
-	
-	
-	
+
 	public String comparPreparStatemStr(String compare) {
 		if (compare!=null && !compare.equals("\"\"")) {
 			compare= "%"+compare+"%";
@@ -639,6 +638,7 @@ public class AuditDaoImpl implements AuditDao {
 		}
 		return compare;
 	}
+	
 	@Override
 	public void addEquipeToAudit(String idEquipe,String idAudit) {
 		
@@ -712,7 +712,7 @@ public class AuditDaoImpl implements AuditDao {
 		
 		Connection connexion = null;
 		Statement statement = null;
-		PreparedStatement preparedStmt = null;
+		PreparedStatement preparedStmt = null;		
 		
 		try {
 			connexion = daoFactory.getConnection();

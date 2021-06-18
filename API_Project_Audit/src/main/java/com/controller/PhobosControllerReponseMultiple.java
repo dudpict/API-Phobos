@@ -12,10 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.beans.Reponse;
 import com.beans.ReponseMultiple;
 import com.dao.DaoFactory;
-import com.dao.ReponseDao;
 import com.dao.ReponseMultipleDao;
 
 
@@ -35,18 +33,6 @@ public class PhobosControllerReponseMultiple {
 		return reponseMultipleDao.getReponseMultipleByIdReponse(id);
 	}
 	
-	@PostMapping(value = "/addReponseMultiple")
-	@ResponseBody
-	public void appelPOSTaddReponseMultiple(@RequestParam(required = true, value = "reponse") String reponse,
-												@RequestParam(required = true, value = "idQuestion") String idQuestion,
-												@RequestParam(required = true, value = "cochee") Boolean cochee) {
-
-		logger.log(Level.INFO, "appelPOST_addReponseMultiple");
-
-		DaoFactory fact = new DaoFactory();
-		ReponseMultipleDao reponseMultipleDao = fact.getReponseMultipleDao();
-		reponseMultipleDao.addReponseMultiple(reponse, idQuestion,cochee);
-	}
 	
 	@PostMapping(value = "/addReponseMultipleBody")
 	@ResponseBody
