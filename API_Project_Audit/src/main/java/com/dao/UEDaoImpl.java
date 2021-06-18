@@ -50,7 +50,7 @@ public class UEDaoImpl implements UEDao{
 				ues.add(ue);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.log(Level.INFO, "sql problem getUES", e);
 		}finally {
 			daoFactory.close(connexion,statement,preparedStatement,resultat);	
 		}
@@ -74,7 +74,7 @@ public class UEDaoImpl implements UEDao{
 			preparedStmt.executeQuery();
 	
 		} catch (SQLException e) {
-			logger.log(Level.INFO, "sql problem getUES", e);
+			logger.log(Level.INFO, "sql problem updateUeProfRef", e);
 
 		}finally {
 			daoFactory.close(connexion,statement,preparedStmt,resultat);			
@@ -125,7 +125,7 @@ public class UEDaoImpl implements UEDao{
 			preparedStmt.executeQuery();
 	
 		} catch (SQLException e) {
-			logger.log(Level.INFO, "sql problem addUe", e);
+			logger.log(Level.INFO, "sql problem deleteUe", e);
 
 		}finally {
 			daoFactory.close(connexion,statement,preparedStmt,resultat);			

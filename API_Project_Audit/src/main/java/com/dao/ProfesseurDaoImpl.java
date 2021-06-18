@@ -55,7 +55,7 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 
 			}
 		} catch (SQLException e) {
-			logger.log(Level.INFO, "sql problem getPersonneByMail", e);
+			logger.log(Level.INFO, "sql problem getProfesseurs", e);
 		}finally {
 			daoFactory.close(connexion,statement,null,resultat);	
 		}
@@ -92,7 +92,7 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 
 			}
 		} catch (SQLException e) {
-			logger.log(Level.INFO, "sql problem getPersonneByMail", e);
+			logger.log(Level.INFO, "sql problem getProfSansRole", e);
 		}finally {
 			daoFactory.close(connexion,statement,null,resultat);	
 		}
@@ -130,7 +130,7 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 
 			}
 		} catch (SQLException e) {
-			logger.log(Level.INFO, "sql problem getPersonneByMail", e);
+			logger.log(Level.INFO, "sql problem getProfesseurById", e);
 		}finally {
 			daoFactory.close(connexion,statement,preparedStmt,resultat);	
 		}
@@ -399,7 +399,7 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.log(Level.INFO, "sql problem getprofesseurByStr", e);
 		}finally {
 			fact.close(connexion,statement,preparedStmt,resultat);	
 		}
@@ -423,7 +423,7 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 			preparedStmt.executeQuery();
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.log(Level.INFO, "sql problem addProfesseurToJuryId", e);
 		}finally {
 			daoFactory.close(connexion,statement,preparedStmt,null);	
 		}
@@ -445,7 +445,7 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 			preparedStmt.executeQuery();
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.log(Level.INFO, "sql problem removeProfesseurToJuryId", e);
 		}finally {
 			daoFactory.close(connexion,statement,preparedStmt,null);	
 		}
@@ -473,7 +473,7 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 			}
 			
 		}catch (SQLException e) {
-			e.printStackTrace();
+			logger.log(Level.INFO, "sql problem getRoleProf", e);
 		}finally {
 			daoFactory.close(connexion, null, preparedStmt, resultat );
 		}
@@ -496,7 +496,7 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 				res=true;				
 			}			
 		}catch (SQLException e) {
-			e.printStackTrace();
+			logger.log(Level.INFO, "sql problem isProf", e);
 		}finally {
 			daoFactory.close(connexion, null, preparedStmt,null );
 		}
@@ -520,7 +520,7 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 				prof = getProfesseurById(idProf);
 			}			
 		}catch (SQLException e) {
-			e.printStackTrace();
+			logger.log(Level.INFO, "sql problem getProfByPersonneId", e);
 		}finally {
 			daoFactory.close(connexion, null, preparedStmt,null );
 		}
@@ -546,7 +546,7 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 			}
 		}
 		catch (SQLException e) {
-			e.printStackTrace();
+			logger.log(Level.INFO, "sql problem getIdProf", e);
 		}finally {
 			daoFactory.close(connexion, statement, preparedStatement,resultat );
 		}

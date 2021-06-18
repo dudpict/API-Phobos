@@ -381,7 +381,7 @@ public class EtudiantDaoImpl implements EtudiantDao {
 			}
 			
 		}catch (SQLException e) {
-			e.printStackTrace();
+			logger.log(Level.INFO, "sql problem getRoleEtudiant", e);
 		}finally {
 			daoFactory.close(connexion, statement, preparedStmt,null );
 		}
@@ -408,7 +408,7 @@ public class EtudiantDaoImpl implements EtudiantDao {
 			}
 		}
 		catch (SQLException e) {
-			e.printStackTrace();
+			logger.log(Level.INFO, "sql problem getIdEtudiant", e);
 		}finally {
 			daoFactory.close(connexion, statement, preparedStmt,resultat );
 		}
