@@ -93,9 +93,10 @@ public class OptionDaoImpl implements OptionDao {
 			preparedStmt = connexion.prepareStatement("SELECT * FROM options");
 			resultat = preparedStmt.executeQuery();
 			while (resultat.next()) {
+				
 				int id = resultat.getInt(sqlParamTable[0]);
-				int idProfesseur = resultat.getInt(sqlParamTable[2]);
 				String designation = resultat.getString(sqlParamTable[1]);
+				int idProfesseur = resultat.getInt(sqlParamTable[2]);				
 				option = new Option(id,idProfesseur,designation);	
 				optionList.add(option);
 			}
@@ -122,13 +123,16 @@ public class OptionDaoImpl implements OptionDao {
 		try {
 			connexion = daoFactory.getConnection();
 			statement = connexion.createStatement();
+			
 			preparedStmt = connexion.prepareStatement("SELECT * FROM options WHERE id_Professeur=?");
 			preparedStmt.setInt(1, idProfRef);
 			resultat = preparedStmt.executeQuery();
+			
 			while (resultat.next()) {
+				String designation = resultat.getString(sqlParamTable[1]);
 				int id = resultat.getInt(sqlParamTable[0]);
 				int idProfesseur = resultat.getInt(sqlParamTable[2]);
-				String designation = resultat.getString(sqlParamTable[1]);
+				
 				option = new Option(id,idProfesseur,designation);	
 				optionList.add(option);
 			}
