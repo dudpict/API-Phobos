@@ -142,13 +142,15 @@ public class QuestionDaoImpl implements QuestionDao {
 		Connection connexion = null;
 		Statement statement = null;
 		ResultSet resultat = null;
+		PreparedStatement preparedStatement = null;
 		Question question = new Question();
 
 		try {
 			connexion = daoFactory.getConnection();
 			statement = connexion.createStatement();
-			resultat = statement.executeQuery("SELECT * FROM question WHERE id=" + id + ";");
-			connexion.close();
+			preparedStatement = connexion.prepareStatement("SELECT * FROM question WHERE id=? ;");
+			preparedStatement.setString(1, id);
+			resultat = preparedStatement.executeQuery();
 
 			while (resultat.next()) {
 				int id2 = resultat.getInt(sqlParamQuestionr[0]);
@@ -176,7 +178,7 @@ public class QuestionDaoImpl implements QuestionDao {
 		}catch (SQLException e) {			
 			logger.log(Level.INFO, "sql problem getQuestionById", e);
 		}finally {
-			daoFactory.close(connexion,statement,null,resultat);			
+			daoFactory.close(connexion,statement,preparedStatement,resultat);			
 		}
 		return question;
 	}

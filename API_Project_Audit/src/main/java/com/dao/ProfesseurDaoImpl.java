@@ -532,11 +532,15 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 		Connection connexion = null;
 		Statement statement = null;
 		ResultSet resultat = null;
+		PreparedStatement preparedStatement = null;
 		int id= 0;
 		try {
 			connexion = daoFactory.getConnection();
-			statement=connexion.createStatement();
-			resultat=statement.executeQuery("SELECT id FROM Professeur WHERE id_Personne ="+idPers);
+			statement = connexion.createStatement();
+			preparedStatement = connexion.prepareStatement("SELECT id FROM Professeur WHERE id_Personne=? ;");
+			preparedStatement.setString(1, idPers);
+			resultat = preparedStatement.executeQuery();			
+		
 			while(resultat.next()) {
 				id = resultat.getInt("id");
 			}
@@ -544,7 +548,7 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 		catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
-			daoFactory.close(connexion, statement, null,null );
+			daoFactory.close(connexion, statement, preparedStatement,resultat );
 		}
 		return id;
 	}

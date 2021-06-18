@@ -85,13 +85,16 @@ public class SectionDaoImpl implements SectionDao {
 		Connection connexion = null;
 		Statement statement = null;
 		ResultSet resultat = null;
+		PreparedStatement preparedStatement = null;
 		Section section = new Section();
 
 		try {
 			connexion = daoFactory.getConnection();
 			statement = connexion.createStatement();
-			resultat = statement.executeQuery("SELECT * FROM section WHERE id=" + sectionID + ";");
-			connexion.close();
+			preparedStatement = connexion.prepareStatement("SELECT * FROM section WHERE id=? ;");
+			preparedStatement.setInt(1, sectionID);
+			resultat = preparedStatement.executeQuery();
+			
 			while (resultat.next()) {
 				int id = resultat.getInt(sqlParamPersonne[0]);
 				String designation = resultat.getString(sqlParamPersonne[1]);
@@ -108,7 +111,7 @@ public class SectionDaoImpl implements SectionDao {
 		}  catch (SQLException e) {
 			logger.log(Level.INFO, "sql problem deleteSection", e);
 		}finally {
-			daoFactory.close(connexion,statement,null,resultat);	
+			daoFactory.close(connexion,statement,preparedStatement,resultat);	
 		}
 		return section;
 	}

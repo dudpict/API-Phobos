@@ -29,11 +29,15 @@ public class PersonneDaoImpl implements PersonneDao {
         Connection connexion = null;
         Statement statement = null;
         ResultSet resultat = null;
+        PreparedStatement preparedStmt= null;
 
         try {
-            connexion = daoFactory.getConnection();
-            statement = connexion.createStatement();
-            resultat = statement.executeQuery("SELECT * FROM Personne WHERE role LIKE '"+role+"%';");
+        	
+        	connexion = daoFactory.getConnection();
+			statement = connexion.createStatement();
+			preparedStmt = connexion.prepareStatement("SELECT * FROM Personne WHERE role LIKE ?;");
+			preparedStmt.setString(1,role );
+			resultat=preparedStmt.executeQuery();
 
             while (resultat.next()) {
             	String id = resultat.getString(sqlParamPersonne[0]);
@@ -52,9 +56,9 @@ public class PersonneDaoImpl implements PersonneDao {
                 personnes.add(personne);
             }
         } catch (SQLException e) {
-			logger.log(Level.INFO, "sql problem getPersonneByMail", e);
+			logger.log(Level.INFO, "sql problem getPersonnes", e);
 		}finally {
-			daoFactory.close(connexion,statement,null,resultat);	
+			daoFactory.close(connexion,statement,preparedStmt,resultat);	
 		}
         return (ArrayList<Personne>) personnes;
     }
@@ -64,16 +68,17 @@ public class PersonneDaoImpl implements PersonneDao {
     	Connection connexion = null;
         Statement statement = null;
         ResultSet resultat = null;
+        PreparedStatement preparedStmt= null;
         Personne personne=new Personne();
         
         
         try {
-            connexion = daoFactory.getConnection();
-            statement = connexion.createStatement();
-            resultat = statement.executeQuery("SELECT * FROM Personne WHERE id="+id+";");
-            
-            connexion.close();
-
+        	connexion = daoFactory.getConnection();
+			statement = connexion.createStatement();
+			preparedStmt = connexion.prepareStatement("SELECT * FROM Personne WHERE id=?;");
+			preparedStmt.setInt(1,id );
+			resultat=preparedStmt.executeQuery();
+        	
             while (resultat.next()) {
             	String id2 = resultat.getString(sqlParamPersonne[0]);
                 String nom = resultat.getString(sqlParamPersonne[1]);
@@ -91,7 +96,7 @@ public class PersonneDaoImpl implements PersonneDao {
         }catch (SQLException e) {
 			logger.log(Level.INFO, "sql problem getPersonneById", e);
 		}finally {
-			daoFactory.close(connexion,statement,null,resultat);	
+			daoFactory.close(connexion,statement,preparedStmt,resultat);	
 		}
         return personne;
     }
