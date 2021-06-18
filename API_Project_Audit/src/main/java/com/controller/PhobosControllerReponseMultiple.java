@@ -48,9 +48,9 @@ public class PhobosControllerReponseMultiple {
 		reponseMultipleDao.addReponseMultiple(reponse, idQuestion,cochee);
 	}
 	
-	@PostMapping(value = "/addReponseMultiple")
+	@PostMapping(value = "/addReponseMultipleBody")
 	@ResponseBody
-	public void appelPOSTaddReponsesMultiple(@RequestBody ReponseMultiple reponseMultiple) {
+	public void appelPOSTaddReponsesMultipleBody(@RequestBody ReponseMultiple reponseMultiple) {
 			
 		logger.log(Level.INFO, "appelPOST_ReponsesMultipleByReponseIdBody");
 
