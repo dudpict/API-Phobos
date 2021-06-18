@@ -11,10 +11,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.beans.Reponse;
-import com.beans.Section;
 import com.dao.DaoFactory;
 import com.dao.ReponseDao;
-import com.dao.SectionDao;
 
 
 @RestController
