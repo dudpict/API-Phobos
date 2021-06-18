@@ -40,7 +40,7 @@ public class PhobosControllerReponse {
 		return reponseDao.getReponsesByQuestionId(id);
 	}
 	
-	/*@PostMapping(value = "/addReponse")
+	@PostMapping(value = "/addReponse")
 	@ResponseBody
 	public void appelPOSTaddReponse(@RequestParam(required = true, value = "ReponseLongue") String reponseLongue,
 												@RequestParam(required = true, value = "Note") int note,
@@ -52,16 +52,16 @@ public class PhobosControllerReponse {
 		DaoFactory fact = new DaoFactory();
 		ReponseDao reponseDao = fact.getReponseDao();
 		reponseDao.addReponse(reponseLongue, note, reponseCourte, idQuestion);
-	}*/
+	}
 	
-	/*@PostMapping(value = "/addReponse")
+	@PostMapping(value = "/addReponse")
 	@ResponseBody
 	public void appelPostReponseaddReponse(@RequestBody Reponse reponse) {
 		logger.log(Level.INFO, "appelPost_reponse_addReponse");
 		DaoFactory fact = new DaoFactory();
 		ReponseDao reponseDao = fact.getReponseDao();
-		reponseDao.addReponse(reponse.getReponseLongue(), reponse.getNote(), reponse.getReponseCourte(),reponse.getIdQuestion());
-	}*/
+		reponseDao.addReponse(reponse.getReponseLongue(), reponse.getNote(), reponse.getReponseCourte(), Integer.toString(reponse.getIdQuestion()));
+	}
 	
 	@PostMapping(value = "/addReponse")
 	@ResponseBody
