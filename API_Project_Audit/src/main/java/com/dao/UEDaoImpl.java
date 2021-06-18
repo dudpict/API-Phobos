@@ -24,7 +24,7 @@ public class UEDaoImpl implements UEDao{
 		this.daoFactory = daoFactory;
 	}
 	
-	public ArrayList<UE> getUES(){
+	public List<UE> getUES(){
 		Connection connexion = null;
 		Statement statement = null;
 		PreparedStatement preparedStatement = null;
@@ -190,11 +190,11 @@ public class UEDaoImpl implements UEDao{
 			resultat = preparedStmt.executeQuery();
 			
 			while (resultat.next()) {
-				int id = resultat.getInt(sqlParamPersonne[0]);
-				String designation = resultat.getString(sqlParamPersonne[1]);
-				String departement = resultat.getString(sqlParamPersonne[2]);
-				Professeur responsable = daoFactory.getProfesseurDao().getProfesseurById(resultat.getString(sqlParamPersonne[3])) ;
 				Option option = daoFactory.getOptionDao().getOptionById(resultat.getString(sqlParamPersonne[4]));
+				int id = resultat.getInt(sqlParamPersonne[0]);
+				Professeur responsable = daoFactory.getProfesseurDao().getProfesseurById(resultat.getString(sqlParamPersonne[3])) ;
+				String designation = resultat.getString(sqlParamPersonne[1]);
+				String departement = resultat.getString(sqlParamPersonne[2]);		
 				
 				ue = new UE(id,designation,departement);
 				ue.setOption(option);
