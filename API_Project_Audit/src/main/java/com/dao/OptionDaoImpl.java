@@ -113,12 +113,14 @@ public class OptionDaoImpl implements OptionDao {
 	
 	@Override
 	public List<Option> getOptionByIdProfRef(int idProfRef) {
+		Option option = null;
+		List<Option> optionList = new ArrayList<>();
+		
 		Connection connexion = null;
 		Statement statement = null;
 		ResultSet resultat = null;
 		PreparedStatement preparedStmt = null;
-		Option option = null;
-		List<Option> optionList = new ArrayList<>();
+		
 
 		try {
 			connexion = daoFactory.getConnection();

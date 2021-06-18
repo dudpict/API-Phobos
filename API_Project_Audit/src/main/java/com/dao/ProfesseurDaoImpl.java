@@ -40,17 +40,20 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 
 			while (resultat.next()) {
 				String id = resultat.getString(sqlParamProfesseur[0]);
-				String bureau = resultat.getString(sqlParamProfesseur[1]);
 				int personneID = resultat.getInt(sqlParamProfesseur[2]);
-
-				// Récupére l'instance de Prsonne via l'id
+				String bureau = resultat.getString(sqlParamProfesseur[1]);
+				
+				Professeur professeur = new Professeur();
+				
 				PersonneDao personneDao = daoFactory.getPersonneDao();
 				Personne personne = personneDao.getPersonneById(personneID);
 
-				Professeur professeur = new Professeur();
+				
 				professeur.setId(Integer.valueOf(id));
-				professeur.setBureau(bureau);
+				
 				professeur.setPersonne(personne);
+				
+				professeur.setBureau(bureau);
 				professeurs.add(professeur);
 
 			}
@@ -76,6 +79,9 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 			connexion.close();
 
 			while (resultat.next()) {
+				Professeur professeur = new Professeur();
+				
+				
 				String id = resultat.getString(sqlParamProfesseur[0]);
 				String bureau = resultat.getString(sqlParamProfesseur[1]);
 				int personneID = resultat.getInt(sqlParamProfesseur[2]);
@@ -83,10 +89,10 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 				// Récupére l'instance de Prsonne via l'id
 				PersonneDao personneDao = daoFactory.getPersonneDao();
 				Personne personne = personneDao.getPersonneById(personneID);
-
-				Professeur professeur = new Professeur();
-				professeur.setId(Integer.valueOf(id));
 				professeur.setBureau(bureau);
+				
+				professeur.setId(Integer.valueOf(id));
+				
 				professeur.setPersonne(personne);
 				professeurs.add(professeur);
 
@@ -116,12 +122,14 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 			resultat = preparedStmt.executeQuery();
 			
 			while (resultat.next()) {
+				// Récupére l'instance de Prsonne via l'id
+				PersonneDao personneDao = daoFactory.getPersonneDao();
+				
+				
 				String id2 = resultat.getString(sqlParamProfesseur[0]);
 				String bureau = resultat.getString(sqlParamProfesseur[1]);
 				int personneID = resultat.getInt(sqlParamProfesseur[2]);
 
-				// Récupére l'instance de Prsonne via l'id
-				PersonneDao personneDao = daoFactory.getPersonneDao();
 				Personne personne = personneDao.getPersonneById(personneID);
 
 				professeur.setId(Integer.valueOf(id2));
@@ -232,18 +240,17 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 			resultat = preparedStmt.executeQuery();
 			
 			while (resultat.next()) {
-				String id = resultat.getString(sqlParamProfesseur[0]);
-				String bureau = resultat.getString(sqlParamProfesseur[1]);
-				int personneID = resultat.getInt(sqlParamProfesseur[2]);
-
-				// Récupére l'instance de Prsonne via l'id
 				PersonneDao personneDao = daoFactory.getPersonneDao();
+				String id = resultat.getString(sqlParamProfesseur[0]);				
+				int personneID = resultat.getInt(sqlParamProfesseur[2]);
+				String bureau = resultat.getString(sqlParamProfesseur[1]);				
 				Personne personne = personneDao.getPersonneById(personneID);
 
 				Professeur professeur = new Professeur();
+				professeur.setPersonne(personne);
 				professeur.setId(Integer.valueOf(id));
 				professeur.setBureau(bureau);
-				professeur.setPersonne(personne);
+				
 				professeurs.add(professeur);
 			}
 		} catch (SQLException e) {
@@ -265,8 +272,8 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 		PreparedStatement preparedStmt = null;
 		try {
 			connexion = daoFactory.getConnection();
-			String requete = "DELETE FROM Professeur WHERE id=?";
-			preparedStmt = connexion.prepareStatement(requete);
+			preparedStmt = connexion.prepareStatement("DELETE FROM Professeur WHERE id=?");
+			
 			preparedStmt.setString(1, id);
 			preparedStmt.execute();
 		} catch (SQLException e) {
@@ -383,18 +390,19 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 			connexion.close();
 
 			while (resultat.next()) {
-				String id = resultat.getString(sqlParamProfesseur[0]);
-				String bureau = resultat.getString(sqlParamProfesseur[1]);
-				int personneID = resultat.getInt(sqlParamProfesseur[2]);
-
-				// Récupére l'instance de Prsonne via l'id
 				PersonneDao personneDao = daoFactory.getPersonneDao();
+				String id = resultat.getString(sqlParamProfesseur[0]);
+				int personneID = resultat.getInt(sqlParamProfesseur[2]);
+				String bureau = resultat.getString(sqlParamProfesseur[1]);
+				
+
+				
 				Personne personne = personneDao.getPersonneById(personneID);
 
-				Professeur professeur = new Professeur();
-				professeur.setId(Integer.valueOf(id));
+				Professeur professeur = new Professeur();				
 				professeur.setBureau(bureau);
 				professeur.setPersonne(personne);
+				professeur.setId(Integer.valueOf(id));
 				professeurs.add(professeur);
 
 			}
