@@ -93,7 +93,7 @@ public class PhobosControllerQuestion {
 		questionDao.updateQuestion(id, designation, intitule, reponse, idsection, idtypeQuestion);
 	}
 	
-	@GetMapping(value = "/questionByNomBody")
+	@PostMapping(value = "/questionByNomBody")
 	@ResponseBody
 	public Question appelGETquestionByNomBody(@RequestBody Question question) {
 		logger.log(Level.INFO, "appelGET_questionByNomBody");

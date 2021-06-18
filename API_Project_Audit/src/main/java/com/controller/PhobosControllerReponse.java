@@ -5,6 +5,7 @@ import org.apache.log4j.Logger;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -51,6 +52,17 @@ public class PhobosControllerReponse {
 		DaoFactory fact = new DaoFactory();
 		ReponseDao reponseDao = fact.getReponseDao();
 		reponseDao.addReponse(reponseLongue, note, reponseCourte, idQuestion);
+	}
+	
+	@PostMapping(value = "/addReponseBody")
+	@ResponseBody
+	public void appelPOSTReponsesByQuestionIdBody(@RequestBody Reponse reponse) {
+			
+		logger.log(Level.INFO, "appelPOST_ReponsesByQuestionIdBody");
+
+		DaoFactory fact = new DaoFactory();
+		ReponseDao reponseDao = fact.getReponseDao();
+		reponseDao.addReponse(reponse.getReponseLongue(), reponse.getNote(), reponse.getReponseCourte(), Integer.toString(reponse.getIdQuestion()));
 	}
 	
 	@PostMapping(value = "/updateReponse")

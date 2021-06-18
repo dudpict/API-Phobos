@@ -272,7 +272,7 @@ public class NotificationDaoImpl implements NotificationDao {
 		try {
 			connexion = daoFactory.getConnection();
 			statement = connexion.createStatement();
-			preparedStatement = connexion.prepareStatement("DELETE FROM Notification WHERE id =?;");
+			preparedStatement = connexion.prepareStatement("DELETE FROM Notification WHERE id=?;");
 			preparedStatement.setString(1, id);
 			preparedStatement.executeQuery();
 		} catch (SQLException e) {
