@@ -78,16 +78,12 @@ public class PhobosControllerReponse {
 	
 	@PostMapping(value = "/updateReponse")
 	@ResponseBody
-	public void appelPOSTupdateReponse(@RequestParam(required = true, value = "id") int id, 
-										@RequestParam(required = false, value = "ReponseLongue") String reponseLongue, 
-										@RequestParam(required = false, value = "note") int note, 
-										@RequestParam(required = false, value = "ReponseCourte") Boolean reponseCourte, 
-										@RequestParam(required = false, value = "idQuestion") int idQuestion) {
+	public void appelPOSTupdateReponse(@RequestBody Reponse reponse) {
 		logger.log(Level.INFO, "appelPOST_updateReponse");
 
 		DaoFactory fact = new DaoFactory();
 		ReponseDao reponseDao = fact.getReponseDao();
-		reponseDao.updateReponse(id, reponseLongue, note, reponseCourte, idQuestion);
+		reponseDao.updateReponse(reponse.getId(), reponse.getReponseLongue(), reponse.getNote(), reponse.getReponseCourte(), Integer.toString(reponse.getIdQuestion()));
 	}
 	
 	@DeleteMapping(value = "/deleteReponse")

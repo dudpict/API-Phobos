@@ -12,7 +12,7 @@ public interface ReponseDao {
 
 	void deleteReponse(String id);
 
-	void updateReponse(int id, String reponseLongue, int note, Boolean reponseCourte, int idQuestion);
+	void updateReponse(int id, String reponseLongue, int note, Boolean reponseCourte, String idQuestion);
 
 	
 	

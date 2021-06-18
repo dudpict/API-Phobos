@@ -147,7 +147,7 @@ public class ReponseDaoImpl implements ReponseDao {
 	}
 	
 	@Override
-	public void updateReponse (int id,String reponseLongue, int note, Boolean reponseCourte, int idQuestion) {
+	public void updateReponse (int id, String reponseLongue, int note, Boolean reponseCourte, String idQuestion) {
 		Connection connexion = null;
 		Statement statement = null;
 		PreparedStatement preparedStmt = null;
@@ -161,7 +161,7 @@ public class ReponseDaoImpl implements ReponseDao {
 			preparedStmt.setString(1, reponseLongue);
 			preparedStmt.setInt(2, note);
 			preparedStmt.setBoolean(3, reponseCourte);
-			preparedStmt.setInt(4, idQuestion);
+			preparedStmt.setString(4, idQuestion);
 			preparedStmt.setInt(5,id);
 			preparedStmt.executeQuery();
 			
