@@ -5,13 +5,16 @@ import org.apache.log4j.Logger;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.beans.Reponse;
+import com.beans.Section;
 import com.dao.DaoFactory;
 import com.dao.ReponseDao;
+import com.dao.SectionDao;
 
 
 @RestController
@@ -39,7 +42,7 @@ public class PhobosControllerReponse {
 		return reponseDao.getReponsesByQuestionId(id);
 	}
 	
-	@PostMapping(value = "/addReponse")
+	/*@PostMapping(value = "/addReponse")
 	@ResponseBody
 	public void appelPOSTaddReponse(@RequestParam(required = true, value = "ReponseLongue") String reponseLongue,
 												@RequestParam(required = true, value = "Note") int note,
@@ -51,6 +54,15 @@ public class PhobosControllerReponse {
 		DaoFactory fact = new DaoFactory();
 		ReponseDao reponseDao = fact.getReponseDao();
 		reponseDao.addReponse(reponseLongue, note, reponseCourte, idQuestion);
+	}*/
+	
+	@PostMapping(value = "/addReponse")
+	@ResponseBody
+	public void appelPostReponseaddReponse(@RequestBody Reponse reponse) {
+		logger.log(Level.INFO, "appelPost_reponse_addReponse");
+		DaoFactory fact = new DaoFactory();
+		ReponseDao reponseDao = fact.getReponseDao();
+		reponseDao.addReponse(reponse.getReponseLongue(), reponse.getNote(), reponse.getReponseCourte(),reponse.getIdQuestion());
 	}
 	
 	@PostMapping(value = "/updateReponse")
@@ -59,7 +71,7 @@ public class PhobosControllerReponse {
 										@RequestParam(required = false, value = "ReponseLongue") String reponseLongue, 
 										@RequestParam(required = false, value = "note") int note, 
 										@RequestParam(required = false, value = "ReponseCourte") Boolean reponseCourte, 
-										@RequestParam(required = false, value = "idQuestion") String idQuestion) {
+										@RequestParam(required = false, value = "idQuestion") int idQuestion) {
 		logger.log(Level.INFO, "appelPOST_updateReponse");
 
 		DaoFactory fact = new DaoFactory();
