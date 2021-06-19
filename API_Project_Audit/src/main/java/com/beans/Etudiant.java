@@ -2,15 +2,13 @@ package com.beans;
 
 public class Etudiant {
 	
-	private static int idCount = 0;
 	int id;
 	String promo;
 	String classe;
 	Personne personne;
 	
 	public Etudiant() {
-		this.id=idCount;
-		idCount++;
+		super();
 		}
 
 	public Etudiant(String promo, String classe,Personne personne) {

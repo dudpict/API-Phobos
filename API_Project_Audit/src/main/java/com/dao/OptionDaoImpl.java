@@ -17,7 +17,9 @@ public class OptionDaoImpl implements OptionDao {
 
 	private DaoFactory daoFactory;
 	private static final Logger logger = Logger.getLogger(OptionDaoImpl.class);
-
+	private String [] sqlParamTable = {"id","designation","id_Professeur"};
+	
+	
 	public OptionDaoImpl(DaoFactory daoFactory) {
 		this.daoFactory = daoFactory;
 	}
@@ -61,9 +63,9 @@ public class OptionDaoImpl implements OptionDao {
 			preparedStmt.setString(1, idOption);
 			resultat = preparedStmt.executeQuery();
 			while (resultat.next()) {
-				int id = resultat.getInt("id");
-				int idProfesseur = resultat.getInt("id_Professeur");
-				String designation = resultat.getString("designation");
+				int id = resultat.getInt(sqlParamTable[0]);
+				int idProfesseur = resultat.getInt(sqlParamTable[2]);
+				String designation = resultat.getString(sqlParamTable[1]);
 				option = new Option(id,idProfesseur,designation);				
 			}
 	
@@ -91,9 +93,10 @@ public class OptionDaoImpl implements OptionDao {
 			preparedStmt = connexion.prepareStatement("SELECT * FROM options");
 			resultat = preparedStmt.executeQuery();
 			while (resultat.next()) {
-				int id = resultat.getInt("id");
-				int idProfesseur = resultat.getInt("id_Professeur");
-				String designation = resultat.getString("designation");
+				
+				int id = resultat.getInt(sqlParamTable[0]);
+				String designation = resultat.getString(sqlParamTable[1]);
+				int idProfesseur = resultat.getInt(sqlParamTable[2]);				
 				option = new Option(id,idProfesseur,designation);	
 				optionList.add(option);
 			}
@@ -110,23 +113,28 @@ public class OptionDaoImpl implements OptionDao {
 	
 	@Override
 	public List<Option> getOptionByIdProfRef(int idProfRef) {
+		Option option = null;
+		List<Option> optionList = new ArrayList<>();
+		
 		Connection connexion = null;
 		Statement statement = null;
 		ResultSet resultat = null;
 		PreparedStatement preparedStmt = null;
-		Option option = null;
-		List<Option> optionList = new ArrayList<>();
+		
 
 		try {
 			connexion = daoFactory.getConnection();
 			statement = connexion.createStatement();
+			
 			preparedStmt = connexion.prepareStatement("SELECT * FROM options WHERE id_Professeur=?");
 			preparedStmt.setInt(1, idProfRef);
 			resultat = preparedStmt.executeQuery();
+			
 			while (resultat.next()) {
-				int id = resultat.getInt("id");
-				int idProfesseur = resultat.getInt("id_Professeur");
-				String designation = resultat.getString("designation");
+				String designation = resultat.getString(sqlParamTable[1]);
+				int id = resultat.getInt(sqlParamTable[0]);
+				int idProfesseur = resultat.getInt(sqlParamTable[2]);
+				
 				option = new Option(id,idProfesseur,designation);	
 				optionList.add(option);
 			}

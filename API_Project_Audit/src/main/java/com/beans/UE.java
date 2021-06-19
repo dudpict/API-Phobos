@@ -18,16 +18,16 @@ public class UE {
 		this.departement = departement;
 	}
 
-	public int getId() {
-		return id;
-	}
+	
 
-	public void setId(int id) {
-		this.id = id;
-	}
+	
 
 	public String getDesignation() {
 		return designation;
+	}
+	
+	public int getId() {
+		return id;
 	}
 
 	public void setDesignation(String designation) {
@@ -40,6 +40,10 @@ public class UE {
 
 	public void setDepartement(String departement) {
 		this.departement = departement;
+	}
+	
+	public void setId(int id) {
+		this.id = id;
 	}
 	
 	public Professeur getResponsable() {

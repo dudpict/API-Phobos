@@ -40,22 +40,25 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 
 			while (resultat.next()) {
 				String id = resultat.getString(sqlParamProfesseur[0]);
-				String bureau = resultat.getString(sqlParamProfesseur[1]);
 				int personneID = resultat.getInt(sqlParamProfesseur[2]);
-
-				// Récupére l'instance de Prsonne via l'id
+				String bureau = resultat.getString(sqlParamProfesseur[1]);
+				
+				Professeur professeur = new Professeur();
+				
 				PersonneDao personneDao = daoFactory.getPersonneDao();
 				Personne personne = personneDao.getPersonneById(personneID);
 
-				Professeur professeur = new Professeur();
+				
 				professeur.setId(Integer.valueOf(id));
-				professeur.setBureau(bureau);
+				
 				professeur.setPersonne(personne);
+				
+				professeur.setBureau(bureau);
 				professeurs.add(professeur);
 
 			}
 		} catch (SQLException e) {
-			logger.log(Level.INFO, "sql problem getPersonneByMail", e);
+			logger.log(Level.INFO, "sql problem getProfesseurs", e);
 		}finally {
 			daoFactory.close(connexion,statement,null,resultat);	
 		}
@@ -76,6 +79,9 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 			connexion.close();
 
 			while (resultat.next()) {
+				Professeur professeur = new Professeur();
+				
+				
 				String id = resultat.getString(sqlParamProfesseur[0]);
 				String bureau = resultat.getString(sqlParamProfesseur[1]);
 				int personneID = resultat.getInt(sqlParamProfesseur[2]);
@@ -83,16 +89,16 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 				// Récupére l'instance de Prsonne via l'id
 				PersonneDao personneDao = daoFactory.getPersonneDao();
 				Personne personne = personneDao.getPersonneById(personneID);
-
-				Professeur professeur = new Professeur();
-				professeur.setId(Integer.valueOf(id));
 				professeur.setBureau(bureau);
+				
+				professeur.setId(Integer.valueOf(id));
+				
 				professeur.setPersonne(personne);
 				professeurs.add(professeur);
 
 			}
 		} catch (SQLException e) {
-			logger.log(Level.INFO, "sql problem getPersonneByMail", e);
+			logger.log(Level.INFO, "sql problem getProfSansRole", e);
 		}finally {
 			daoFactory.close(connexion,statement,null,resultat);	
 		}
@@ -116,12 +122,14 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 			resultat = preparedStmt.executeQuery();
 			
 			while (resultat.next()) {
+				// Récupére l'instance de Prsonne via l'id
+				PersonneDao personneDao = daoFactory.getPersonneDao();
+				
+				
 				String id2 = resultat.getString(sqlParamProfesseur[0]);
 				String bureau = resultat.getString(sqlParamProfesseur[1]);
 				int personneID = resultat.getInt(sqlParamProfesseur[2]);
 
-				// Récupére l'instance de Prsonne via l'id
-				PersonneDao personneDao = daoFactory.getPersonneDao();
 				Personne personne = personneDao.getPersonneById(personneID);
 
 				professeur.setId(Integer.valueOf(id2));
@@ -130,7 +138,7 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 
 			}
 		} catch (SQLException e) {
-			logger.log(Level.INFO, "sql problem getPersonneByMail", e);
+			logger.log(Level.INFO, "sql problem getProfesseurById", e);
 		}finally {
 			daoFactory.close(connexion,statement,preparedStmt,resultat);	
 		}
@@ -232,18 +240,17 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 			resultat = preparedStmt.executeQuery();
 			
 			while (resultat.next()) {
-				String id = resultat.getString(sqlParamProfesseur[0]);
-				String bureau = resultat.getString(sqlParamProfesseur[1]);
-				int personneID = resultat.getInt(sqlParamProfesseur[2]);
-
-				// Récupére l'instance de Prsonne via l'id
 				PersonneDao personneDao = daoFactory.getPersonneDao();
+				String id = resultat.getString(sqlParamProfesseur[0]);				
+				int personneID = resultat.getInt(sqlParamProfesseur[2]);
+				String bureau = resultat.getString(sqlParamProfesseur[1]);				
 				Personne personne = personneDao.getPersonneById(personneID);
 
 				Professeur professeur = new Professeur();
+				professeur.setPersonne(personne);
 				professeur.setId(Integer.valueOf(id));
 				professeur.setBureau(bureau);
-				professeur.setPersonne(personne);
+				
 				professeurs.add(professeur);
 			}
 		} catch (SQLException e) {
@@ -265,8 +272,8 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 		PreparedStatement preparedStmt = null;
 		try {
 			connexion = daoFactory.getConnection();
-			String requete = "DELETE FROM Professeur WHERE id=?";
-			preparedStmt = connexion.prepareStatement(requete);
+			preparedStmt = connexion.prepareStatement("DELETE FROM Professeur WHERE id=?");
+			
 			preparedStmt.setString(1, id);
 			preparedStmt.execute();
 		} catch (SQLException e) {
@@ -383,23 +390,24 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 			connexion.close();
 
 			while (resultat.next()) {
-				String id = resultat.getString(sqlParamProfesseur[0]);
-				String bureau = resultat.getString(sqlParamProfesseur[1]);
-				int personneID = resultat.getInt(sqlParamProfesseur[2]);
-
-				// Récupére l'instance de Prsonne via l'id
 				PersonneDao personneDao = daoFactory.getPersonneDao();
+				String id = resultat.getString(sqlParamProfesseur[0]);
+				int personneID = resultat.getInt(sqlParamProfesseur[2]);
+				String bureau = resultat.getString(sqlParamProfesseur[1]);
+				
+
+				
 				Personne personne = personneDao.getPersonneById(personneID);
 
-				Professeur professeur = new Professeur();
-				professeur.setId(Integer.valueOf(id));
+				Professeur professeur = new Professeur();				
 				professeur.setBureau(bureau);
 				professeur.setPersonne(personne);
+				professeur.setId(Integer.valueOf(id));
 				professeurs.add(professeur);
 
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.log(Level.INFO, "sql problem getprofesseurByStr", e);
 		}finally {
 			fact.close(connexion,statement,preparedStmt,resultat);	
 		}
@@ -423,7 +431,7 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 			preparedStmt.executeQuery();
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.log(Level.INFO, "sql problem addProfesseurToJuryId", e);
 		}finally {
 			daoFactory.close(connexion,statement,preparedStmt,null);	
 		}
@@ -445,7 +453,7 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 			preparedStmt.executeQuery();
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.log(Level.INFO, "sql problem removeProfesseurToJuryId", e);
 		}finally {
 			daoFactory.close(connexion,statement,preparedStmt,null);	
 		}
@@ -473,7 +481,7 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 			}
 			
 		}catch (SQLException e) {
-			e.printStackTrace();
+			logger.log(Level.INFO, "sql problem getRoleProf", e);
 		}finally {
 			daoFactory.close(connexion, null, preparedStmt, resultat );
 		}
@@ -496,7 +504,7 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 				res=true;				
 			}			
 		}catch (SQLException e) {
-			e.printStackTrace();
+			logger.log(Level.INFO, "sql problem isProf", e);
 		}finally {
 			daoFactory.close(connexion, null, preparedStmt,null );
 		}
@@ -520,7 +528,7 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 				prof = getProfesseurById(idProf);
 			}			
 		}catch (SQLException e) {
-			e.printStackTrace();
+			logger.log(Level.INFO, "sql problem getProfByPersonneId", e);
 		}finally {
 			daoFactory.close(connexion, null, preparedStmt,null );
 		}
@@ -532,19 +540,23 @@ public class ProfesseurDaoImpl implements ProfesseurDao {
 		Connection connexion = null;
 		Statement statement = null;
 		ResultSet resultat = null;
+		PreparedStatement preparedStatement = null;
 		int id= 0;
 		try {
 			connexion = daoFactory.getConnection();
-			statement=connexion.createStatement();
-			resultat=statement.executeQuery("SELECT id FROM Professeur WHERE id_Personne ="+idPers);
+			statement = connexion.createStatement();
+			preparedStatement = connexion.prepareStatement("SELECT id FROM Professeur WHERE id_Personne=? ;");
+			preparedStatement.setString(1, idPers);
+			resultat = preparedStatement.executeQuery();			
+		
 			while(resultat.next()) {
 				id = resultat.getInt("id");
 			}
 		}
 		catch (SQLException e) {
-			e.printStackTrace();
+			logger.log(Level.INFO, "sql problem getIdProf", e);
 		}finally {
-			daoFactory.close(connexion, statement, null,null );
+			daoFactory.close(connexion, statement, preparedStatement,resultat );
 		}
 		return id;
 	}

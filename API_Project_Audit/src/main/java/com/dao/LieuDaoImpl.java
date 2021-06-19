@@ -1,10 +1,12 @@
 package com.dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -25,15 +27,16 @@ public class LieuDaoImpl implements LieuDao {
 		Connection connexion = null;
 		Statement statement = null;
 		ResultSet resultat = null;
+		PreparedStatement preparedStmt = null;
 		Lieu lieu = new Lieu();
 
 		try {
 			connexion = daoFactory.getConnection();
 			statement = connexion.createStatement();
-			resultat = statement.executeQuery("SELECT * FROM Lieu WHERE id=" + lieuID + ";");
-
-			connexion.close();
-
+			preparedStmt = connexion.prepareStatement("SELECT * FROM Lieu WHERE id=?;");
+			preparedStmt.setString(1,lieuID );
+			resultat=preparedStmt.executeQuery();
+			
 			while (resultat.next()) {
 				String ville = resultat.getString("Ville");
 				String etablissement = resultat.getString("Etablissement");
@@ -53,13 +56,13 @@ public class LieuDaoImpl implements LieuDao {
 			logger.log(Level.INFO, "sql problem getJurys", e);
 
 		}finally {
-			daoFactory.close(connexion,statement,null,resultat);			
+			daoFactory.close(connexion,statement,preparedStmt,resultat);			
 		}
 		return lieu;
 	}
 
-	public ArrayList<Lieu> getLieux() {
-		ArrayList<Lieu> lieux = new ArrayList<>();
+	public List<Lieu> getLieux() {
+		List<Lieu> lieux = new ArrayList<>();
 		Connection connexion = null;
 		Statement statement = null;
 		ResultSet resultat = null;

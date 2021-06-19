@@ -57,15 +57,18 @@ public class JuryDaoImpl implements JuryDao {
         Connection connexion = null;
         Statement statement = null;
         ResultSet resultat = null;
+        PreparedStatement preparedStmt = null;
         Jury jury = new Jury();
         ArrayList<Jury> jurys = new ArrayList<>();
 
         try {
-            connexion = daoFactory.getConnection();
-            statement = connexion.createStatement();
-            resultat = statement.executeQuery("SELECT id,designation FROM Jury WHERE id="+juryID+";");
-
-            while (resultat.next()) {
+        	connexion = daoFactory.getConnection();
+			statement = connexion.createStatement();
+			preparedStmt = connexion.prepareStatement("SELECT id,designation FROM Jury WHERE id=?;");
+			preparedStmt.setString(1,juryID );
+			resultat=preparedStmt.executeQuery();
+        	
+			while (resultat.next()) {
             	String id = resultat.getString(sqlParamJury[0]);
                 String designation = resultat.getString(sqlParamJury[1]);
                
@@ -77,7 +80,7 @@ public class JuryDaoImpl implements JuryDao {
 			logger.log(Level.INFO, "sql problem getEtudiantById", e);
 
 		}finally {
-			daoFactory.close(connexion,statement,null,resultat);			
+			daoFactory.close(connexion,statement,preparedStmt,resultat);			
 		}
         return jury;
 	}

@@ -13,5 +13,6 @@ public interface ReponseMultipleDao {
 	void deleteReponseMultiple(String id);
 
 	void updateReponseMultiple(String reponseMultiple, String idReponse, boolean cochee);
+
 	
 }

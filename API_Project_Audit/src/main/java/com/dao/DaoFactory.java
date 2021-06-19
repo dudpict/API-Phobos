@@ -1,21 +1,31 @@
 package com.dao;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Properties;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Configuration;
+
+
 @Configuration
 public class DaoFactory {
 	private static final Logger logger = Logger.getLogger(DaoFactory.class);
+	
+	
 	public DaoFactory() {
 		super();
 	}
+	
+	
 
 	public static DaoFactory getInstance() {
 		try {
@@ -26,19 +36,46 @@ public class DaoFactory {
 		
 		return  new DaoFactory();
 	}
-
+	
 	public Connection getConnection() throws SQLException {
+		 String userLogin = getEncryptedLogin();
+		 String userPassword= getEncryptedPass();
 		try {
 			Class.forName("org.mariadb.jdbc.Driver");
 		} catch (ClassNotFoundException e) {
 			logger.log(Level.INFO, "connection bdd problem", e);
 		}
-		return DriverManager.getConnection("jdbc:mariadb://172.24.1.9/projetGL","essai","network");
+		return DriverManager.getConnection(returnProperties("urlBddDistant"),userLogin,userPassword);
 	}
 	
-	//172.24.1.9
+	//urlBddDistant, urlBddLocal
 
+	public String returnProperties(String prop) {
+		Properties properties = new Properties();
+		try (
+			InputStream stream1 = new FileInputStream("src/main/resources/application.properties");		    
+		  ) {
+			properties.load(stream1);
+		}
+		catch (IOException e) {
+			logger.log(Level.INFO, "returnProperties problem", e);
+		}		
+		return properties.getProperty(prop);
+	}
+	
+	
+	public String getEncryptedPass() {
+		
+		return  returnProperties("userPass");
+	}
+	
+	public String getEncryptedLogin() {
+		
+		return  returnProperties("userLogin");
+	}
+	
 	// Récupération du Dao
+		
 	public PersonneDao getPersonneDao() {
 		return new PersonneDaoImpl(this);
 	}

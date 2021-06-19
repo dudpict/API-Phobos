@@ -71,14 +71,15 @@ public class EtudiantDaoImpl implements EtudiantDao {
         Connection connexion = null;
         Statement statement = null;
         ResultSet resultat = null;
+        PreparedStatement preparedStmt = null;
         Etudiant etudiant = new Etudiant();
 
-        try {
-            connexion = daoFactory.getConnection();
-            statement = connexion.createStatement();
-            resultat = statement.executeQuery("SELECT * FROM Etudiant WHERE id="+id+";");
-            connexion.close();
-           
+        try { 
+        	connexion = daoFactory.getConnection();
+			statement = connexion.createStatement();
+			preparedStmt = connexion.prepareStatement("SELECT * FROM Etudiant WHERE id=?;");
+			preparedStmt.setString(1,id );
+			resultat=preparedStmt.executeQuery();
             while (resultat.next()) {
             	String id2 = resultat.getString(sqlParamEtudiant[0]);
                 String classe = resultat.getString(sqlParamEtudiant[2]);
@@ -99,7 +100,7 @@ public class EtudiantDaoImpl implements EtudiantDao {
 			logger.log(Level.INFO, "sql problem getEtudiantById", e);
 
 		}finally {
-			daoFactory.close(connexion,statement,null,resultat);			
+			daoFactory.close(connexion,statement,preparedStmt,resultat);			
 		}
         return etudiant;
 	}
@@ -381,7 +382,7 @@ public class EtudiantDaoImpl implements EtudiantDao {
 			}
 			
 		}catch (SQLException e) {
-			e.printStackTrace();
+			logger.log(Level.INFO, "sql problem getRoleEtudiant", e);
 		}finally {
 			daoFactory.close(connexion, statement, preparedStmt,null );
 		}
@@ -393,19 +394,24 @@ public class EtudiantDaoImpl implements EtudiantDao {
 		Connection connexion = null;
 		Statement statement = null;
 		ResultSet resultat = null;
+		PreparedStatement preparedStmt = null;
 		int id= 0;
 		try {
+			
 			connexion = daoFactory.getConnection();
-			statement=connexion.createStatement();
-			resultat=statement.executeQuery("SELECT id FROM Etudiant WHERE id_Personne ="+idPers);
+			statement = connexion.createStatement();
+			preparedStmt = connexion.prepareStatement("SELECT id FROM Etudiant WHERE id_Personne =?;");
+			preparedStmt.setString(1,idPers );
+			resultat=preparedStmt.executeQuery();
+
 			while(resultat.next()) {
 				id = resultat.getInt("id");
 			}
 		}
 		catch (SQLException e) {
-			e.printStackTrace();
+			logger.log(Level.INFO, "sql problem getIdEtudiant", e);
 		}finally {
-			daoFactory.close(connexion, statement, null,null );
+			daoFactory.close(connexion, statement, preparedStmt,resultat );
 		}
 		return id;
 	}

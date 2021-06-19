@@ -2,13 +2,11 @@ package com.beans;
 
 public class Jury {
 	
-	private static int idCount = 0;
 	int id;
 	String designation;
 	
 	public Jury() {
-		this.id=idCount;
-		idCount++;
+		super();
 		}
 
 	public Jury(int id, String designation) {
@@ -16,13 +14,13 @@ public class Jury {
 		this.id = id;
 		this.designation = designation;
 	}
+	
+	public void setId(int id) {
+		this.id = id;
+	}
 
 	public int getId() {
 		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
 	}
 
 	public String getDesignation() {

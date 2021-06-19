@@ -18,12 +18,13 @@ import com.beans.UE;
 public class UEDaoImpl implements UEDao{
 	private DaoFactory daoFactory;
 	private static final Logger logger = Logger.getLogger(UEDaoImpl.class);
+	private String [] sqlParamPersonne = {"id","Designation","Departement","id_Professeur","id_Option"};
 	
 	public UEDaoImpl(DaoFactory daoFactory) {
 		this.daoFactory = daoFactory;
 	}
 	
-	public ArrayList<UE> getUES(){
+	public List<UE> getUES(){
 		Connection connexion = null;
 		Statement statement = null;
 		PreparedStatement preparedStatement = null;
@@ -36,13 +37,13 @@ public class UEDaoImpl implements UEDao{
 			resultat = preparedStatement.executeQuery();
 			
 			while (resultat.next()) {
-				String idProf = resultat.getString("id_Professeur");
+				String idProf = resultat.getString(sqlParamPersonne[3]);
 
 				UE ue = new UE();
-				ue.setId(resultat.getInt("id"));
-				ue.setDesignation(resultat.getString("designation"));
+				ue.setId(resultat.getInt(sqlParamPersonne[0]));
+				ue.setDesignation(resultat.getString(sqlParamPersonne[1]));
 				
-				ue.setDepartement(resultat.getString("departement"));
+				ue.setDepartement(resultat.getString(sqlParamPersonne[2]));
 				ProfesseurDao professeurDao = daoFactory.getProfesseurDao();
 				Professeur matiereInstance = professeurDao.getProfesseurById(idProf);
 				ue.setResponsable(matiereInstance);
@@ -50,7 +51,7 @@ public class UEDaoImpl implements UEDao{
 				ues.add(ue);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.log(Level.INFO, "sql problem getUES", e);
 		}finally {
 			daoFactory.close(connexion,statement,preparedStatement,resultat);	
 		}
@@ -74,7 +75,7 @@ public class UEDaoImpl implements UEDao{
 			preparedStmt.executeQuery();
 	
 		} catch (SQLException e) {
-			logger.log(Level.INFO, "sql problem getUES", e);
+			logger.log(Level.INFO, "sql problem updateUeProfRef", e);
 
 		}finally {
 			daoFactory.close(connexion,statement,preparedStmt,resultat);			
@@ -125,7 +126,7 @@ public class UEDaoImpl implements UEDao{
 			preparedStmt.executeQuery();
 	
 		} catch (SQLException e) {
-			logger.log(Level.INFO, "sql problem addUe", e);
+			logger.log(Level.INFO, "sql problem deleteUe", e);
 
 		}finally {
 			daoFactory.close(connexion,statement,preparedStmt,resultat);			
@@ -149,11 +150,11 @@ public class UEDaoImpl implements UEDao{
 			resultat = preparedStmt.executeQuery();
 			
 			while (resultat.next()) {
-				int id = resultat.getInt("id");
-				String designation = resultat.getString("Designation");
-				String departement = resultat.getString("Departement");
-				Professeur responsable = daoFactory.getProfesseurDao().getProfesseurById(resultat.getString("id_Professeur")) ;
-				Option option = daoFactory.getOptionDao().getOptionById(resultat.getString("id_Option"));
+				int id = resultat.getInt(sqlParamPersonne[0]);
+				String designation = resultat.getString(sqlParamPersonne[1]);
+				String departement = resultat.getString(sqlParamPersonne[2]);
+				Professeur responsable = daoFactory.getProfesseurDao().getProfesseurById(resultat.getString(sqlParamPersonne[3])) ;
+				Option option = daoFactory.getOptionDao().getOptionById(resultat.getString(sqlParamPersonne[4]));
 				
 				ue = new UE(id,designation,departement);
 				ue.setOption(option);
@@ -189,11 +190,11 @@ public class UEDaoImpl implements UEDao{
 			resultat = preparedStmt.executeQuery();
 			
 			while (resultat.next()) {
-				int id = resultat.getInt("id");
-				String designation = resultat.getString("Designation");
-				String departement = resultat.getString("Departement");
-				Professeur responsable = daoFactory.getProfesseurDao().getProfesseurById(resultat.getString("id_Professeur")) ;
-				Option option = daoFactory.getOptionDao().getOptionById(resultat.getString("id_Option"));
+				Option option = daoFactory.getOptionDao().getOptionById(resultat.getString(sqlParamPersonne[4]));
+				int id = resultat.getInt(sqlParamPersonne[0]);
+				Professeur responsable = daoFactory.getProfesseurDao().getProfesseurById(resultat.getString(sqlParamPersonne[3])) ;
+				String designation = resultat.getString(sqlParamPersonne[1]);
+				String departement = resultat.getString(sqlParamPersonne[2]);		
 				
 				ue = new UE(id,designation,departement);
 				ue.setOption(option);

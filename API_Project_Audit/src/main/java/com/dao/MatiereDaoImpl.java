@@ -19,6 +19,7 @@ public class MatiereDaoImpl implements MatiereDao {
 
 	private DaoFactory daoFactory;
 	private static final Logger logger = Logger.getLogger(MatiereDaoImpl.class);
+	private String [] sqlParamTable = {"id","designation","effectif","departement","id_Professeur","id_UE"};
 
 	public MatiereDaoImpl(DaoFactory daoFactory) {
 		this.daoFactory = daoFactory;
@@ -41,11 +42,11 @@ public class MatiereDaoImpl implements MatiereDao {
             
             
             while (resultat.next()) {
-            	int id = resultat.getInt("id");
-				String designation = resultat.getString("designation");
-				String departement = resultat.getString("departement");
-				int effectif = resultat.getInt("effectif");
-				Professeur responsable = daoFactory.getProfesseurDao().getProfesseurById(resultat.getString("id_Professeur"));
+            	int id = resultat.getInt(sqlParamTable[0]);
+				String designation = resultat.getString(sqlParamTable[1]);
+				String departement = resultat.getString(sqlParamTable[3]);
+				int effectif = resultat.getInt(sqlParamTable[2]);
+				Professeur responsable = daoFactory.getProfesseurDao().getProfesseurById(resultat.getString(sqlParamTable[4]));
 				
 				matiere = new Matiere(id, designation, departement, effectif, responsable);
             }
@@ -71,7 +72,7 @@ public class MatiereDaoImpl implements MatiereDao {
 			preparedStatement.setInt(1, idProf);
 			resultat = preparedStatement.executeQuery();
 			while (resultat.next()) {
-				matiere = resultat.getInt("id");
+				matiere = resultat.getInt(sqlParamTable[0]);
 			}
 		} catch (SQLException e) {
 			logger.log(Level.INFO, "sql problem getMatiereIdByResponsableID", e);
@@ -96,13 +97,13 @@ public class MatiereDaoImpl implements MatiereDao {
 			resultat = preparedStatement.executeQuery();
 			
 			while (resultat.next()) {
-				String idProf = resultat.getString("id_Professeur");
+				String idProf = resultat.getString(sqlParamTable[4]);
 
 				Matiere matiere = new Matiere();
-				matiere.setId(resultat.getInt("id"));
-				matiere.setDesignation(resultat.getString("designation"));
-				matiere.setEffectif(Integer.parseInt(resultat.getString("effectif")));
-				matiere.setDepartement(resultat.getString("departement"));
+				matiere.setId(resultat.getInt(sqlParamTable[0]));
+				matiere.setDesignation(resultat.getString(sqlParamTable[1]));
+				matiere.setEffectif(Integer.parseInt(resultat.getString(sqlParamTable[2])));
+				matiere.setDepartement(resultat.getString(sqlParamTable[3]));
 				ProfesseurDao professeurDao = daoFactory.getProfesseurDao();
 				Professeur matiereInstance = professeurDao.getProfesseurById(idProf);
 				matiere.setResponsable(matiereInstance);
@@ -159,11 +160,11 @@ public class MatiereDaoImpl implements MatiereDao {
 			resultat = preparedStmt.executeQuery();
 			
 			while(resultat.next()) {
-				int id = resultat.getInt("id");
-				String designation = resultat.getString("designation");
-				String departement = resultat.getString("departement");
-				int effectif = resultat.getInt("effectif");
-				Professeur responsable = daoFactory.getProfesseurDao().getProfesseurById(resultat.getString("id_Professeur"));
+				int id = resultat.getInt(sqlParamTable[0]);
+				String designation = resultat.getString(sqlParamTable[1]);
+				String departement = resultat.getString(sqlParamTable[3]);
+				int effectif = resultat.getInt(sqlParamTable[2]);
+				Professeur responsable = daoFactory.getProfesseurDao().getProfesseurById(resultat.getString(sqlParamTable[4]));
 				
 				matiere = new Matiere(id, designation, departement, effectif, responsable);
 				matiereList.add(matiere);

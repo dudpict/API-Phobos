@@ -89,7 +89,7 @@ public class NotificationDaoImpl implements NotificationDao {
 			}
 
 		} catch (SQLException e) {
-			logger.log(Level.INFO, "sql problem getNotificationByAudit", e);
+			logger.log(Level.INFO, "sql problem getNotificationByPersonneId", e);
 		}finally {
 			daoFactory.close(connexion,statement,preparedStatement,resultat);	
 		}
@@ -221,7 +221,7 @@ public class NotificationDaoImpl implements NotificationDao {
 			}
 
 		} catch (SQLException e) {
-			logger.log(Level.INFO, "sql problem getAuditById", e);
+			logger.log(Level.INFO, "sql problem getNotificationByMatiere", e);
 		}finally {
 			daoFactory.close(connexion,statement,preparedStatement,resultat);	
 		}
@@ -256,7 +256,7 @@ public class NotificationDaoImpl implements NotificationDao {
 			}		
 			preparedStatement.executeQuery();
 		} catch (SQLException e) {
-			logger.log(Level.INFO, "sql problem getAuditById", e);
+			logger.log(Level.INFO, "sql problem addNotification", e);
 		}finally {
 			daoFactory.close(connexion,statement,preparedStatement,null);	
 		}
@@ -276,7 +276,27 @@ public class NotificationDaoImpl implements NotificationDao {
 			preparedStatement.setString(1, id);
 			preparedStatement.executeQuery();
 		} catch (SQLException e) {
-			logger.log(Level.INFO, "sql problem getNotificationByEquipe", e);
+			logger.log(Level.INFO, "sql problem deleteNotificationById", e);
+		}finally {
+			daoFactory.close(connexion,statement,preparedStatement,resultat);	
+		}
+	}
+	
+	@Override
+	public void deleteNotificationByIdAudit(String idAudit) {
+		Connection connexion = null;
+		ResultSet resultat = null;
+		Statement statement = null;
+		PreparedStatement preparedStatement = null;
+
+		try {
+			connexion = daoFactory.getConnection();
+			statement = connexion.createStatement();
+			preparedStatement = connexion.prepareStatement("DELETE FROM Notification WHERE id_Audit =?;");
+			preparedStatement.setString(1, idAudit);
+			preparedStatement.executeQuery();
+		} catch (SQLException e) {
+			logger.log(Level.INFO, "sql problem deleteNotificationByIdAudit", e);
 		}finally {
 			daoFactory.close(connexion,statement,preparedStatement,resultat);	
 		}
