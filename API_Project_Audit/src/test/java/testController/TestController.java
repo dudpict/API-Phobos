@@ -41,6 +41,16 @@ public class TestController {
 		Assert.assertEquals(true,ueOk);	
 		Assert.assertNotNull(idUe);
 	
+		contrUe.deleteUe(idUe);
+		List<UE> ueListeDel = contrUe.getUES();
+		
+		for (UE ueD : ueListeDel) {
+			if(ueD.getId()==Integer.parseInt(idUe)) {
+				ueOk = false;
+			}			
+		}
+		Assert.assertEquals(true,ueOk);	
+		
 	}
 
 }
