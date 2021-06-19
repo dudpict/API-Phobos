@@ -7,6 +7,11 @@ public class Question {
 	int id;
 	TypeQuestion typeQuestion;
 	Section section;
+	boolean roleEnseignant;
+	boolean roleEleve;
+	
+	
+
 	
 	public Question(String designation, String reponse, int id) {
 		super();
@@ -31,6 +36,7 @@ public class Question {
 		this.section = section;
 		this.intitule = intitule;
 	}
+	
 
 	public Question() {
 		}
@@ -41,6 +47,30 @@ public class Question {
 
 	public void setDesignation(String designation) {
 		this.designation = designation;
+	}
+
+	public boolean isRoleEnseignant() {
+		return roleEnseignant;
+	}
+
+	public boolean isRoleEleve() {
+		return roleEleve;
+	}
+
+	public void setRoleEnseignant(boolean roleEnseignant) {
+		this.roleEnseignant = roleEnseignant;
+	}
+
+	public void setRoleEleve(boolean roleEleve) {
+		this.roleEleve = roleEleve;
+	}
+	
+	public boolean getRoleEnseignant() {
+		return this.roleEnseignant;
+	}
+
+	public boolean getRoleEleve() {
+		return this.roleEleve;
 	}
 
 	public String getReponse() {

@@ -15,7 +15,7 @@ import com.beans.Section;
 import com.beans.TypeQuestion;
 
 public class QuestionDaoImpl implements QuestionDao {
-	private String [] sqlParamQuestionr = {"id","Designation","intitule","id_section","id_typeQuestion"};
+	private String [] sqlParamQuestionr = {"id","Designation","intitule","id_section","id_typeQuestion","RoleEnseignant","RoleEleve"};
 	private static final Logger logger = Logger.getLogger(QuestionDaoImpl.class);
 	
 	private DaoFactory daoFactory;
@@ -43,6 +43,7 @@ public class QuestionDaoImpl implements QuestionDao {
 				int typeQuestionID = resultat.getInt(sqlParamQuestionr[4]);
 				int sectionID = resultat.getInt(sqlParamQuestionr[3]);
 
+				
 				// Récupére l'instance de TypeQuestion via l'id
 				TypeQuestionDao typeQuestionDao = daoFactory.getTypeQuestionDao();
 				TypeQuestion typeQuestion = typeQuestionDao.getTypeQuestionById(Integer.toString(typeQuestionID));
@@ -53,6 +54,11 @@ public class QuestionDaoImpl implements QuestionDao {
 
 				// Remplir les attributs
 				Question question = new Question();
+				boolean roleEnseignant =  resultat.getBoolean(sqlParamQuestionr[5]);
+				boolean roleEleve =  resultat.getBoolean(sqlParamQuestionr[6]);
+				question.setRoleEnseignant(roleEnseignant);
+				question.setRoleEleve(roleEleve);
+				
 				question.setId(id);
 				question.setDesignation(designation);
 				question.setSection(section);
@@ -90,18 +96,20 @@ public class QuestionDaoImpl implements QuestionDao {
 	}
 
 	@Override
-	public void addQuestion(String designation, String intitule, int idSection, int idTypeQuestion/*, boolean eleves, boolean professeur*/) {
+	public void addQuestion(String designation, String intitule, int idSection, int idTypeQuestion, boolean eleves, boolean professeur) {
 		Connection connexion = null;
 		PreparedStatement preparedStmt = null;
 
 		try {
 			connexion = daoFactory.getConnection();
-			String requete ="INSERT INTO `question` (`Designation`, `intitule`, `id_section`, `id_typeQuestion`) VALUES (?,?,?,?);";
+			String requete ="INSERT INTO `question` (`Designation`, `intitule`, `id_section`, `id_typeQuestion`,RoleEleve,RoleEnseignant) VALUES (?,?,?,?,?,?);";
 			preparedStmt = connexion.prepareStatement(requete);
 			preparedStmt.setString(1, designation);
 			preparedStmt.setString(2, intitule);
 			preparedStmt.setInt(3, idSection);
 			preparedStmt.setInt(4, idTypeQuestion);
+			preparedStmt.setBoolean(5, eleves);
+			preparedStmt.setBoolean(6, professeur);
 			preparedStmt.execute();
 
 		} catch (SQLException e) {			
@@ -168,7 +176,10 @@ public class QuestionDaoImpl implements QuestionDao {
 				Section section = sectionDao.getSectionById(sectionID);
 
 				// Remplir les attributs
-
+				boolean roleEnseignant =  resultat.getBoolean(sqlParamQuestionr[5]);
+				boolean roleEleve =  resultat.getBoolean(sqlParamQuestionr[6]);
+				question.setRoleEnseignant(roleEnseignant);
+				question.setRoleEleve(roleEleve);
 				question.setId(id2);
 				question.setDesignation(designation);
 				question.setIntitule(intitule);
@@ -215,6 +226,11 @@ public class QuestionDaoImpl implements QuestionDao {
 
 				// Remplir les attributs
 				question = new Question();
+				
+				boolean roleEnseignant =  resultat.getBoolean(sqlParamQuestionr[5]);
+				boolean roleEleve =  resultat.getBoolean(sqlParamQuestionr[6]);
+				question.setRoleEnseignant(roleEnseignant);
+				question.setRoleEleve(roleEleve);
 				question.setId(id2);
 				question.setDesignation(designation);
 				question.setIntitule(intitule);
@@ -265,7 +281,10 @@ public class QuestionDaoImpl implements QuestionDao {
 				question.setIntitule(intitule);
 				question.setSection(section);
 				question.setTypeQuestion(typeQuestion);
-
+				boolean roleEnseignant =  rs.getBoolean(sqlParamQuestionr[5]);
+				boolean roleEleve =  rs.getBoolean(sqlParamQuestionr[6]);
+				question.setRoleEnseignant(roleEnseignant);
+				question.setRoleEleve(roleEleve);
 				questions.add(question);
 			}
 			connexion.close();
@@ -320,6 +339,10 @@ public class QuestionDaoImpl implements QuestionDao {
 				question.setDesignation(designation);
 				question.setIntitule(intitule);
 				question.setSection(section);
+				boolean roleEnseignant =  rs.getBoolean(sqlParamQuestionr[5]);
+				boolean roleEleve =  rs.getBoolean(sqlParamQuestionr[6]);
+				question.setRoleEnseignant(roleEnseignant);
+				question.setRoleEleve(roleEleve);
 				question.setTypeQuestion(typeQuestion);
 
 				questions.add(question);

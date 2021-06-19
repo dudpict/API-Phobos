@@ -75,7 +75,8 @@ public class PhobosControllerQuestion {
 		logger.log(Level.INFO, "appelPost_question_addQuestion Body");
 		DaoFactory fact = new DaoFactory();
 		QuestionDao questionDao = fact.getQuestionDao();
-		questionDao.addQuestion(question.getDesignation(), question.getIntitule(), question.getSection().getId(), question.getTypeQuestion().getId());
+		questionDao.addQuestion(question.getDesignation(), question.getIntitule(), question.getSection().getId(), question.getTypeQuestion().getId(),
+				question.getRoleEleve(), question.getRoleEnseignant());
 	}
 	
 
