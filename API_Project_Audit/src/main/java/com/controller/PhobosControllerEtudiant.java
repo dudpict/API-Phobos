@@ -25,7 +25,7 @@ public class PhobosControllerEtudiant {
 	@GetMapping(value = "/etudiant")
 	@ResponseBody
 	public List<Etudiant> appelGETetudiant() {
-		log.log(Level.INFO, "appel get triAudit");
+		log.log(Level.INFO, "appel get etudiant");
 		
 		DaoFactory fact = new DaoFactory();
 		EtudiantDao etudiantDao = fact.getEtudiantDao();

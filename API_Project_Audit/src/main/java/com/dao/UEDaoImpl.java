@@ -29,7 +29,7 @@ public class UEDaoImpl implements UEDao{
 		Statement statement = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultat = null;
-		ArrayList<UE> ues = new ArrayList<>();
+		List<UE> ues = new ArrayList<>();
 		try {
 			connexion = daoFactory.getConnection();
 			statement = connexion.createStatement();

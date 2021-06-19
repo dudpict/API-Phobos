@@ -38,17 +38,18 @@ public class DaoFactory {
 	}
 	
 	public Connection getConnection() throws SQLException {
-		 String userLogin = getEncryptedLogin();
-		 String userPassword= getEncryptedPass();
 		try {
 			Class.forName("org.mariadb.jdbc.Driver");
 		} catch (ClassNotFoundException e) {
 			logger.log(Level.INFO, "connection bdd problem", e);
 		}
-		return DriverManager.getConnection(returnProperties("urlBddDistant"),userLogin,userPassword);
+		return DriverManager.getConnection("jdbc:mariadb://172.24.1.9/projetGL","essai","network");
 	}
+	/*	
+		"jdbc:mariadb://localhost/projetGL","essai","network"
+		"jdbc:mariadb://172.24.1.9/projetGL","essai","network"
+	*/
 	
-	//urlBddDistant, urlBddLocal
 
 	public String returnProperties(String prop) {
 		Properties properties = new Properties();
