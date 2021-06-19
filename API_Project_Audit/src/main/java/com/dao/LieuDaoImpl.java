@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -60,8 +61,8 @@ public class LieuDaoImpl implements LieuDao {
 		return lieu;
 	}
 
-	public ArrayList<Lieu> getLieux() {
-		ArrayList<Lieu> lieux = new ArrayList<>();
+	public List<Lieu> getLieux() {
+		List<Lieu> lieux = new ArrayList<>();
 		Connection connexion = null;
 		Statement statement = null;
 		ResultSet resultat = null;
