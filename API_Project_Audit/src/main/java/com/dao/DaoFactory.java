@@ -1,21 +1,31 @@
 package com.dao;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Properties;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Configuration;
+
+import api.configuration.*;
+
 @Configuration
 public class DaoFactory {
 	private static final Logger logger = Logger.getLogger(DaoFactory.class);
+	private static final Properties ps = new Properties(); 
+	
+	
 	public DaoFactory() {
 		super();
 	}
+	
+	
 
 	public static DaoFactory getInstance() {
 		try {
@@ -28,6 +38,7 @@ public class DaoFactory {
 	}
 
 	public Connection getConnection() throws SQLException {
+		apiProp.getString();
 		try {
 			Class.forName("org.mariadb.jdbc.Driver");
 		} catch (ClassNotFoundException e) {
@@ -39,6 +50,21 @@ public class DaoFactory {
 	//172.24.1.9
 
 	// Récupération du Dao
+	
+	public String returnProperties(String nameP) {
+		String valueProperties = null;
+		
+		try {
+			ps.load(new java.io.FileInputStream("Dao.properties"));
+		} catch (IOException e1) {
+			
+			e1.printStackTrace();
+		} finally{
+			
+		}
+		return valueProperties;
+		
+	}
 	public PersonneDao getPersonneDao() {
 		return new PersonneDaoImpl(this);
 	}
