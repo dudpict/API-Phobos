@@ -11,25 +11,27 @@ public class Equipe {
 		}
 
 	public Equipe(int id, String designation) {
-		super();
-		this.id = id;
+		super();		
 		this.designation = designation;
+		this.id = id;
 	}
 
-	public int getId() {
-		return id;
-	}
+	
 
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	public String getDesignation() {
-		return designation;
-	}
+	}	
 
 	public void setDesignation(String designation) {
 		this.designation = designation;
+	}
+	
+	public String getDesignation() {
+		return designation;
+	}
+	
+	public int getId() {
+		return id;
 	}
 	
 	

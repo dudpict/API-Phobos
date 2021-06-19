@@ -16,8 +16,8 @@ public class TypeQuestion {
 		this.designation = designation;
 	}
 
-	public int getId() {
-		return id;
+	public void setDesignation(String designation) {
+		this.designation = designation;
 	}
 
 	public void setId(int id) {
@@ -28,9 +28,9 @@ public class TypeQuestion {
 		return designation;
 	}
 
-	public void setDesignation(String designation) {
-		this.designation = designation;
-	}
 	
+	public int getId() {
+		return id;
+	}
 	
 }

@@ -30,14 +30,12 @@ public class Matiere {
 	public void setUe(UE ue) {
 		this.ue = ue;
 	}
-
-	public int getId() {
-		return id;
+	
+	public String getDepartement() {
+		return departement;
 	}
 
-	public void setId(int id) {
-		this.id = id;
-	}
+	
 
 	public String getDesignation() {
 		return designation;
@@ -47,8 +45,12 @@ public class Matiere {
 		this.designation = designation;
 	}
 
-	public String getDepartement() {
-		return departement;
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public void setDepartement(String departement) {
