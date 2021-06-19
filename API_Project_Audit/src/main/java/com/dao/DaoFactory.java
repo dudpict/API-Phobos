@@ -13,7 +13,6 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Configuration;
 
-import api.configuration.*;
 
 @Configuration
 public class DaoFactory {
@@ -38,7 +37,7 @@ public class DaoFactory {
 	}
 
 	public Connection getConnection() throws SQLException {
-		apiProp.getString();
+		
 		try {
 			Class.forName("org.mariadb.jdbc.Driver");
 		} catch (ClassNotFoundException e) {
