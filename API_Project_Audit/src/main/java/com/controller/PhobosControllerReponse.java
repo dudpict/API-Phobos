@@ -42,20 +42,6 @@ public class PhobosControllerReponse {
 	
 	@PostMapping(value = "/addReponse")
 	@ResponseBody
-	public void appelPOSTaddReponse(@RequestParam(required = true, value = "ReponseLongue") String reponseLongue,
-												@RequestParam(required = true, value = "Note") int note,
-												@RequestParam(required = true, value = "ReponseCourte") Boolean reponseCourte,
-												@RequestParam(required = true, value = "idQuestion") String idQuestion) {
-			
-		logger.log(Level.INFO, "appelPOSTaddReponse");
-		
-		DaoFactory fact = new DaoFactory();
-		ReponseDao reponseDao = fact.getReponseDao();
-		reponseDao.addReponse(reponseLongue, note, reponseCourte, idQuestion);
-	}
-	
-	@PostMapping(value = "/addReponse")
-	@ResponseBody
 	public void appelPostReponseaddReponse(@RequestBody Reponse reponse) {
 		logger.log(Level.INFO, "appelPost_reponse_addReponse");
 		DaoFactory fact = new DaoFactory();
@@ -63,16 +49,6 @@ public class PhobosControllerReponse {
 		reponseDao.addReponse(reponse.getReponseLongue(), reponse.getNote(), reponse.getReponseCourte(), Integer.toString(reponse.getIdQuestion()));
 	}
 	
-	@PostMapping(value = "/addReponse")
-	@ResponseBody
-	public void appelPOSTaddReponse(@RequestBody Reponse reponse) {
-			
-		logger.log(Level.INFO, "appelPOST_addReponse");
-
-		DaoFactory fact = new DaoFactory();
-		ReponseDao reponseDao = fact.getReponseDao();
-		reponseDao.addReponse(reponse.getReponseLongue(), reponse.getNote(), reponse.getReponseCourte(), Integer.toString(reponse.getIdQuestion()));
-	}
 	
 	@PostMapping(value = "/updateReponse")
 	@ResponseBody

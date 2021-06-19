@@ -1,6 +1,10 @@
 package com.dao;
 
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -17,7 +21,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class DaoFactory {
 	private static final Logger logger = Logger.getLogger(DaoFactory.class);
-	private static final Properties ps = new Properties(); 
 	
 	
 	public DaoFactory() {
@@ -35,35 +38,46 @@ public class DaoFactory {
 		
 		return  new DaoFactory();
 	}
-
+	
 	public Connection getConnection() throws SQLException {
-		
+		 String userLogin = getEncryptedLogin();
+		 String userPassword= getEncryptedPass();
 		try {
 			Class.forName("org.mariadb.jdbc.Driver");
 		} catch (ClassNotFoundException e) {
 			logger.log(Level.INFO, "connection bdd problem", e);
 		}
-		return DriverManager.getConnection("jdbc:mariadb://172.24.1.9/projetGL","essai","network");
+		return DriverManager.getConnection(returnProperties("urlBddDistant"),userLogin,userPassword);
 	}
 	
-	//172.24.1.9
+	//urlBddDistant, urlBddLocal
 
-	// Récupération du Dao
-	
-	public String returnProperties(String nameP) {
-		String valueProperties = null;
-		
-		try {
-			ps.load(new java.io.FileInputStream("Dao.properties"));
-		} catch (IOException e1) {
-			
-			e1.printStackTrace();
-		} finally{
-			
+	public String returnProperties(String prop) {
+		Properties properties = new Properties();
+		try (
+			InputStream stream1 = new FileInputStream("src/main/resources/application.properties");		    
+		  ) {
+			properties.load(stream1);
 		}
-		return valueProperties;
-		
+		catch (IOException e) {
+			logger.log(Level.INFO, "returnProperties problem", e);
+		}		
+		return properties.getProperty(prop);
 	}
+	
+	
+	public String getEncryptedPass() {
+		
+		return  returnProperties("userPass");
+	}
+	
+	public String getEncryptedLogin() {
+		
+		return  returnProperties("userLogin");
+	}
+	
+	// Récupération du Dao
+		
 	public PersonneDao getPersonneDao() {
 		return new PersonneDaoImpl(this);
 	}
