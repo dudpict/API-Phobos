@@ -1,4 +1,4 @@
-package testController;
+package testcontroller;
 
 import java.util.List;
 
@@ -102,22 +102,23 @@ public class TestController {
 	
 	@Test
 	public void testJury() {
+		String name = "JurytestJunit";
 		PhobosControllerJury contrJury = new PhobosControllerJury();
-		Jury jr = new Jury(0,"JurytestJunit");
+		Jury jr = new Jury(0,name);
 		
 		contrJury.addJury(jr);
 		
-		Jury jury = contrJury.getJuryByString("JurytestJunit");
+		Jury jury = contrJury.getJuryByString(name);
 		
 		int idJ = jury.getId();
 		
-		Assert.assertEquals("JurytestJunit",jury.getDesignation());
+		Assert.assertEquals(name,jury.getDesignation());
 		Assert.assertEquals(idJ,jury.getId());
 		
 		
 		jury = contrJury.getJuryByStringBody(jr);
 		
-		Assert.assertEquals("JurytestJunit",jury.getDesignation());
+		Assert.assertEquals(name,jury.getDesignation());
 		Assert.assertEquals(idJ,jury.getId());
 		
 		List<Jury> lJury = contrJury.getJurys(null);
@@ -128,21 +129,23 @@ public class TestController {
 		
 		Assert.assertEquals(1,lJury.size());
 		Assert.assertEquals(idJ,lJury.get(0).getId());
-		Assert.assertEquals("JurytestJunit",lJury.get(0).getDesignation());	
+		Assert.assertEquals(name,lJury.get(0).getDesignation());	
 	}
 	
 	@Test
 	public void ttestSection() {
 		PhobosControllerSection contrSection = new PhobosControllerSection();
-		
-		contrSection.appelPostaddSection("Section 1 junit", 1);
+		String name1 = "Section 1 junit";
+		String name2 = "Section 2 junit"; 
+		String name21 = "Section2junit";
+		contrSection.appelPostaddSection(name1, 1);
 		
 		Section sec = new Section();	
 		Modele mdo = new Modele();
 		mdo.setId(1);
 		
 		sec.setId(0);
-		sec.setDesignation("Section 2 junit");
+		sec.setDesignation(name2);
 		sec.setModele(mdo);
 		
 		contrSection.appelPostaddSectionBody(sec);
@@ -154,29 +157,29 @@ public class TestController {
 		int id1 = 0;
 		int nbrSec =0;
 		for(Section sect : lSection) {
-			if(sect.getDesignation().equals("Section 1 junit")){
+			if(sect.getDesignation().equals(name1)){
 				nbrSec++;
 				id1 = sect.getId();
-			}if(sect.getDesignation().equals("Section 2 junit")) {
+			}if(sect.getDesignation().equals(name2)) {
 				nbrSec++;
 				sec=sect;				
 			}
 		}
 		
 		Assert.assertEquals(2,nbrSec);
-		Assert.assertEquals("Section 2 junit",sec.getDesignation());
+		Assert.assertEquals(name2,sec.getDesignation());
 		
 		lSection = contrSection.getSectionByIdModele("1");
 		
 		Assert.assertTrue(lSection.size()>2);
 		
-		contrSection.appelPostquestionupdateSection(sec.getId(),"Section2junit",1);
+		contrSection.appelPostquestionupdateSection(sec.getId(),name21,1);
 		
 		sec = contrSection.getSectionById(sec.getId());
 		
-		Assert.assertEquals("Section2junit",sec.getDesignation());
+		Assert.assertEquals(name21,sec.getDesignation());
 		
-		lSection = contrSection.appelGETsectionByNom("Section2junit");
+		lSection = contrSection.appelGETsectionByNom(name21);
 		
 		Assert.assertTrue(lSection.size()>0);
 		

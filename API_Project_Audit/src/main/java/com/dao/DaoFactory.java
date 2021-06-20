@@ -47,10 +47,7 @@ public class DaoFactory {
 		}
 		return DriverManager.getConnection(returnUrlBdd("distant"),getEncryptedLogin(),getEncryptedPass());
 	}
-	/*	
-		"jdbc:mariadb://localhost/projetGL","essai","network"
-		"jdbc:mariadb://172.24.1.9/projetGL","essai","network"
-	*/
+	
 	
 	public String returnUrlBdd (String url) {
 		if(url.equals("distant")) {
