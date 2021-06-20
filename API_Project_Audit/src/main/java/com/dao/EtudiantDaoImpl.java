@@ -255,7 +255,6 @@ public class EtudiantDaoImpl implements EtudiantDao {
 			connexion = daoFactory.getConnection();
 			statement = connexion.createStatement();
 			preparedStmt = connexion.prepareStatement("SELECT * FROM Etudiant WHERE id_Equipe IN (SELECT id FROM Equipe eq WHERE eq.id = (SELECT id_Equipe from Audit WHERE id = ?));");
-			//preparedStmt = connexion.prepareStatement("SELECT * FROM Etudiant WHERE id IN (SELECT id_etudiant FROM contient co WHERE co.id = (SELECT id_equipe from Audit WHERE id = ?));");
 			preparedStmt.setString(1, idAudit);
 			resultat = preparedStmt.executeQuery();
 			

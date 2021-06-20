@@ -151,16 +151,20 @@ public class TestController {
 		contrSection.appelPostaddSectionBody(sec);
 		
 		List<Section> lSection = contrSection.getSectionByAllParam(sec);
-		
+		int id1 = 0;
+		if (lSection.size()>0) {
+			id1++;
+		}
+		 id1 = 0;
 		lSection = contrSection.appelGETsection(null);
 		Assert.assertTrue(lSection.size()>1);
-		int id1 = 0;
+		
 		int nbrSec =0;
 		for(Section sect : lSection) {
 			if(sect.getDesignation().equals(name1)){
 				nbrSec++;
 				id1 = sect.getId();
-			}if(sect.getDesignation().equals(name2)) {
+			}else if(sect.getDesignation().equals(name2)) {
 				nbrSec++;
 				sec=sect;				
 			}
@@ -221,15 +225,15 @@ public class TestController {
 	@Test
 	public void testEquipe() {
 		PhobosControllerEquipe contrEqu = new PhobosControllerEquipe();
-		
+		String name = "test Junit";
 		Equipe equ = new Equipe();
-		equ.setDesignation("test Junit");
+		equ.setDesignation(name);
 		equ.setId(0);
 		contrEqu.addEquipe(equ);
 		
-		Equipe equ1=contrEqu.getEquipeByString("test Junit");
+		Equipe equ1=contrEqu.getEquipeByString(name);
 		
-		Assert.assertEquals("test Junit",equ1.getDesignation());
+		Assert.assertEquals(name,equ1.getDesignation());
 		
 		contrEqu.getEquipeByStringBody(equ);
 		
