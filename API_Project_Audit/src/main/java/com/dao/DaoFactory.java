@@ -15,8 +15,7 @@ import org.springframework.context.annotation.Configuration;
 public class DaoFactory {
 	private static final Logger logger = Logger.getLogger(DaoFactory.class);
 	
-	private static final String URL_BDD_DISTANT = "jdbc:mariadb://172.24.1.9/projetGL";
-	private static final String URL_BDD_LOCAL = "jdbc:mariadb://localhost/projetGL";
+	
 	private static final String LOGIN_BDD = "essai";
 	private static final String BDD_PASS = "network";
 	
@@ -52,9 +51,9 @@ public class DaoFactory {
 	
 	public String returnUrlBdd (String url) {
 		if(url.equals("distant")) {
-			return URL_BDD_DISTANT;
+			return "jdbc:mariadb://172.24.1.9/projetGL";
 		}else if (url.equals("local")) {
-			return URL_BDD_LOCAL;
+			return "jdbc:mariadb://localhost/projetGL";
 		}else {
 			return "";
 			
