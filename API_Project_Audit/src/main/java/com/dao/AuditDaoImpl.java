@@ -329,11 +329,26 @@ public class AuditDaoImpl implements AuditDao {
 			preparedStatement.setString(7, null);
 			preparedStatement.setInt(8, audit.getModele().getId());
 			preparedStatement.setString(9, null);
-			preparedStatement.setInt(10, audit.getMatiere().getId());
-			preparedStatement.setInt(11, audit.getLieu().getId());
+			if(audit.getMatiere()==null) {
+				preparedStatement.setString(10, null );
+			}else {
+				preparedStatement.setInt(10, audit.getMatiere().getId());
+			}
+			
+			if(audit.getLieu()==null) {
+				preparedStatement.setString(11, null );
+			}else {
+				preparedStatement.setInt(11, audit.getLieu().getId());
+			}
+			if(audit.getEquipe()==null) {
+				preparedStatement.setString(14, null );
+			}else {
+				preparedStatement.setInt(14, audit.getEquipe().getId());
+			}
+			
+			
 			preparedStatement.setString(12, audit.getModeDate());
 			preparedStatement.setString(13, audit.getSemaineAudit());
-			preparedStatement.setInt(14, audit.getEquipe().getId());
 						
 			preparedStatement.executeQuery();
 

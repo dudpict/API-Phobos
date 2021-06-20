@@ -2,14 +2,12 @@ package com.beans;
 
 public class Section {
 	
-	private static int idCount = 0;
 	int id;
 	String designation;
 	Modele modele;
 	
 	public Section() {
-		this.id=idCount;
-		idCount++;
+		super();
 		}
 
 	public Section(int id, String designation, Modele modele) {

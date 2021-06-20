@@ -26,7 +26,7 @@ public class PhobosControllerSection {
 	// INSERT d'une Section 
 	@PostMapping(value = "/addSection")
 	@ResponseBody
-	public void appelPostquestionaddSection(@RequestParam(required = true, value = "Designation") String designation,
+	public void appelPostaddSection(@RequestParam(required = true, value = "Designation") String designation,
 												@RequestParam(required = true, value = "id_Modele") int idModele) {
 		logger.log(Level.INFO, "appelPost_question_addSection");
 		DaoFactory fact = new DaoFactory();
@@ -36,7 +36,7 @@ public class PhobosControllerSection {
 	
 	@PostMapping(value = "/addSectionBody")
 	@ResponseBody
-	public void appelPostquestionaddSection(@RequestBody Section section) {
+	public void appelPostaddSectionBody(@RequestBody Section section) {
 		logger.log(Level.INFO, "appelPost_question_addSection");
 		DaoFactory fact = new DaoFactory();
 		SectionDao sectionDao = fact.getSectionDao();

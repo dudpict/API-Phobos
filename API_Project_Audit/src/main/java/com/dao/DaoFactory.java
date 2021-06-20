@@ -1,16 +1,11 @@
 package com.dao;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Properties;
-
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Configuration;
@@ -19,6 +14,11 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class DaoFactory {
 	private static final Logger logger = Logger.getLogger(DaoFactory.class);
+	
+	private static final String URL_BDD_DISTANT = "jdbc:mariadb://172.24.1.9/projetGL";
+	private static final String URL_BDD_LOCAL = "jdbc:mariadb://localhost/projetGL";
+	private static final String LOGIN_BDD = "essai";
+	private static final String BDD_PASS = "network";
 	
 	
 	public DaoFactory() {
@@ -43,36 +43,33 @@ public class DaoFactory {
 		} catch (ClassNotFoundException e) {
 			logger.log(Level.INFO, "connection bdd problem", e);
 		}
-		return DriverManager.getConnection("jdbc:mariadb://172.24.1.9/projetGL","essai","network");
+		return DriverManager.getConnection(returnUrlBdd("distant"),getEncryptedLogin(),getEncryptedPass());
 	}
 	/*	
 		"jdbc:mariadb://localhost/projetGL","essai","network"
 		"jdbc:mariadb://172.24.1.9/projetGL","essai","network"
 	*/
 	
-
-	public String returnProperties(String prop) {
-		Properties properties = new Properties();
-		try (
-			InputStream stream1 = new FileInputStream("src/main/resources/application.properties");		    
-		  ) {
-			properties.load(stream1);
+	public String returnUrlBdd (String url) {
+		if(url.equals("distant")) {
+			return URL_BDD_DISTANT;
+		}else if (url.equals("local")) {
+			return URL_BDD_LOCAL;
+		}else {
+			return "";
+			
 		}
-		catch (IOException e) {
-			logger.log(Level.INFO, "returnProperties problem", e);
-		}		
-		return properties.getProperty(prop);
 	}
 	
 	
 	public String getEncryptedPass() {
 		
-		return  returnProperties("userPass");
+		return  BDD_PASS;
 	}
 	
 	public String getEncryptedLogin() {
 		
-		return  returnProperties("userLogin");
+		return  LOGIN_BDD;
 	}
 	
 	// Récupération du Dao

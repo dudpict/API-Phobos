@@ -19,7 +19,7 @@ public class PhobosControllerOption {
 	
 	@GetMapping (value = "/allOption")
 	@ResponseBody
-	public List<Option> getLieux(){
+	public List<Option> allOption(){
 		logger.log(Level.INFO, "appelGET_allOption");
 		
 		DaoFactory fact = new DaoFactory();

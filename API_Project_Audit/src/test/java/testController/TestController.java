@@ -5,8 +5,15 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.beans.Equipe;
+import com.beans.Jury;
+import com.beans.Lieu;
+import com.beans.Modele;
 import com.beans.Option;
 import com.beans.Professeur;
+import com.beans.RoleUtilisateur;
+import com.beans.Section;
+import com.beans.TypeQuestion;
 import com.beans.UE;
 import com.controller.*;
 
@@ -14,9 +21,7 @@ import com.controller.*;
 public class TestController {
 		
 	@Test
-	public void testAudit() {
-		
-		
+	public void testUE() {		
 		UE ue = new UE(0,"Java EE","56");
 		Professeur prof = new Professeur(11, null ,null);
 		Option opt = new Option(4, 1, null);
@@ -49,8 +54,187 @@ public class TestController {
 				ueOk = false;
 			}			
 		}
-		Assert.assertEquals(true,ueOk);	
+		Assert.assertEquals(true,ueOk);			
+	}
+	
+	@Test
+	public void testOption() {
+		PhobosControllerOption contrOption = new PhobosControllerOption();
+		List<Option> lOption = contrOption.allOption();
 		
+		Assert.assertTrue(lOption.size()>0);
+		Assert.assertNotNull(lOption.get(0).getDesignation());
+		Assert.assertNotEquals(lOption.get(0).getIdProfesseur(),0);
+
+	}
+	
+	@Test
+	public void testLieu() {
+		PhobosControllerLieu contrLieu = new PhobosControllerLieu();
+		List<Lieu> lLieu = contrLieu.getLieux(null);
+		
+		Assert.assertTrue(lLieu.size()>1);	
+		
+		lLieu = contrLieu.getLieux("1");		
+		
+		Assert.assertEquals(1,lLieu.get(0).getId());
+		Assert.assertNotNull(lLieu.get(0).getVille());
+		Assert.assertNotNull(lLieu.get(0).getEtablissement());
+		Assert.assertNotNull(lLieu.get(0).getBatiment());
+		Assert.assertNotNull(lLieu.get(0).getNomSalle());
+		Assert.assertNotNull(lLieu.get(0).getEtage());
+		Assert.assertNotNull(lLieu.get(0).getNumSalle());
+
+	}
+	
+	@Test
+	public void testTypeQuestion() {
+		PhobosControllerTypeQuestion contrTypeQuestion = new PhobosControllerTypeQuestion();
+		List<TypeQuestion> lTypeQuestion = contrTypeQuestion.appelGETtypequestion();
+		
+		Assert.assertTrue(lTypeQuestion.size()>1);	
+		
+		TypeQuestion typeQ = contrTypeQuestion.appelGETtypeQuestionById("1");
+		
+		Assert.assertEquals(1,typeQ.getId());
+		Assert.assertNotNull(typeQ.getDesignation());
+	}
+	
+	@Test
+	public void testJury() {
+		PhobosControllerJury contrJury = new PhobosControllerJury();
+		Jury jr = new Jury(0,"JurytestJunit");
+		
+		contrJury.addJury(jr);
+		
+		Jury jury = contrJury.getJuryByString("JurytestJunit");
+		
+		int idJ = jury.getId();
+		
+		Assert.assertEquals("JurytestJunit",jury.getDesignation());
+		Assert.assertEquals(idJ,jury.getId());
+		
+		
+		jury = contrJury.getJuryByStringBody(jr);
+		
+		Assert.assertEquals("JurytestJunit",jury.getDesignation());
+		Assert.assertEquals(idJ,jury.getId());
+		
+		List<Jury> lJury = contrJury.getJurys(null);
+		
+		Assert.assertTrue(lJury.size()>1);
+		
+		lJury = contrJury.getJurys(Integer.toString(idJ));
+		
+		Assert.assertEquals(1,lJury.size());
+		Assert.assertEquals(idJ,lJury.get(0).getId());
+		Assert.assertEquals("JurytestJunit",lJury.get(0).getDesignation());	
+	}
+	
+	@Test
+	public void ttestSection() {
+		PhobosControllerSection contrSection = new PhobosControllerSection();
+		
+		contrSection.appelPostaddSection("Section 1 junit", 1);
+		
+		Section sec = new Section();	
+		Modele mdo = new Modele();
+		mdo.setId(1);
+		
+		sec.setId(0);
+		sec.setDesignation("Section 2 junit");
+		sec.setModele(mdo);
+		
+		contrSection.appelPostaddSectionBody(sec);
+		
+		List<Section> lSection = contrSection.getSectionByAllParam(sec);
+		
+		lSection = contrSection.appelGETsection(null);
+		Assert.assertTrue(lSection.size()>1);
+		int id1 = 0;
+		int nbrSec =0;
+		for(Section sect : lSection) {
+			if(sect.getDesignation().equals("Section 1 junit")){
+				nbrSec++;
+				id1 = sect.getId();
+			}if(sect.getDesignation().equals("Section 2 junit")) {
+				nbrSec++;
+				sec=sect;				
+			}
+		}
+		
+		Assert.assertEquals(2,nbrSec);
+		Assert.assertEquals("Section 2 junit",sec.getDesignation());
+		
+		lSection = contrSection.getSectionByIdModele("1");
+		
+		Assert.assertTrue(lSection.size()>2);
+		
+		contrSection.appelPostquestionupdateSection(sec.getId(),"Section2junit",1);
+		
+		sec = contrSection.getSectionById(sec.getId());
+		
+		Assert.assertEquals("Section2junit",sec.getDesignation());
+		
+		lSection = contrSection.appelGETsectionByNom("Section2junit");
+		
+		Assert.assertTrue(lSection.size()>0);
+		
+		contrSection.appelDELETEsection(Integer.toString(sec.getId()));
+		
+		contrSection.appelDELETEsection(Integer.toString(id1));
+	}
+	
+	@Test
+	public void testRole() {
+		PhobosControllerRole contrRole = new PhobosControllerRole();
+		contrRole.appelPostaddRoleProfesseur("1","1",null);
+		
+		PhobosControllerProfesseur contrProf = new PhobosControllerProfesseur();
+		List<RoleUtilisateur> lRole = contrProf.roleProf("1");
+		
+		Boolean roleOk = false;
+		for (RoleUtilisateur role : lRole) {
+			if(role.getId()==1 || role.getDesignation().equals("1")) {
+				roleOk=true;
+			}
+		}
+		
+		Assert.assertTrue(roleOk);
+		
+		contrRole.appelDELETEdeleteRoleProfesseur("1", "1", null);
+		
+		lRole = contrProf.roleProf("1");
+		
+		
+		for (RoleUtilisateur role : lRole) {
+			if(role.getId()==1 || role.getDesignation().equals("1")) {
+				roleOk=false;
+			}
+		}
+		Assert.assertTrue(roleOk);
+	}
+	
+	@Test
+	public void testEquipe() {
+		PhobosControllerEquipe contrEqu = new PhobosControllerEquipe();
+		
+		Equipe equ = new Equipe();
+		equ.setDesignation("test Junit");
+		equ.setId(0);
+		contrEqu.addEquipe(equ);
+		
+		Equipe equ1=contrEqu.getEquipeByString("test Junit");
+		
+		Assert.assertEquals("test Junit",equ1.getDesignation());
+		
+		contrEqu.getEquipeByStringBody(equ);
+		
+		Assert.assertEquals(equ.getDesignation(),equ1.getDesignation());
+		
+		Equipe lEquipe = contrEqu.getEquipeByEtudiantId("33");
+		
+		Assert.assertNotNull(lEquipe.getDesignation());
 	}
 
 }

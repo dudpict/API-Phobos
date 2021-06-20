@@ -59,7 +59,7 @@ public class ModeleDaoImpl implements ModeleDao {
 		Statement statement = null;
 		ResultSet resultat = null;
 		PreparedStatement preparedStmt = null;
-		Modele modele = new Modele();
+		Modele modele = null;
 
 		try {
 			connexion = daoFactory.getConnection();
@@ -70,7 +70,7 @@ public class ModeleDaoImpl implements ModeleDao {
 			while (resultat.next()) {
 				int id = resultat.getInt(sqlParamModele[0]);
 				String designation = resultat.getString(sqlParamModele[1]);
-
+				modele=new Modele();
 				modele.setId(id);
 				modele.setDesignation(designation);
 							}

@@ -42,7 +42,7 @@ public class PhobosControllerReponseMultiple {
 
 		DaoFactory fact = new DaoFactory();
 		ReponseMultipleDao reponseMultipleDao = fact.getReponseMultipleDao();
-		reponseMultipleDao.addReponseMultiple(reponseMultiple.getDesignation(), Integer.toString(reponseMultiple.getReponse().getId()), reponseMultiple.getCochee());
+		reponseMultipleDao.addReponseMultiple(reponseMultiple.getDesignation(), Integer.toString(reponseMultiple.getId()), reponseMultiple.getCochee());
 	}
 	
 	@PostMapping(value = "/updateReponseMultiple")
