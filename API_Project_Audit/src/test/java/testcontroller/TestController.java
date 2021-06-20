@@ -154,8 +154,9 @@ public class TestController {
 		int id1 = 0;
 		if (lSection.size()>0) {
 			id1++;
+			Assert.assertTrue(id1>0);
 		}
-		 id1 = 0;
+		id1 = 0;
 		lSection = contrSection.appelGETsection(null);
 		Assert.assertTrue(lSection.size()>1);
 		

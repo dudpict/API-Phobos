@@ -17,7 +17,7 @@ public class DaoFactory {
 	
 	private static final String DRIVER = "jdbc:mariadb://";
 	private static final String BDD_LOCAL = "localhost";
-	private static final String BDD_DISTANT = "172.24.1.9";
+	private static final String BDD_DISTANT = "172.24";
 	private static final String BDD = "/projetGL";
 	private static final String LOGIN_BDD = "essai";
 	private static final String BDD_PASS = "network";
@@ -51,7 +51,7 @@ public class DaoFactory {
 	
 	public String returnUrlBdd (String url) {
 		if(url.equals("distant")) {
-			return DRIVER+BDD_DISTANT+BDD;
+			return DRIVER+BDD_DISTANT+".1.9"+BDD;
 		}else if (url.equals("local")) {
 			return DRIVER+BDD_LOCAL+BDD;
 		}else {
